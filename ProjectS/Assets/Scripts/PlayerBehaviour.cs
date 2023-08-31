@@ -1,17 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
+[RequireComponent(typeof(CharacterController))]
 public class PlayerBehaviour : MonoBehaviour
 {
     [SerializeField]private float sensitivity=1f;
+    [SerializeField] private float _rotationSpeed = 4f;
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float jumpForce = 1f;
     [SerializeField] private float sprintSpeed = 10f;
+    [SerializeField]
+    private InputActionReference _movementControl;
+    [SerializeField]
+    private InputActionReference _jumpControl;
+    [SerializeField]
+    private InputActionReference _sprintControl;
+    private Transform cameraMain;
+    
+    private CharacterController controller;
+    private Vector3 playerVelocity;
+    private bool groundedPlayer;
+    private float gravityValue = -9.81f;
     private float mouseX; 
     private float adjustedMouseX;
-    private float moveHorizontal;
-    private float moveVertical;
+    
     
     public float currentSpeed;
     public float stamina;
@@ -38,11 +52,24 @@ public class PlayerBehaviour : MonoBehaviour
     private bool isUsingAbility;
     private bool canUseHealthPotion = true;
     private bool canUseManaPotion = true;
-    
 
+    private void OnEnable()
+    {
+        _jumpControl.action.Enable();
+        _movementControl.action.Enable();
+        _sprintControl.action.Enable();
+    }
+    private void OnDisable()
+    {
+        _jumpControl.action.Disable();
+        _movementControl.action.Disable();
+        _sprintControl.action.Disable();
+    }
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        controller = gameObject.GetComponent<CharacterController>();
+        cameraMain = Camera.main.transform;
     }
     private void Start()
     {
@@ -56,8 +83,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         // Movement handling with movement speed
         MovePlayer();
-        //Player Rotation
-        RotatePlayer();
+        
         // Ability usage handling
         UseAbility();
 
@@ -69,16 +95,7 @@ public class PlayerBehaviour : MonoBehaviour
         RecoverStamina();
         GenerateMana();
     }
-    private void RotatePlayer()
-    {
-        mouseX = Input.GetAxis("Mouse X");
-
-        // Регулировка чувствительности вращения с помощью мыши
-        adjustedMouseX = mouseX * sensitivity;
-
-        // Вращение персонажа в горизонтальной плоскости
-        transform.Rotate(Vector3.up, adjustedMouseX);
-    }
+   
     private void MovePlayer()
     {
         /*
@@ -102,34 +119,36 @@ public class PlayerBehaviour : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
         */
-        moveHorizontal = Input.GetAxis("Horizontal");
-        moveVertical = Input.GetAxis("Vertical");
-        bool isJumping = Input.GetKeyDown(KeyCode.Space);
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-
-        // Получение направления взгляда камеры
-        Vector3 cameraForward = Camera.main.transform.forward;
-        cameraForward.y = 0;
-        cameraForward = cameraForward.normalized;
-
-        // Создание вектора направления движения на основе ввода и направления камеры
-        Vector3 movement = new Vector3(moveHorizontal, 0f, moveVertical);
-        movement = Quaternion.LookRotation(cameraForward) * movement;
-        movement.Normalize();
-
-        currentSpeed = moveSpeed;
-        if (isSprinting)
+        groundedPlayer = controller.isGrounded;
+        if (groundedPlayer && playerVelocity.y < 0)
+        {
+            playerVelocity.y = 0f;
+        }
+        Vector2 movement = _movementControl.action.ReadValue<Vector2>();
+        Vector3 move = new Vector3(movement.x,0,movement.y);
+        move = cameraMain.forward * move.z + cameraMain.right * move.x;
+        move.y = 0f;
+        if (_sprintControl.action.IsPressed())
         {
             currentSpeed = sprintSpeed;
         }
-
-        // Применение движения к Rigidbody
-        rb.velocity = new Vector3(movement.x * currentSpeed, rb.velocity.y, movement.z * currentSpeed);
-
-        if (isJumping && Mathf.Abs(rb.velocity.y) < 0.01f)
+        else
         {
-            // Применение силы для прыжка
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            currentSpeed = moveSpeed;
+        }
+        controller.Move(move * Time.deltaTime * currentSpeed);
+        if (_jumpControl.action.triggered && groundedPlayer)
+        {
+            playerVelocity.y += Mathf.Sqrt(jumpForce * -3.0f * gravityValue);
+        }       
+        // Changes the height position of the player.. 
+        playerVelocity.y += gravityValue * Time.deltaTime;
+        controller.Move(playerVelocity * Time.deltaTime);
+        if(movement!= Vector2.zero)
+        {
+            float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg+cameraMain.eulerAngles.y;
+            Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
+            transform.rotation = Quaternion.Lerp(transform.rotation,rotation,Time.deltaTime*_rotationSpeed);
         }
     }
 
