@@ -4,36 +4,37 @@ using UnityEngine;
 using UnityEngine.AI;
 public class MeleeEnemyBehaviour : MonoBehaviour
 {
-    [SerializeField] private float detectionRadius = 10f; // Радиус обнаружения игрока
-    [SerializeField] private float aggroRadius = 10f; // Радиус агро
-    [SerializeField] private float attackRange = 2f;
-    private GameObject player; // Ссылка на игрока
-    private NavMeshAgent agent; // Компонент NavMeshAgent для перемещения врага
-    private bool isAggro = false; // Флаг, указывающий, атакует ли враг игрока
-    private float attackCooldown = 0f;
+    [SerializeField] private float _detectionRadius = 10f; // Радиус обнаружения игрока
+    [SerializeField] private float _aggroRadius = 10f; // Радиус агро
+    [SerializeField] private float _attackRange = 4f;
+    private GameObject _player; // Ссылка на игрока
+    private NavMeshAgent _agent; // Компонент NavMeshAgent для перемещения врага
+    private bool _isAggro = false; // Флаг, указывающий, атакует ли враг игрока
+    private float _attackCooldown = 0f;
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        agent = GetComponent<NavMeshAgent>();
+        _player = GameObject.FindGameObjectWithTag("Player");
+        _agent = GetComponent<NavMeshAgent>();
     }
 
     void Update()
     {
         // Проверяем, находится ли игрок в зоне обнаружения врага
-        if (Vector3.Distance(transform.position, player.transform.position) <= detectionRadius)
+        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
         {
             // Если игрок находится в зоне агро и враг не атакует, начинаем преследование
-            isAggro = true;
+            _isAggro = true;
 
 
 
-            if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
+            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
             {
                 StopAllCoroutines();
-                attackCooldown += Time.deltaTime;
-                if (attackCooldown > 3f)
+                _agent.SetDestination(transform.position);
+                _attackCooldown += Time.deltaTime;
+                if (_attackCooldown > 3f)
                 {
-                    attackCooldown = 0;
+                    _attackCooldown = 0;
                     Attack();
                 }
             }
@@ -44,7 +45,7 @@ public class MeleeEnemyBehaviour : MonoBehaviour
         }
         else
         {
-            isAggro = false;
+            _isAggro = false;
             StopCoroutine(ChasePlayer());
         }
     }
@@ -54,9 +55,9 @@ public class MeleeEnemyBehaviour : MonoBehaviour
     }
     IEnumerator ChasePlayer()
     {
-        while (isAggro)
+        while (_isAggro)
         {
-            agent.SetDestination(player.transform.position);
+            _agent.SetDestination(_player.transform.position);
             yield return null;
         }
     }
