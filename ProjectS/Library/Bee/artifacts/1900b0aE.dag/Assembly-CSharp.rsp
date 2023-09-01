@@ -364,12 +364,15 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.7f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scripts/AddPlayerToCamera.cs"
 "Assets/Scripts/CameraController.cs"
-"Assets/Scripts/MeleeEnemyBehaviour.cs"
-"Assets/Scripts/PlayerBehaviour.cs"
+"Assets/Scripts/Enemy/MeleeEnemyBehaviour.cs"
+"Assets/Scripts/Enemy/RangeEnemyBehaviour.cs"
+"Assets/Scripts/Enemy/SummonerEnemyBehaviour.cs"
+"Assets/Scripts/HealthSystem.cs"
+"Assets/Scripts/Player/PlayerBattleSystem.cs"
+"Assets/Scripts/Player/PlayerBehaviour.cs"
+"Assets/Scripts/Player/PotionsSystem.cs"
 "Assets/Scripts/PlayerSelect.cs"
-"Assets/Scripts/RangeEnemyBehaviour.cs"
 "Assets/Scripts/SpawnerScript.cs"
-"Assets/Scripts/SummonerEnemyBehaviour.cs"
 -langversion:9.0
 
 /deterministic

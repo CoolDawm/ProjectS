@@ -23,35 +23,23 @@ public class PlayerBehaviour : MonoBehaviour
     private Vector3 playerVelocity;
     private bool groundedPlayer;
     private float gravityValue = -9.81f;
-    private float mouseX; 
-    private float adjustedMouseX;
-    
+   
     
     public float currentSpeed;
     public float stamina;
     public float staminaRecoveryRate;
     public float rollDuration;
     public float rollInvincibilityDuration;
-    public float manaGenerationRate;
-    public float meleeAbilityRange;
-    public float rangedAbilityProjectileLifetime;
-    public float areaAbilityRadius;
-    public float areaAbilityRange;
-    public int healthPotionCount;
-    public int manaPotionCount;
-    public float healthPotionHealAmount;
-    public float manaPotionManaAmount;
-    public float healthPotionCooldown;
-    public float manaPotionCooldown;
+    
+    
+    
     private Rigidbody rb;
     private float currentStamina;
     private float rollTimer;
     private float rollInvincibilityTimer;
-    private float manaTimer;
+    
     private bool isRolling;
-    private bool isUsingAbility;
-    private bool canUseHealthPotion = true;
-    private bool canUseManaPotion = true;
+    
 
     private void OnEnable()
     {
@@ -76,24 +64,16 @@ public class PlayerBehaviour : MonoBehaviour
         currentStamina = stamina;
         rollTimer = rollDuration;
         rollInvincibilityTimer = rollInvincibilityDuration;
-        manaTimer = manaGenerationRate;
+        
     }
 
     private void Update()
     {
         // Movement handling with movement speed
-        MovePlayer();
-        
-        // Ability usage handling
-        UseAbility();
-
-        // Health and mana potion usage handling
-        UseHealthPotion();
-        UseManaPotion();
-
+        MovePlayer();                      
         // Stamina recovery and mana generation
         RecoverStamina();
-        GenerateMana();
+        
     }
    
     private void MovePlayer()
@@ -152,48 +132,19 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-    private void UseAbility()
-    {
-        // Check for ability activation key press
-
-        // Check ability type and time of usage
-
-        // Ability application logic based on type
-    }
-
+    
     private void Roll()
     {
         // Roll logic with temporary invincibility
         // Implement your desired roll logic here
     }
 
-    private void UseHealthPotion()
-    {
-        // Check for health potion usage key press
-
-        // Check potion availability and cooldown
-
-        // Health restoration logic and cooldown set
-    }
-
-    private void UseManaPotion()
-    {
-        // Check for mana potion usage key press
-
-        // Check potion availability and cooldown
-
-        // Mana restoration logic and cooldown set
-    }
-
+    
     private void RecoverStamina()
     {
         // Stamina recovery logic when not rolling or sprinting
         // Implement your desired stamina recovery logic here
     }
 
-    private void GenerateMana()
-    {
-        // Mana generation logic considering generation and consumption time
-        // Implement your desired mana generation logic here
-    }
+   
 }
