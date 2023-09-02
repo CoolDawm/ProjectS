@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MVPSystems
-{
+
     public class SpawnerScript : MonoBehaviour
     {
         [SerializeField]
@@ -35,4 +34,4 @@ namespace MVPSystems
             }
         }
     }
-}
+

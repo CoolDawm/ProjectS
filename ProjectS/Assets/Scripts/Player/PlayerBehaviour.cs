@@ -17,22 +17,16 @@ public class PlayerBehaviour : MonoBehaviour
     private InputActionReference _jumpControl;
     [SerializeField]
     private InputActionReference _sprintControl;
-    private Transform cameraMain;
-    
+    private Transform cameraMain;  
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
-    private float gravityValue = -9.81f;
-   
-    
+    private float gravityValue = -9.81f;     
     public float currentSpeed;
     public float stamina;
     public float staminaRecoveryRate;
     public float rollDuration;
-    public float rollInvincibilityDuration;
-    
-    
-    
+    public float rollInvincibilityDuration;         
     private Rigidbody rb;
     private float currentStamina;
     private float rollTimer;
@@ -78,27 +72,7 @@ public class PlayerBehaviour : MonoBehaviour
    
     private void MovePlayer()
     {
-        /*
-        moveHorizontal = Input.GetAxis("Horizontal");
-        moveVertical = Input.GetAxis("Vertical");
-        bool isJumping = Input.GetKeyDown(KeyCode.Space);
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-        Vector3 movement = new Vector3(moveHorizontal, 0f, moveVertical);
-        movement.Normalize();
-        currentSpeed = moveSpeed;
-        if (isSprinting)
-        {
-            currentSpeed = sprintSpeed;
-        }
-        // Apply movement to  Rigidbody
-        rb.velocity = new Vector3(movement.x * currentSpeed, rb.velocity.y, movement.z * currentSpeed);
-
-        if (isJumping && Mathf.Abs(rb.velocity.y) < 0.01f)
-        {
-            // Aplly force for jump
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        }
-        */
+       
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {

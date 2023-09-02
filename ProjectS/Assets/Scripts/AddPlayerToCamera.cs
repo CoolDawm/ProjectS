@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MVPSystems
-{
+
     public class AddPlayerToCamera : MonoBehaviour
     {
         private GameObject _player;
@@ -18,4 +17,4 @@ namespace MVPSystems
 
         
     }
-}
+

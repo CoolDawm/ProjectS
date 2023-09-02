@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MVPSystems
-{
 
     public class PotionsSystem : MonoBehaviour
     {
@@ -48,4 +46,4 @@ namespace MVPSystems
         }
 
     }
-}
+

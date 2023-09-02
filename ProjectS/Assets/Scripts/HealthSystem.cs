@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MVPSystems
-{
+
     public class HealthSystem : MonoBehaviour
     {
         // Start is called before the first frame update
@@ -18,4 +17,4 @@ namespace MVPSystems
         
         }
     }
-}
+

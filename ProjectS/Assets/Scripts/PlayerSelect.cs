@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace MVPSystems
-{
+
     public class PlayerSelect : MonoBehaviour
     {
         private GameObject[] characters;
@@ -58,4 +57,4 @@ namespace MVPSystems
             SceneManager.LoadScene("Level1");
         }
     }
-}
+
