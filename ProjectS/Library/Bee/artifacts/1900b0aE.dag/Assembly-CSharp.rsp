@@ -372,6 +372,7 @@
 "Assets/Scripts/Player/PlayerBehaviour.cs"
 "Assets/Scripts/Player/PotionsSystem.cs"
 "Assets/Scripts/PlayerSelect.cs"
+"Assets/Scripts/ProjectileScript.cs"
 "Assets/Scripts/SpawnerScript.cs"
 -langversion:9.0
 

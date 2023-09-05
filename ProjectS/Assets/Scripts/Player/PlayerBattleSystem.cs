@@ -3,59 +3,62 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-    public class PlayerBattleSystem : MonoBehaviour
+public class PlayerBattleSystem : MonoBehaviour
+{
+    [SerializeField]
+    private Transform shootingPosition;
+    public float manaGenerationRate;
+    public float meleeAbilityRange;
+    public float rangedAbilityProjectileLifetime;
+    public float areaAbilityRadius;
+    public float areaAbilityRange;
+    private bool isUsingAbility;
+    private float manaTimer;
+    public float meleeRange = 3f;
+    public float projectileSpeed = 1500f;
+    public float projectileLifetime = 3f;
+    public float areaOfEffectRadius = 5f;
+    public float summonRange = 10f;
+    public GameObject projectilePrefab;
+    // Start is called before the first frame update
+    void Start()
     {
-        public float manaGenerationRate;
-        public float meleeAbilityRange;
-        public float rangedAbilityProjectileLifetime;
-        public float areaAbilityRadius;
-        public float areaAbilityRange;
-        private bool isUsingAbility;
-        private float manaTimer;
-        public float meleeRange = 1f;
-        public float projectileSpeed = 10f;
-        public float projectileLifetime = 5f;
-        public float areaOfEffectRadius = 5f;
-        public float summonRange = 10f;
-        public GameObject projectilePrefab;       
-        // Start is called before the first frame update
-        void Start()
-        {
-            manaTimer = manaGenerationRate;
-        }
+        manaTimer = manaGenerationRate;
+    }
 
-        
-        private void GenerateMana()
-        {
-            // Mana generation logic considering generation and consumption time
-            // Implement your desired mana generation logic here
-        }
-        
 
-        private void Update()
-        {
+    private void GenerateMana()
+    {
+        // Mana generation logic considering generation and consumption time
+        // Implement your desired mana generation logic here
+    }
+
+
+    private void Update()
+    {
         GenerateMana();
         // Melee ability
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                // Geting someone in our melee range
-                Collider[] colliders = Physics.OverlapSphere(transform.position, meleeRange);
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            // Geting someone in our melee range
+            Collider[] colliders = Physics.OverlapSphere(transform.position, meleeRange);
 
-                // Checking for enemies
-                foreach (Collider collider in colliders)
+            // Checking for enemies
+            foreach (Collider collider in colliders)
+            {
+                Debug.Log("try");
+                if (collider.CompareTag("Enemy"))
                 {
-                    if (collider.CompareTag("Enemy"))
-                    {
                     // Attack mechanic
-                        Destroy(collider.gameObject);
-                    }
+                    Destroy(collider.gameObject);
                 }
             }
+        }
 
         // Умение: Рендж (Range)
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
             Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
             projectileRigidbody.velocity = transform.forward * projectileSpeed;
 
@@ -92,7 +95,7 @@ using UnityEngine;
             // ...
         }
 
-        
+
     }
 
     private void ShowAbilityArea(Vector3 targetPosition, float radius)
