@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 3724434196563804583}
   - component: {fileID: 1224879229212159805}
   - component: {fileID: 3951038155357437379}
+  - component: {fileID: 2494007885783738307}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -310,6 +311,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootingPosition: {fileID: 6867033276631886}
+  aoeDamage: 5
+  meleeDamage: 25
   manaGenerationRate: 0
   meleeAbilityRange: 2
   rangedAbilityProjectileLifetime: 5
@@ -320,4 +323,18 @@ MonoBehaviour:
   projectileLifetime: 5
   areaOfEffectRadius: 5
   summonRange: 10
-  projectilePrefab: {fileID: 4970609658577900936, guid: 1b32035462c00844a82c3b4dd912e555, type: 3}
+  projectilePrefab: {fileID: 2416214550007718432, guid: f9852ad8712bd3540bbad50a9cf5e932, type: 3}
+--- !u!114 &2494007885783738307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861272822325234659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32166dae24f6cb24cb0fa27f8f7c0f15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0

@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,13 @@ public class PlayerBattleSystem : MonoBehaviour
 {
     [SerializeField]
     private Transform shootingPosition;
+    [SerializeField]
+    private float aoeDamage=5;
+    [SerializeField]
+    private float meleeDamage = 25;
+    [SerializeField]
+    private bool _abilityIsActive = true;
+    public GameObject cursorObject;
     public float manaGenerationRate;
     public float meleeAbilityRange;
     public float rangedAbilityProjectileLifetime;
@@ -20,7 +28,7 @@ public class PlayerBattleSystem : MonoBehaviour
     public float areaOfEffectRadius = 5f;
     public float summonRange = 10f;
     public GameObject projectilePrefab;
-    // Start is called before the first frame update
+  
     void Start()
     {
         manaTimer = manaGenerationRate;
@@ -29,33 +37,32 @@ public class PlayerBattleSystem : MonoBehaviour
 
     private void GenerateMana()
     {
-        // Mana generation logic considering generation and consumption time
-        // Implement your desired mana generation logic here
+        
     }
 
 
     private void Update()
     {
         GenerateMana();
-        // Melee ability
+        //(Melee)
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            // Geting someone in our melee range
+           
             Collider[] colliders = Physics.OverlapSphere(transform.position, meleeRange);
 
-            // Checking for enemies
+            
             foreach (Collider collider in colliders)
             {
                 Debug.Log("try");
                 if (collider.CompareTag("Enemy"))
                 {
-                    // Attack mechanic
-                    Destroy(collider.gameObject);
+                   
+                   collider.gameObject.GetComponent<HealthSystem>().TakeDamage(meleeDamage);
                 }
             }
         }
 
-        // Умение: Рендж (Range)
+        //  (Range)
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
@@ -64,11 +71,34 @@ public class PlayerBattleSystem : MonoBehaviour
 
             Destroy(projectile, projectileLifetime);
         }
-
-        // AOE ability
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            // Ray from camera to coursor
+            _abilityIsActive = true;
+            StartCoroutine(AoeAbility());
+        }
+        // Ability 4
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            
+        }
+
+
+    }
+    // AOE ability
+    IEnumerator AoeAbility()
+    {
+        CinemachineFreeLook cinemachineFreeLook = Camera.main.GetComponent<CinemachineFreeLook>();
+        
+        float originalXYAxisValue = cinemachineFreeLook.m_XAxis.m_InputAxisValue;
+        float originalYAxisValue = cinemachineFreeLook.m_YAxis.m_InputAxisValue;
+
+        cinemachineFreeLook.m_XAxis.m_InputAxisValue = 0f;
+        cinemachineFreeLook.m_YAxis.m_InputAxisValue = 0f;
+        
+        while (_abilityIsActive)
+        {
+           
+            // Ray from camera to cursor
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
@@ -76,32 +106,68 @@ public class PlayerBattleSystem : MonoBehaviour
                 // If ray lands on enemy, show it
                 if (hit.collider.CompareTag("Enemy"))
                 {
-                    Vector3 targetPosition = hit.collider.transform.position;
-                    ShowAbilityArea(targetPosition, areaOfEffectRadius);
+                    cursorObject.transform.position = hit.collider.transform.position;
+                    ShowAbilityArea(cursorObject);
+                    hit.collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        //Attack
+                        _abilityIsActive = false;
+                    }
                 }
                 else
                 {
-                    // If not show where it lands at the end
-                    Vector3 targetPosition = hit.point;
-                    ShowAbilityArea(targetPosition, areaOfEffectRadius);
+                    // If not, show where cursor lands at the end
+                    cursorObject.transform.position = hit.point;
+                    ShowAbilityArea(cursorObject);
+
+                    // Overlapsphere to find enemies within the area of effect
+                    Collider[] colliders = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius, LayerMask.GetMask("Enemy"));
+                    if (colliders.Length > 0)
+                    {
+                        // Find the closest enemy to the center of the overlapsphere
+                        Vector3 centerOfSphere = cursorObject.transform.position;
+                        Collider closestEnemy = colliders[0];
+                        float closestDistance = Vector3.Distance(centerOfSphere, closestEnemy.transform.position);
+
+                        foreach (Collider collider in colliders)
+                        {
+                            float distance = Vector3.Distance(centerOfSphere, collider.transform.position);
+                            if (distance < closestDistance)
+                            {
+                                closestEnemy = collider;
+                                closestDistance = distance;
+                            }
+                        }
+
+                        // Move cursor object towards the closest enemy
+                        cursorObject.transform.position = closestEnemy.transform.position;
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            //Attack
+                            _abilityIsActive = false;
+                        }
+                    }
                 }
             }
+
+            yield return null;
         }
-
-        // Ability 4
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            // 
-            // ...
-        }
-
-
+        
+        cinemachineFreeLook.m_XAxis.m_InputAxisValue = originalXYAxisValue;
+        cinemachineFreeLook.m_YAxis.m_InputAxisValue = originalYAxisValue;
+        // Hide ability area when ability is not active
+        HideAbilityArea(cursorObject);
     }
-
-    private void ShowAbilityArea(Vector3 targetPosition, float radius)
+    private void ShowAbilityArea(GameObject point)
     {
         // Show area? Probably will use particles for that
-        // ...
+        
+    }
+    private void HideAbilityArea(GameObject point)
+    {
+        // Show area? Probably will use particles for that
+
     }
 }
 

@@ -5,15 +5,22 @@ using UnityEngine.AI;
 public class RangeEnemyBehaviour : MonoBehaviour
 {
     [SerializeField]
-    public float _detectionRadius = 15f; // –адиус обнаружени€ игрока
+    public float _detectionRadius = 15f; 
     [SerializeField]
-    public float _aggroRadius = 15f; // Agro radius
+    public float _aggroRadius = 15f; 
     [SerializeField]
     private float _attackRange = 10f;
-    private GameObject _player; // Player link
-    private NavMeshAgent _agent; // NavMesh component
+    [SerializeField]
+    private Transform shootingPosition;
+    [SerializeField]
+    private float _rotationSpeed = 3f;
+    private GameObject _player; 
+    private NavMeshAgent _agent; 
+    public GameObject projectilePrefab;
     private bool _isAggro = false; 
     private float _attackCooldown=0f;
+    public float projectileSpeed = 10f;
+    public float projectileLifetime = 3f;
     void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
@@ -22,10 +29,10 @@ public class RangeEnemyBehaviour : MonoBehaviour
 
     void Update()
     {
-        // ѕровер€ем, находитс€ ли игрок в зоне обнаружени€ врага
+      
         if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
         {
-            // ≈сли игрок находитс€ в зоне агро и враг не атакует, начинаем преследование
+           
             _isAggro = true;
 
             
@@ -35,6 +42,9 @@ public class RangeEnemyBehaviour : MonoBehaviour
                 StopAllCoroutines();
                 _agent.SetDestination(transform.position);
                 _attackCooldown += Time.deltaTime;
+                Vector3 targetDirection = _player.transform.position - transform.position;
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
                 if (_attackCooldown > 3f)
                 {
                     _attackCooldown = 0;
@@ -55,6 +65,12 @@ public class RangeEnemyBehaviour : MonoBehaviour
     public void Attack()
     {
         Debug.Log("Attack");
+        
+        GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
+        Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
+        projectileRigidbody.velocity = transform.forward * projectileSpeed;
+
+        Destroy(projectile, projectileLifetime);
     }
     IEnumerator ChasePlayer()
     {

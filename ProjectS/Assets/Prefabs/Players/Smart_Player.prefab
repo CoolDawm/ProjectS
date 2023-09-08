@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 8326493963995363807}
   - component: {fileID: 8338841158745678350}
   - component: {fileID: 5077140723063834932}
+  - component: {fileID: 6510031172208376582}
   m_Layer: 0
   m_Name: Smart_Player
   m_TagString: Player
@@ -279,6 +280,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootingPosition: {fileID: 7955051689130861782}
+  aoeDamage: 5
+  meleeDamage: 25
   manaGenerationRate: 0
   meleeAbilityRange: 2
   rangedAbilityProjectileLifetime: 5
@@ -289,7 +292,21 @@ MonoBehaviour:
   projectileLifetime: 5
   areaOfEffectRadius: 5
   summonRange: 10
-  projectilePrefab: {fileID: 4970609658577900936, guid: 1b32035462c00844a82c3b4dd912e555, type: 3}
+  projectilePrefab: {fileID: 2416214550007718432, guid: f9852ad8712bd3540bbad50a9cf5e932, type: 3}
+--- !u!114 &6510031172208376582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765348477108020771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32166dae24f6cb24cb0fa27f8f7c0f15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 80
+  currentHealth: 0
 --- !u!1 &8935003735110599363
 GameObject:
   m_ObjectHideFlags: 0
