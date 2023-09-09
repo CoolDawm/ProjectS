@@ -14,6 +14,7 @@ public class PlayerBattleSystem : MonoBehaviour
     private float meleeDamage = 25;
     [SerializeField]
     private bool _abilityIsActive = true;
+    private GameObject  freeLook;
     public GameObject cursorObject;
     public float manaGenerationRate;
     public float meleeAbilityRange;
@@ -32,6 +33,7 @@ public class PlayerBattleSystem : MonoBehaviour
     void Start()
     {
         manaTimer = manaGenerationRate;
+        freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
     }
 
 
@@ -87,13 +89,13 @@ public class PlayerBattleSystem : MonoBehaviour
     // AOE ability
     IEnumerator AoeAbility()
     {
-        CinemachineFreeLook cinemachineFreeLook = Camera.main.GetComponent<CinemachineFreeLook>();
+        //CinemachineFreeLook cinemachineFreeLook = Camera.main.GetComponent<CinemachineFreeLook>();
+        freeLook.GetComponent<CinemachineInputProvider>().enabled = false;
+        //float originalXYAxisValue = cinemachineFreeLook.m_XAxis.m_InputAxisValue;
+        //float originalYAxisValue = cinemachineFreeLook.m_YAxis.m_InputAxisValue;
         
-        float originalXYAxisValue = cinemachineFreeLook.m_XAxis.m_InputAxisValue;
-        float originalYAxisValue = cinemachineFreeLook.m_YAxis.m_InputAxisValue;
-
-        cinemachineFreeLook.m_XAxis.m_InputAxisValue = 0f;
-        cinemachineFreeLook.m_YAxis.m_InputAxisValue = 0f;
+        //cinemachineFreeLook.m_XAxis.m_InputAxisValue = 0f;
+        //cinemachineFreeLook.m_YAxis.m_InputAxisValue = 0f;
         
         while (_abilityIsActive)
         {
@@ -108,9 +110,11 @@ public class PlayerBattleSystem : MonoBehaviour
                 {
                     cursorObject.transform.position = hit.collider.transform.position;
                     ShowAbilityArea(cursorObject);
-                    hit.collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
+                    
                     if (Input.GetMouseButtonDown(0))
                     {
+                        hit.collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
+                        Debug.Log("Pew Pew Pew Pew Pew");
                         //Attack
                         _abilityIsActive = false;
                     }
@@ -140,10 +144,13 @@ public class PlayerBattleSystem : MonoBehaviour
                             }
                         }
 
-                        // Move cursor object towards the closest enemy
-                        cursorObject.transform.position = closestEnemy.transform.position;
+                        
                         if (Input.GetMouseButtonDown(0))
                         {
+                            // Move cursor object towards the closest enemy
+                            cursorObject.transform.position = closestEnemy.transform.position;
+
+                            Debug.Log("Pew Pew Pew Pew Pew");
                             //Attack
                             _abilityIsActive = false;
                         }
@@ -153,9 +160,9 @@ public class PlayerBattleSystem : MonoBehaviour
 
             yield return null;
         }
-        
-        cinemachineFreeLook.m_XAxis.m_InputAxisValue = originalXYAxisValue;
-        cinemachineFreeLook.m_YAxis.m_InputAxisValue = originalYAxisValue;
+        freeLook.GetComponent<CinemachineInputProvider>().enabled = true;
+       // cinemachineFreeLook.m_XAxis.m_InputAxisValue = originalXYAxisValue;
+        //cinemachineFreeLook.m_YAxis.m_InputAxisValue = originalYAxisValue;
         // Hide ability area when ability is not active
         HideAbilityArea(cursorObject);
     }

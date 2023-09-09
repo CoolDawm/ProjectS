@@ -367,6 +367,7 @@
 "Assets/Scripts/Enemy/MeleeEnemyBehaviour.cs"
 "Assets/Scripts/Enemy/RangeEnemyBehaviour.cs"
 "Assets/Scripts/Enemy/SummonerEnemyBehaviour.cs"
+"Assets/Scripts/Enemy/SummonsBehaviour.cs"
 "Assets/Scripts/HealthSystem.cs"
 "Assets/Scripts/Player/PlayerBattleSystem.cs"
 "Assets/Scripts/Player/PlayerBehaviour.cs"

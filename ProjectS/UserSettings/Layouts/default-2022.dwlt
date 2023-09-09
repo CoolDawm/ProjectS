@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1280
     height: 637.3334
   m_ShowMode: 4
-  m_Title: Console
+  m_Title: Game
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -295,8 +295,8 @@ MonoBehaviour:
     y: 0
     width: 311.3333
     height: 587.3333
-  m_MinSize: {x: 275, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -408,7 +408,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 26042
+  m_LastSelectedObjectID: 25120
 --- !u!114 &15
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -493,9 +493,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: c47fffff
-      m_LastClickedID: -32828
-      m_ExpandedIDs: f27fffff6c80ffff6a9affffd29afffff89affff34a4ffff5aa4ffffdeb4ffff0efbffff165e0000325e00003c6f0000586f0000
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 0efbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -927,9 +927,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -20.202616, y: 1.5446264, z: -18.660921}
+    m_Target: {x: 11.447225, y: -5.183534, z: -0.09527987}
     speed: 2
-    m_Value: {x: -20.202616, y: 1.5446264, z: -18.660921}
+    m_Value: {x: 11.447225, y: -5.183534, z: -0.09527987}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -975,13 +975,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.12945712, y: -0.08503119, z: 0.011253677, w: 0.98791397}
+    m_Target: {x: 0.15585968, y: 0.7053735, z: -0.16345517, w: 0.6719639}
     speed: 2
-    m_Value: {x: 0.12943426, y: -0.08650907, z: 0.011447335, w: 0.9877408}
+    m_Value: {x: 0.15585212, y: 0.7053393, z: -0.16344725, w: 0.67193127}
   m_Size:
-    m_Target: 1.6008575
+    m_Target: 10
     speed: 2
-    m_Value: 1.531921
+    m_Value: 10
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1051,7 +1051,7 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs
+    - Assets/Scenes
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1059,16 +1059,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 67
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/Scenes
   m_LastFoldersGridSize: 67
   m_LastProjectPath: C:\Users\lorik\Desktop\FolderForProject\ProjectS\ProjectS
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 61.00003}
-    m_SelectedIDs: f45f0000
-    m_LastClickedID: 24564
-    m_ExpandedIDs: 00000000f25f0000f45f0000f65f0000ffffff7f
+    scrollPos: {x: 0, y: 77.00003}
+    m_SelectedIDs: 50610000
+    m_LastClickedID: 24912
+    m_ExpandedIDs: 0000000006600000086000000a600000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1096,7 +1096,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 26}
     m_SelectedIDs: 26630000
     m_LastClickedID: 25382
-    m_ExpandedIDs: 00000000f25f0000f45f0000f65f0000
+    m_ExpandedIDs: 0000000006600000086000000a600000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1121,8 +1121,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: c47fffff
-    m_LastClickedInstanceID: -32828
+    m_SelectedInstanceIDs: 56610000
+    m_LastClickedInstanceID: 24918
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c62300005817000094890000407d00008c5b0000907a0000e8610000885f00004e620000ac6300001c62000046700000009c000034830000988b0000129b0000da8b0000867600009cb50000046b0000da7e00008cab00001e600000
     m_RenameOverlay:
@@ -1140,7 +1140,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 11}
+      m_ClientGUIView: {fileID: 10}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
