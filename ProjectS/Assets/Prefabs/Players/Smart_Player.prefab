@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 8338841158745678350}
   - component: {fileID: 5077140723063834932}
   - component: {fileID: 6510031172208376582}
+  - component: {fileID: 6473006953353033153}
   m_Layer: 0
   m_Name: Smart_Player
   m_TagString: Player
@@ -282,11 +283,15 @@ MonoBehaviour:
   shootingPosition: {fileID: 7955051689130861782}
   aoeDamage: 5
   meleeDamage: 25
-  manaGenerationRate: 0
+  _abilityIsActive: 1
+  _maxMana: 100
   meleeAbilityRange: 2
   rangedAbilityProjectileLifetime: 5
   areaAbilityRadius: 3
   areaAbilityRange: 4
+  currentMana: 0
+  cursorObject: {fileID: 0}
+  manaGenerationRate: 0
   meleeRange: 2
   projectileSpeed: 10
   projectileLifetime: 5
@@ -307,6 +312,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 80
   currentHealth: 0
+--- !u!114 &6473006953353033153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765348477108020771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe31c030d8741bf4ab15a5d3690f72a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPotionHealAmount: 5
+  manaPotionManaAmount: 5
+  healthPotionCooldown: 0
+  manaPotionCooldown: 0
+  healthPotionCount: 0
+  manaPotionCount: 0
 --- !u!1 &8935003735110599363
 GameObject:
   m_ObjectHideFlags: 0

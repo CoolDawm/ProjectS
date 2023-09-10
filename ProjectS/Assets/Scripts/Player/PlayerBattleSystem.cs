@@ -14,38 +14,40 @@ public class PlayerBattleSystem : MonoBehaviour
     private float meleeDamage = 25;
     [SerializeField]
     private bool _abilityIsActive = true;
+    [SerializeField]
+    private float _maxMana = 100;
     private GameObject  freeLook;
-    public GameObject cursorObject;
-    public float manaGenerationRate;
     public float meleeAbilityRange;
     public float rangedAbilityProjectileLifetime;
     public float areaAbilityRadius;
     public float areaAbilityRange;
     private bool isUsingAbility;
-    private float manaTimer;
+    public float currentMana;
+    public GameObject cursorObject;
+    public float manaGenerationRate;
     public float meleeRange = 3f;
     public float projectileSpeed = 1500f;
     public float projectileLifetime = 3f;
-    public float areaOfEffectRadius = 5f;
+    public float areaOfEffectRadius = 10f;
     public float summonRange = 10f;
     public GameObject projectilePrefab;
   
     void Start()
     {
-        manaTimer = manaGenerationRate;
+        currentMana = _maxMana;
         freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
     }
 
 
-    private void GenerateMana()
+    private void GenerateMana(float mana)
     {
-        
+        currentMana += mana;
     }
 
 
     private void Update()
     {
-        GenerateMana();
+        
         //(Melee)
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -67,21 +69,32 @@ public class PlayerBattleSystem : MonoBehaviour
         //  (Range)
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
-            Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
-            projectileRigidbody.velocity = transform.forward * projectileSpeed;
-
-            Destroy(projectile, projectileLifetime);
+            if (currentMana >= 10)
+            {
+                currentMana -= 10;
+                GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
+                Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
+                projectileRigidbody.velocity = transform.forward * projectileSpeed;
+                Destroy(projectile, projectileLifetime);
+            }        
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            _abilityIsActive = true;
-            StartCoroutine(AoeAbility());
+            if (currentMana >= 20)
+            {
+                _abilityIsActive = true;
+                StartCoroutine(AoeAbility());
+            }
+            
         }
-        // Ability 4
+        // AOE from player
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            
+            Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position, areaOfEffectRadius, LayerMask.GetMask("Enemy"));
+            foreach (Collider collider in colliders)
+            {
+                collider.gameObject.GetComponent<HealthSystem>().TakeDamage(15);
+            }
         }
 
 

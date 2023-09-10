@@ -5,8 +5,8 @@ using UnityEngine;
 
     public class PotionsSystem : MonoBehaviour
     {
-        public float healthPotionHealAmount;
-        public float manaPotionManaAmount;
+        public float healthPotionHealAmount=5;
+        public float manaPotionManaAmount=5;
         public float healthPotionCooldown;
         public float manaPotionCooldown;
         public int healthPotionCount;
@@ -23,26 +23,32 @@ using UnityEngine;
         // Update is called once per frame
         void Update()
         {
-            // Health and mana potion usage handling
-            UseHealthPotion();
-            UseManaPotion();
-        }
-        private void UseHealthPotion()
+        // Health and mana potion usage handling
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            // Check for health potion usage key press
-
-            // Check potion availability and cooldown
-
-            // Health restoration logic and cooldown set
+            if (healthPotionHealAmount > 0)
+            {
+                UseHealthPotion(30);
+                healthPotionHealAmount--;
+            }
+           
+        }
+        if(Input.GetKeyDown(KeyCode.T))
+            if (manaPotionManaAmount > 0)
+            {
+                UseManaPotion(30);
+                manaPotionManaAmount--;
+            }
+            
+        }
+        private void UseHealthPotion(float health)
+        {
+            gameObject.GetComponent<HealthSystem>().currentHealth += health;
         }
 
-        private void UseManaPotion()
+        private void UseManaPotion(float mana)
         {
-            // Check for mana potion usage key press
-
-            // Check potion availability and cooldown
-
-            // Mana restoration logic and cooldown set
+            gameObject.GetComponent<PlayerBattleSystem>().currentMana += mana;
         }
 
     }

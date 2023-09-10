@@ -7,7 +7,7 @@ using UnityEngine;
     {
     public float maxHealth = 100;
     [SerializeField]
-    private float currentHealth;
+    public float currentHealth;
 
     void Start()
     {

@@ -152,6 +152,7 @@ GameObject:
   - component: {fileID: 5365075009883104660}
   - component: {fileID: 2523807205190426137}
   - component: {fileID: 6123845652709149503}
+  - component: {fileID: 3139499319733717052}
   m_Layer: 0
   m_Name: Fast_Player
   m_TagString: Player
@@ -313,11 +314,15 @@ MonoBehaviour:
   shootingPosition: {fileID: 1555733872510296171}
   aoeDamage: 5
   meleeDamage: 25
-  manaGenerationRate: 0
+  _abilityIsActive: 1
+  _maxMana: 100
   meleeAbilityRange: 2
   rangedAbilityProjectileLifetime: 5
   areaAbilityRadius: 3
   areaAbilityRange: 4
+  currentMana: 0
+  cursorObject: {fileID: 0}
+  manaGenerationRate: 0
   meleeRange: 2
   projectileSpeed: 10
   projectileLifetime: 5
@@ -338,3 +343,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 90
   currentHealth: 0
+--- !u!114 &3139499319733717052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8170727818798247065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe31c030d8741bf4ab15a5d3690f72a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPotionHealAmount: 5
+  manaPotionManaAmount: 5
+  healthPotionCooldown: 0
+  manaPotionCooldown: 0
+  healthPotionCount: 0
+  manaPotionCount: 0
