@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1280
     height: 637.3334
   m_ShowMode: 4
-  m_Title: Hierarchy
+  m_Title: Game
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -239,8 +239,8 @@ MonoBehaviour:
     y: 0
     width: 759.3334
     height: 379.33334
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -408,7 +408,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 25120
+  m_LastSelectedObjectID: 26300
 --- !u!114 &15
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -493,7 +493,7 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 3a1f0000
       m_LastClickedID: 0
       m_ExpandedIDs: 0efbffff
       m_RenameOverlay:
@@ -927,9 +927,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 10.685108, y: -4.472967, z: -0.6161413}
+    m_Target: {x: -31.130926, y: -35.93123, z: 31.063168}
     speed: 2
-    m_Value: {x: 10.685108, y: -4.472967, z: -0.6161413}
+    m_Value: {x: -31.130926, y: -35.93123, z: 31.063168}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -975,13 +975,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.12313231, y: 0.7744299, z: -0.15879457, w: 0.5999862}
+    m_Target: {x: -0.3706576, y: 0.18357944, z: -0.07512306, w: -0.90743995}
     speed: 2
-    m_Value: {x: 0.123126015, y: 0.77439034, z: -0.15878645, w: 0.5999555}
+    m_Value: {x: -0.37062442, y: 0.18356301, z: -0.07511633, w: -0.9073587}
   m_Size:
-    m_Target: 10
+    m_Target: 48.379917
     speed: 2
-    m_Value: 10
+    m_Value: 48.379917
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1051,7 +1051,7 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Player
+    - Assets/Scripts/Enemy
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1059,16 +1059,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 67
   m_LastFolders:
-  - Assets/Scripts/Player
+  - Assets/Scripts/Enemy
   m_LastFoldersGridSize: 67
   m_LastProjectPath: C:\Users\lorik\Desktop\FolderForProject\ProjectS\ProjectS
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 93.00003}
-    m_SelectedIDs: da620000
-    m_LastClickedID: 25306
-    m_ExpandedIDs: 000000008462000086620000d4620000ffffff7f
+    scrollPos: {x: 0, y: 77.00003}
+    m_SelectedIDs: 30640000
+    m_LastClickedID: 25648
+    m_ExpandedIDs: 00000000c26300001064000014640000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1096,7 +1096,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 26}
     m_SelectedIDs: 26630000
     m_LastClickedID: 25382
-    m_ExpandedIDs: 000000008462000086620000
+    m_ExpandedIDs: 00000000c2630000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

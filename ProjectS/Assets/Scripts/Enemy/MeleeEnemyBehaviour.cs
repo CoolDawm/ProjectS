@@ -2,42 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class MeleeEnemyBehaviour : MonoBehaviour
+public class MeleeEnemyBehaviour : EnemyBehaviour
 {
-    [SerializeField] 
-    private float _detectionRadius = 10f; 
-    [SerializeField] 
-    private float _aggroRadius = 10f; 
-    [SerializeField] 
-    private float _attackRange = 4f;
     [SerializeField]
     private float _damage = 10f;
-    private GameObject _player; 
+    [SerializeField]
+    private float _attackCooldown =0;
     private NavMeshAgent _agent;
-    private bool _isAggro = false; 
-    private float _attackCooldown = 0f;
-    void Start()
+    
+
+    protected override void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player");
+        base.Start();
         _agent = GetComponent<NavMeshAgent>();
     }
 
-    void Update()
+    protected override void FixedUpdate()
     {
-        
         if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
         {
-           
+
             _isAggro = true;
-
-
-
             if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
             {
-                StopAllCoroutines();
+                Idle();
                 _agent.SetDestination(transform.position);
+
                 _attackCooldown += Time.deltaTime;
-                if (_attackCooldown > 5f)
+                if (_attackCooldown > 3f)
                 {
                     _attackCooldown = 0;
                     Attack();
@@ -45,26 +37,37 @@ public class MeleeEnemyBehaviour : MonoBehaviour
             }
             else
             {
-                StartCoroutine(ChasePlayer());
+                ChasePlayer();
             }
         }
         else
         {
             _isAggro = false;
-            StopCoroutine(ChasePlayer());
+            ChasePlayer();
         }
     }
-    public void Attack()
+
+    public override void ChasePlayer()
     {
-        _player.GetComponent<HealthSystem>().TakeDamage(_damage);
-        Debug.Log("Attack");
+        StartCoroutine(ChasePlayerCoroutine());
     }
-    IEnumerator ChasePlayer()
+    public override void Idle()
+    {
+        StopAllCoroutines();
+    }
+
+    private IEnumerator ChasePlayerCoroutine()
     {
         while (_isAggro)
         {
             _agent.SetDestination(_player.transform.position);
             yield return null;
         }
+    }
+
+    public override void Attack()
+    {
+        _player.GetComponent<HealthSystem>().TakeDamage(_damage);
+        Debug.Log("Attack");
     }
 }

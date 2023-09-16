@@ -47,7 +47,20 @@ public class PlayerBattleSystem : MonoBehaviour
 
     private void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, meleeRange);
+            GenerateMana(10);
+            foreach (Collider collider in colliders)
+            {
+                Debug.Log("try");
+                if (collider.CompareTag("Enemy"))
+                {
+
+                    collider.gameObject.GetComponent<HealthSystem>().TakeDamage(meleeDamage);
+                }
+            }
+        }
         //(Melee)
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -69,6 +82,7 @@ public class PlayerBattleSystem : MonoBehaviour
         //  (Range)
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+            Debug.Log(currentMana);
             if (currentMana >= 10)
             {
                 currentMana -= 10;
@@ -86,6 +100,11 @@ public class PlayerBattleSystem : MonoBehaviour
                 StartCoroutine(AoeAbility());
             }
             
+        }
+        //Shield
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            gameObject.GetComponent<HealthSystem>().ShieldCharge(100);
         }
         // AOE from player
         if (Input.GetKeyDown(KeyCode.Alpha4))
@@ -126,7 +145,16 @@ public class PlayerBattleSystem : MonoBehaviour
                     
                     if (Input.GetMouseButtonDown(0))
                     {
-                        hit.collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
+                        Collider[] colliders = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius);
+                        foreach (Collider collider in colliders)
+                        {
+                            Debug.Log("try");
+                            if (collider.CompareTag("Enemy"))
+                            {
+
+                                collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
+                            }
+                        }
                         Debug.Log("Pew Pew Pew Pew Pew");
                         //Attack
                         _abilityIsActive = false;
@@ -160,9 +188,16 @@ public class PlayerBattleSystem : MonoBehaviour
                         
                         if (Input.GetMouseButtonDown(0))
                         {
-                            // Move cursor object towards the closest enemy
-                            cursorObject.transform.position = closestEnemy.transform.position;
+                            Collider[] colliders1 = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius);
+                            foreach (Collider collider in colliders)
+                            {
+                                Debug.Log("try");
+                                if (collider.CompareTag("Enemy"))
+                                {
 
+                                    collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
+                                }
+                            }
                             Debug.Log("Pew Pew Pew Pew Pew");
                             //Attack
                             _abilityIsActive = false;

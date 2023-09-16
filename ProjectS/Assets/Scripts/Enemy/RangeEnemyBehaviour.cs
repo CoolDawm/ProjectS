@@ -2,82 +2,78 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class RangeEnemyBehaviour : MonoBehaviour
+
+public class RangeEnemyBehaviour : EnemyBehaviour
 {
-    [SerializeField]
-    public float _detectionRadius = 15f; 
-    [SerializeField]
-    public float _aggroRadius = 15f; 
-    [SerializeField]
-    private float _attackRange = 10f;
     [SerializeField]
     private Transform shootingPosition;
     [SerializeField]
     private float _rotationSpeed = 3f;
-    private GameObject _player; 
-    private NavMeshAgent _agent; 
+    private NavMeshAgent _agent;
     public GameObject projectilePrefab;
-    private bool _isAggro = false; 
-    private float _attackCooldown=0f;
+    private float _attackCooldown = 0f;
     public float projectileSpeed = 10f;
     public float projectileLifetime = 3f;
-    void Start()
+    
+    protected override void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player");
+        base.Start();
+        _attackRange = 10f;
+        _detectionRadius = 15f;
         _agent = GetComponent<NavMeshAgent>();
     }
 
-    void Update()
+    protected override void FixedUpdate()
     {
-      
-        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
-        {
-           
-            _isAggro = true;
 
-            
-
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+        
+            if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
             {
-                StopAllCoroutines();
-                _agent.SetDestination(transform.position);
-                _attackCooldown += Time.deltaTime;
-                Vector3 targetDirection = _player.transform.position - transform.position;
-                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
-                if (_attackCooldown > 3f)
+
+                if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
                 {
-                    _attackCooldown = 0;
-                    Attack();
+                    _agent.SetDestination(transform.position);
+                    _attackCooldown += Time.deltaTime;
+                    Vector3 targetDirection = _player.transform.position - transform.position;
+                    Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
+                    if (_attackCooldown > 3f)
+                    {
+                        _attackCooldown = 0;
+                        Attack();
+                    }
+                }
+                else
+                {
+                    ChasePlayer();
                 }
             }
             else
             {
-                StartCoroutine(ChasePlayer());
+                _isAggro = false;
+                ChasePlayer();
             }
-        }
-        else
-        {
-            _isAggro = false;
-            StopCoroutine(ChasePlayer());
-        }
+            
+        
     }
-    public void Attack()
+    public override void Idle()
+    {
+        StopAllCoroutines();
+    }
+
+    public override void Attack()
     {
         Debug.Log("Attack");
-        
+
         GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
         Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
         projectileRigidbody.velocity = transform.forward * projectileSpeed;
 
         Destroy(projectile, projectileLifetime);
     }
-    IEnumerator ChasePlayer()
+
+    public override void ChasePlayer()
     {
-        while (_isAggro)
-        {
-            _agent.SetDestination(_player.transform.position);
-            yield return null;
-        }
+        _agent.SetDestination(_player.transform.position);
     }
 }

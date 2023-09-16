@@ -29,7 +29,7 @@ using UnityEngine;
                 timer = timeSpawn;
                 if (transform.childCount < _maxEnemy)
                 {
-                    Instantiate(_enemyPrefab, Random.insideUnitCircle * distance, Quaternion.identity, transform);
+                    Instantiate(_enemyPrefab, Random.insideUnitCircle * distance, Quaternion.identity);
                 }
             }
         }

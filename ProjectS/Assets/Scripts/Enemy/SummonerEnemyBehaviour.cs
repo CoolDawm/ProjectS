@@ -3,37 +3,31 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-public class SummonerEnemyBehaviour : MonoBehaviour
+public class SummonerEnemyBehaviour : EnemyBehaviour
 {
+    
     [SerializeField]
-    public float _detectionRadius = 20f;
+    private float _rotationSpeed = 3f;
     [SerializeField]
-    public float _aggroRadius = 20f;
-    [SerializeField]
-    private float _attackRange = 15f;
-    [SerializeField]
-    private float _rotationSpeed = 6f;
-    private float _distance = 5f;
-    private GameObject _player;
+    private float _summonRadius = 6f;
     private NavMeshAgent _agent;
     public GameObject summonPrefab;
-    private bool _isAggro = false;
+    public GameObject projectilePrefab;
     private float _attackCooldown = 0f;
-    void Start()
+    protected override void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player");
+        base.Start();
+        _attackRange = 10f;
+        _detectionRadius = 15f;
         _agent = GetComponent<NavMeshAgent>();
     }
 
-    void Update()
+    protected override void FixedUpdate()
     {
+
 
         if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
         {
-
-            _isAggro = true;
-
-
 
             if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
             {
@@ -46,32 +40,37 @@ public class SummonerEnemyBehaviour : MonoBehaviour
                 if (_attackCooldown > 8f)
                 {
                     _attackCooldown = 0;
-                    Summon();
+                    Attack();
                 }
             }
             else
             {
-                StartCoroutine(ChasePlayer());
+                ChasePlayer();
             }
         }
         else
         {
             _isAggro = false;
-            StopCoroutine(ChasePlayer());
+            ChasePlayer();
         }
+
+
     }
-    public void Summon()
+    public override void Idle()
+    {
+        StopAllCoroutines();
+    }
+
+    public override void Attack()
     {
         Debug.Log("Attack");
-
-        GameObject projectile = Instantiate(summonPrefab, Random.insideUnitCircle * _distance, Quaternion.identity );
+        Vector3 summonPosition = transform.position + Random.insideUnitSphere * _summonRadius; 
+        GameObject newBeast = Instantiate(summonPrefab, summonPosition, Quaternion.identity); 
     }
-    IEnumerator ChasePlayer()
+
+    public override void ChasePlayer()
     {
-        while (_isAggro)
-        {
-            _agent.SetDestination(_player.transform.position);
-            yield return null;
-        }
+        _agent.SetDestination(_player.transform.position);
     }
 }
+
