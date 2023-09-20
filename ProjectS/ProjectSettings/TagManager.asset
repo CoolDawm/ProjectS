@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - FreeLookCamera
+  - AbilitiesManager
   layers:
   - Default
   - TransparentFX

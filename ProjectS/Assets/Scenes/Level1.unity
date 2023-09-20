@@ -1260,6 +1260,10 @@ PrefabInstance:
       propertyPath: cursorObject
       value: 
       objectReference: {fileID: 2002723675}
+    - target: {fileID: 3951038155357437379, guid: c5d3d804176582d448060f509ba30ba0, type: 3}
+      propertyPath: abilitiesManager
+      value: 
+      objectReference: {fileID: 1355785154}
     - target: {fileID: 7519184023710906142, guid: c5d3d804176582d448060f509ba30ba0, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -1447,6 +1451,10 @@ PrefabInstance:
       propertyPath: cursorObject
       value: 
       objectReference: {fileID: 2002723675}
+    - target: {fileID: 2523807205190426137, guid: b3155d85eccbf9f4d9131f3929344eb4, type: 3}
+      propertyPath: abilitiesManager
+      value: 
+      objectReference: {fileID: 1355785154}
     - target: {fileID: 8170727818798247065, guid: b3155d85eccbf9f4d9131f3929344eb4, type: 3}
       propertyPath: m_Name
       value: Fast_Player
@@ -1649,9 +1657,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1355785153}
+  - component: {fileID: 1355785154}
   m_Layer: 0
   m_Name: AbilitiesManager
-  m_TagString: Untagged
+  m_TagString: AbilitiesManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1671,6 +1680,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1355785154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355785152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9db9aaa9b88a84e43a683aaf569137fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorObject: {fileID: 2002723675}
+  areaOfEffectRadius: 5
+  projectilePrefab: {fileID: 2416214550007718432, guid: f9852ad8712bd3540bbad50a9cf5e932, type: 3}
 --- !u!1 &1467330232
 GameObject:
   m_ObjectHideFlags: 3
@@ -1964,6 +1988,10 @@ PrefabInstance:
       propertyPath: cursorObject
       value: 
       objectReference: {fileID: 2002723675}
+    - target: {fileID: 5077140723063834932, guid: 2698629a003f3b840915d5ceaf7ac3a7, type: 3}
+      propertyPath: abilitiesManager
+      value: 
+      objectReference: {fileID: 1355785154}
     - target: {fileID: 6765348477108020771, guid: 2698629a003f3b840915d5ceaf7ac3a7, type: 3}
       propertyPath: m_Name
       value: Smart_Player
@@ -2377,6 +2405,10 @@ PrefabInstance:
       propertyPath: cursorObject
       value: 
       objectReference: {fileID: 2002723675}
+    - target: {fileID: 8940190205207286395, guid: 6e906e54f1b2b714ea5a4f8835d605eb, type: 3}
+      propertyPath: abilitiesManager
+      value: 
+      objectReference: {fileID: 1355785154}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

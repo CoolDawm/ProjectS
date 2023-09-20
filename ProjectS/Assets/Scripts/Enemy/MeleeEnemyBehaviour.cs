@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 public class MeleeEnemyBehaviour : EnemyBehaviour
 {
     [SerializeField]
@@ -9,12 +10,14 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     [SerializeField]
     private float _attackCooldown =0;
     private NavMeshAgent _agent;
-    
-
+    public AbilitesManager abilitiesManager;
+    public UnityEvent meleeAbilityEvent;
     protected override void Start()
     {
         base.Start();
         _agent = GetComponent<NavMeshAgent>();
+        abilitiesManager = GameObject.FindGameObjectWithTag("AbilitiesManager").GetComponent<AbilitesManager>();
+        meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(_attackRange, _damage,gameObject)));
     }
 
     protected override void FixedUpdate()
@@ -67,7 +70,7 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
 
     public override void Attack()
     {
-        _player.GetComponent<HealthSystem>().TakeDamage(_damage);
+        meleeAbilityEvent.Invoke();
         Debug.Log("Attack");
     }
 }
