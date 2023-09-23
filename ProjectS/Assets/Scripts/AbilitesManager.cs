@@ -5,14 +5,24 @@ using UnityEngine;
 
 public class AbilitesManager : MonoBehaviour
 {
+    [SerializeField]
+    private float _bombTimer = 0f;
+    private bool _boom;
     public GameObject cursorObject;
     public float areaOfEffectRadius;
     public GameObject projectilePrefab;
     private bool _abilityIsActive = false;
     private GameObject freeLook;
     public void Start()
-    {
+    {    
         freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
+    }
+    public void FixedUpdate()
+    {
+        if(freeLook == null)
+        {
+            freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
+        }
     }
     public void MeleeAbility(float meleeRange,float meleeDamage,GameObject attacker)
     {
@@ -24,8 +34,8 @@ public class AbilitesManager : MonoBehaviour
                 Debug.Log("try");
                 if (collider.CompareTag("Player"))
                 {
+
                     collider.gameObject.GetComponent<HealthSystem>().TakeDamage(meleeDamage);
-                    Debug.Log("Ataaaaaaaaaaaaaaaaaaaaaaaaaaack");
                     break;
                 }
             }
@@ -156,21 +166,41 @@ public class AbilitesManager : MonoBehaviour
     }
     private void ShowAbilityArea(GameObject point)
     {
-        // Show area? Probably will use particles for that
+        cursorObject.SetActive(true);
 
     }
     private void HideAbilityArea(GameObject point)
     {
-        // Show area? Probably will use particles for that
+        cursorObject.SetActive(false);
 
     }
     public void Shield(float currentMana,GameObject abilityObject)
     {
         abilityObject.GetComponent<HealthSystem>().ShieldCharge(100);
     }
-    public void MeleeAoe(float damage)
+    public void Suicide(GameObject abilityObject)
     {
-        Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position, areaOfEffectRadius, LayerMask.GetMask("Enemy"));
+        StartCoroutine(SuicideAbilityCoroutine(abilityObject));
+
+    }
+    IEnumerator SuicideAbilityCoroutine(GameObject abilityObject)
+    {
+        _boom = true;
+        while (_boom == true)
+        {
+            _bombTimer += Time.deltaTime;
+            if (_bombTimer >= 5)
+            {
+                MeleeAoe(30f, abilityObject);
+                Destroy(abilityObject);
+                _boom= false;
+            }
+        }
+        yield return null;
+    }
+    public void MeleeAoe(float damage,GameObject user)
+    {
+        Collider[] colliders = Physics.OverlapSphere(user.transform.position, areaOfEffectRadius, LayerMask.GetMask("Enemy"));
         foreach (Collider collider in colliders)
         {
             collider.gameObject.GetComponent<HealthSystem>().TakeDamage(damage);

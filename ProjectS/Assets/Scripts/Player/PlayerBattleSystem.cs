@@ -8,14 +8,11 @@ public class PlayerBattleSystem : MonoBehaviour
 {
     [SerializeField]
     private Transform shootingPosition;
-    [SerializeField]
-    private float aoeDamage=15;
-    [SerializeField]
-    private float meleeDamage = 25;
+    public float aoeDamage=15;
+    public float meleeDamage = 25;
     [SerializeField]
     private bool _abilityIsActive = true;
-    [SerializeField]
-    private float _maxMana = 100;
+    public float _maxMana = 100;
     private GameObject  freeLook;
     public float meleeAbilityRange;
     public float rangedAbilityProjectileLifetime;
@@ -44,7 +41,7 @@ public class PlayerBattleSystem : MonoBehaviour
         meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(meleeRange, meleeDamage,gameObject)));
         rangeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.RangeAbility( currentMana, projectileLifeTime,  projectileSpeed, shootingPosition)));
         aoeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.AoeAbility(currentMana,aoeDamage)));
-        meleeAoeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAoe(meleeDamage)));
+        meleeAoeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAoe(meleeDamage,gameObject)));
         shieldAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.Shield(currentMana,gameObject)));
     }
 

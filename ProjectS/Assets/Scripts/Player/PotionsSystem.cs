@@ -3,26 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-    public class PotionsSystem : MonoBehaviour
+public class PotionsSystem : MonoBehaviour
+{
+    public float healthPotionHealAmount = 5;
+    public float manaPotionManaAmount = 5;
+    public float healthPotionCooldown;
+    public float manaPotionCooldown;
+    public int healthPotionCount;
+    public int manaPotionCount;
+    private HealthSystem _healthSystem;
+    private PlayerBattleSystem _playerBattleSystem;
+    private bool canUseHealthPotion = true;
+    private bool canUseManaPotion = true;
+    // Start is called before the first frame update
+    void Start()
     {
-        public float healthPotionHealAmount=5;
-        public float manaPotionManaAmount=5;
-        public float healthPotionCooldown;
-        public float manaPotionCooldown;
-        public int healthPotionCount;
-        public int manaPotionCount;
+        _healthSystem = gameObject.GetComponent<HealthSystem>();
+        _playerBattleSystem = gameObject.GetComponent<PlayerBattleSystem>();
+    }
 
-        private bool canUseHealthPotion = true;
-        private bool canUseManaPotion = true;
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
+    // Update is called once per frame
+    void Update()
+    {
         // Health and mana potion usage handling
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -31,25 +33,25 @@ using UnityEngine;
                 UseHealthPotion(30);
                 healthPotionHealAmount--;
             }
-           
+
         }
-        if(Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T))
             if (manaPotionManaAmount > 0)
             {
                 UseManaPotion(30);
                 manaPotionManaAmount--;
             }
-            
-        }
-        private void UseHealthPotion(float health)
-        {
-            gameObject.GetComponent<HealthSystem>().currentHealth += health;
-        }
-
-        private void UseManaPotion(float mana)
-        {
-            gameObject.GetComponent<PlayerBattleSystem>().currentMana += mana;
-        }
 
     }
+    private void UseHealthPotion(float health)
+    {
+        _healthSystem.IncreaseCurrentHealth(health);
+    }
+
+    private void UseManaPotion(float mana)
+    {
+        _playerBattleSystem.currentMana += mana;
+    }
+
+}
 

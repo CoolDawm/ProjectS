@@ -3,38 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-[RequireComponent(typeof(CharacterController))]
 public class PlayerBehaviour : MonoBehaviour
 {
-    [SerializeField]private float sensitivity=1f;
-    [SerializeField] private float _rotationSpeed = 4f;
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 1f;
-    [SerializeField] private float sprintSpeed = 10f;
+    public float _rotationSpeed = 4f;
+    public float moveSpeed = 5f;
+    public float jumpForce = 1f;
+    public float sprintSpeed = 10f;
     [SerializeField]
     private InputActionReference _movementControl;
     [SerializeField]
     private InputActionReference _jumpControl;
     [SerializeField]
     private InputActionReference _sprintControl;
+    public float _maxStamina = 10;
+    public float _currentStamina = 0f;
     private Transform cameraMain;  
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
-    private float gravityValue = -9.81f;     
+    private float gravityValue = -9.81f;   
+    public bool isRolling;
     public float currentSpeed;
-    public float stamina;
-    public float staminaRecoveryRate;
-    public float rollDuration;
-    public float rollInvincibilityDuration;         
-    private Rigidbody rb;
-    private float currentStamina;
-    private float rollTimer;
-    private float rollInvincibilityTimer;
-    
-    private bool isRolling;
-    
-
+    public float staminaRecoveryRate=1f;
+    public float staminaSpendingRate = 1f;
+    public float rollDistance = 5f;
+    public float rollCost = 5f;
+    public float rollDuration;        
     private void OnEnable()
     {
         _jumpControl.action.Enable();
@@ -49,30 +43,27 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
         controller = gameObject.GetComponent<CharacterController>();
         cameraMain = Camera.main.transform;
     }
     private void Start()
     {
-        currentStamina = stamina;
-        rollTimer = rollDuration;
-        rollInvincibilityTimer = rollInvincibilityDuration;
+        _currentStamina = _maxStamina;
         
     }
-
+    
     private void Update()
-    {
+    { 
         // Movement handling with movement speed
-        MovePlayer();                      
-        // Stamina recovery and mana generation
-        RecoverStamina();
-        
+        MovePlayer();                         
     }
    
     private void MovePlayer()
     {
-       
+        if (cameraMain == null)
+        {
+            cameraMain = Camera.main.transform;
+        }
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
@@ -82,13 +73,20 @@ public class PlayerBehaviour : MonoBehaviour
         Vector3 move = new Vector3(movement.x,0,movement.y);
         move = cameraMain.forward * move.z + cameraMain.right * move.x;
         move.y = 0f;
-        if (_sprintControl.action.IsPressed())
+        if (_sprintControl.action.IsPressed()&&_currentStamina>0)
         {
             currentSpeed = sprintSpeed;
+            //stamina spending
+            _currentStamina -= Time.deltaTime*staminaSpendingRate;
         }
         else
         {
             currentSpeed = moveSpeed;
+            //Stamina recovery
+            if (_currentStamina < _maxStamina)
+            {
+                _currentStamina += Time.deltaTime * staminaRecoveryRate;
+            }       
         }
         controller.Move(move * Time.deltaTime * currentSpeed);
         if (_jumpControl.action.triggered && groundedPlayer)
@@ -104,21 +102,38 @@ public class PlayerBehaviour : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
             transform.rotation = Quaternion.Lerp(transform.rotation,rotation,Time.deltaTime*_rotationSpeed);
         }
+        //Roll
+        if (!isRolling && Input.GetKeyDown(KeyCode.LeftControl)&&_currentStamina>=rollCost)
+        {
+            Debug.Log("Roll");
+            _currentStamina -= rollCost;
+            StartCoroutine(Roll());
+        }
     }
-
-    
-    private void Roll()
+    private IEnumerator Roll()
     {
-        // Roll logic with temporary invincibility
-        // Implement your desired roll logic here
-    }
+        isRolling = true;
 
-    
-    private void RecoverStamina()
-    {
-        // Stamina recovery logic when not rolling or sprinting
-        // Implement your desired stamina recovery logic here
-    }
+        // ѕолучаем направление, в котором смотрит игрок
+        Vector3 dashDirection = transform.forward;
 
-   
+        // ¬ычисл€ем конечную точку рывка
+        Vector3 dashEndPosition = transform.position + dashDirection * rollDistance;
+
+        // «апоминаем начальную позицию игрока
+        Vector3 startPosition = transform.position;
+        float elapsedTime = 0f;
+        while (elapsedTime < rollDistance)
+        {
+            // ¬ычисл€ем текущую позицию игрока на основе начальной позиции, конечной позиции и времени
+            float t = elapsedTime / rollDistance;
+            transform.position = Vector3.Lerp(startPosition, dashEndPosition, t);
+
+            elapsedTime += Time.deltaTime*15;
+            yield return null;
+        }
+
+        // ¬осстанавливаем управление игроком
+        isRolling = false;
+    }
 }

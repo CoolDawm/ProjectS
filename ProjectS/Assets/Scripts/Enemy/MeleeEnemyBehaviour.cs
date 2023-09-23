@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
+
 public class MeleeEnemyBehaviour : EnemyBehaviour
 {
     [SerializeField]
@@ -49,7 +51,6 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
             ChasePlayer();
         }
     }
-
     public override void ChasePlayer()
     {
         StartCoroutine(ChasePlayerCoroutine());
@@ -58,7 +59,6 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     {
         StopAllCoroutines();
     }
-
     private IEnumerator ChasePlayerCoroutine()
     {
         while (_isAggro)
@@ -67,7 +67,6 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
             yield return null;
         }
     }
-
     public override void Attack()
     {
         meleeAbilityEvent.Invoke();

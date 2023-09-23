@@ -9,6 +9,11 @@ public interface IEnemy
 
     void Attack();
 }
+public interface IEnemyAbilitiesUse
+{
+    float abilityCooldown { get; }
+    void UseAbility();
+}
 public interface IEnemyMovement
 {
     float detectionRadius { get; }
