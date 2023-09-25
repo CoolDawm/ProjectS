@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -12,6 +13,7 @@ using UnityEngine;
     public float currentShield;
     private HealthBar _healthBar;
     private string _objectTag;
+    public Action OnDeath;
     void Start()
     {
         currentHealth = maxHealth;
@@ -105,8 +107,9 @@ using UnityEngine;
     }
     private void Die()
     {
-        
-        Destroy(gameObject);
+        Debug.Log("++++");
+        OnDeath?.Invoke();
+        Debug.Log("----");
     }
 }
 

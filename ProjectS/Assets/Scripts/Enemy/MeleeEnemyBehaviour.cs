@@ -20,6 +20,8 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
         _agent = GetComponent<NavMeshAgent>();
         abilitiesManager = GameObject.FindGameObjectWithTag("AbilitiesManager").GetComponent<AbilitesManager>();
         meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(_attackRange, _damage,gameObject)));
+        HealthSystem healthSystem = GetComponent<HealthSystem>();
+        healthSystem.OnDeath += Die;
     }
 
     protected override void FixedUpdate()
@@ -71,5 +73,10 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     {
         meleeAbilityEvent.Invoke();
         Debug.Log("Attack");
+    }
+
+    public override void Die()
+    {
+        Destroy(gameObject);
     }
 }

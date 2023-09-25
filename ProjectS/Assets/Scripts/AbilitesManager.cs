@@ -5,9 +5,7 @@ using UnityEngine;
 
 public class AbilitesManager : MonoBehaviour
 {
-    [SerializeField]
-    private float _bombTimer = 0f;
-    private bool _boom;
+    
     public GameObject cursorObject;
     public float areaOfEffectRadius;
     public GameObject projectilePrefab;
@@ -31,7 +29,7 @@ public class AbilitesManager : MonoBehaviour
             Collider[] colliders = Physics.OverlapSphere(attacker.transform.position, meleeRange);
             foreach (Collider collider in colliders)
             {
-                Debug.Log("try");
+                
                 if (collider.CompareTag("Player"))
                 {
 
@@ -45,7 +43,7 @@ public class AbilitesManager : MonoBehaviour
             Collider[] colliders = Physics.OverlapSphere(attacker.transform.position, meleeRange);
             foreach (Collider collider in colliders)
             {
-                Debug.Log("try");
+                
                 if (collider.CompareTag("Enemy"))
                 {
                     collider.gameObject.GetComponent<HealthSystem>().TakeDamage(meleeDamage);
@@ -64,7 +62,7 @@ public class AbilitesManager : MonoBehaviour
             currentMana -= 10;
             GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
             Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
-            projectileRigidbody.velocity = transform.forward * projectileSpeed;
+            projectileRigidbody.velocity = shootingPosition.transform.forward * projectileSpeed;
             Destroy(projectile, projectileLifeTime);
         }
     }
@@ -100,14 +98,14 @@ public class AbilitesManager : MonoBehaviour
                         Collider[] colliders = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius);
                         foreach (Collider collider in colliders)
                         {
-                            Debug.Log("try");
+                            
                             if (collider.CompareTag("Enemy"))
                             {
 
                                 collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
                             }
                         }
-                        Debug.Log("Pew Pew Pew Pew Pew");
+                        
                         //Attack
                         _abilityIsActive = false;
                     }
@@ -136,21 +134,18 @@ public class AbilitesManager : MonoBehaviour
                                 closestDistance = distance;
                             }
                         }
-
-
                         if (Input.GetMouseButtonDown(0))
                         {
                             Collider[] colliders1 = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius);
                             foreach (Collider collider in colliders)
                             {
-                                Debug.Log("try");
+                                
                                 if (collider.CompareTag("Enemy"))
                                 {
-
                                     collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
                                 }
                             }
-                            Debug.Log("Pew Pew Pew Pew Pew");
+                           
                             //Attack
                             _abilityIsActive = false;
                         }
@@ -178,32 +173,27 @@ public class AbilitesManager : MonoBehaviour
     {
         abilityObject.GetComponent<HealthSystem>().ShieldCharge(100);
     }
-    public void Suicide(GameObject abilityObject)
-    {
-        StartCoroutine(SuicideAbilityCoroutine(abilityObject));
-
-    }
-    IEnumerator SuicideAbilityCoroutine(GameObject abilityObject)
-    {
-        _boom = true;
-        while (_boom == true)
-        {
-            _bombTimer += Time.deltaTime;
-            if (_bombTimer >= 5)
-            {
-                MeleeAoe(30f, abilityObject);
-                Destroy(abilityObject);
-                _boom= false;
-            }
-        }
-        yield return null;
-    }
+    
     public void MeleeAoe(float damage,GameObject user)
     {
-        Collider[] colliders = Physics.OverlapSphere(user.transform.position, areaOfEffectRadius, LayerMask.GetMask("Enemy"));
-        foreach (Collider collider in colliders)
+        if (user.tag == "Player")
         {
-            collider.gameObject.GetComponent<HealthSystem>().TakeDamage(damage);
+            Collider[] colliders = Physics.OverlapSphere(user.transform.position, areaOfEffectRadius, LayerMask.GetMask("Enemy"));
+            foreach (Collider collider in colliders)
+            {
+                collider.gameObject.GetComponent<HealthSystem>().TakeDamage(damage);
+            }
         }
+        else
+        {
+            Debug.Log("Boooooom");
+            Collider[] colliders = Physics.OverlapSphere(user.transform.position, areaOfEffectRadius);
+            foreach (Collider collider in colliders)
+            {
+                
+                collider.gameObject.GetComponent<HealthSystem>().TakeDamage(damage);
+            }
+        }
+        
     }
 }

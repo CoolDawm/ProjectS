@@ -20,6 +20,8 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
         _attackRange = 10f;
         _detectionRadius = 15f;
         _agent = GetComponent<NavMeshAgent>();
+        HealthSystem healthSystem = GetComponent<HealthSystem>();
+        healthSystem.OnDeath += Die;
     }
 
     protected override void FixedUpdate()
@@ -71,6 +73,10 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
     public override void ChasePlayer()
     {
         _agent.SetDestination(_player.transform.position);
+    }
+    public override void Die()
+    {
+        Destroy(gameObject);
     }
 }
 

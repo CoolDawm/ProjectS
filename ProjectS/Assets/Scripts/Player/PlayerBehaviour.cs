@@ -49,7 +49,8 @@ public class PlayerBehaviour : MonoBehaviour
     private void Start()
     {
         _currentStamina = _maxStamina;
-        
+        HealthSystem healthSystem = GetComponent<HealthSystem>();
+        healthSystem.OnDeath += Die;
     }
     
     private void Update()
@@ -110,30 +111,25 @@ public class PlayerBehaviour : MonoBehaviour
             StartCoroutine(Roll());
         }
     }
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
     private IEnumerator Roll()
     {
         isRolling = true;
-
-        // ѕолучаем направление, в котором смотрит игрок
         Vector3 dashDirection = transform.forward;
-
-        // ¬ычисл€ем конечную точку рывка
         Vector3 dashEndPosition = transform.position + dashDirection * rollDistance;
-
-        // «апоминаем начальную позицию игрока
         Vector3 startPosition = transform.position;
         float elapsedTime = 0f;
         while (elapsedTime < rollDistance)
         {
-            // ¬ычисл€ем текущую позицию игрока на основе начальной позиции, конечной позиции и времени
             float t = elapsedTime / rollDistance;
             transform.position = Vector3.Lerp(startPosition, dashEndPosition, t);
-
             elapsedTime += Time.deltaTime*15;
             yield return null;
         }
-
-        // ¬осстанавливаем управление игроком
         isRolling = false;
     }
 }

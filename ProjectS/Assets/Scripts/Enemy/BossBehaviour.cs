@@ -26,12 +26,14 @@ public abstract class BossBehaviour : MonoBehaviour, IEnemy, IEnemyMovement,IEne
     protected virtual void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
+        
     }
 
     protected virtual void FixedUpdate()
     {
-        // Implement your physics-related logic here
+        
     }
+    public abstract void Die();
     public abstract void UseAbility();
     public abstract void Attack();
     public abstract void Idle();

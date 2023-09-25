@@ -17,6 +17,8 @@ public class SummonsBehaviour : EnemyBehaviour
         base.Start();
         _attackRange = 2f;
         _agent = GetComponent<NavMeshAgent>();
+        HealthSystem healthSystem = GetComponent<HealthSystem>();
+        healthSystem.OnDeath += Die;
     }
 
     protected override void FixedUpdate()
@@ -61,10 +63,13 @@ public class SummonsBehaviour : EnemyBehaviour
             yield return null;
         }
     }
-
     public override void Attack()
     {
         _player.GetComponent<HealthSystem>().TakeDamage(_damage);
         Debug.Log("Boom");
+    }
+    public override void Die()
+    {
+        Destroy(gameObject);
     }
 }

@@ -8,6 +8,7 @@ public interface IEnemy
     float attackRange { get; }
 
     void Attack();
+    void Die();
 }
 public interface IEnemyAbilitiesUse
 {

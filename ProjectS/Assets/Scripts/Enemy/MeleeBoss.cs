@@ -11,12 +11,14 @@ public class MeleeBoss : BossBehaviour
     private float _damage = 10f;
     [SerializeField]
     private float _attackCooldown = 0;
-    
+    [SerializeField]
+    private float _bombTimer = 0f;
+    private bool _boom;
     private NavMeshAgent _agent;
     public AbilitesManager abilitiesManager;
     public UnityEvent meleeAbilityEvent;
     public UnityEvent shieldAbilityEvent;
-    public UnityEvent suicideAbilityEvent;
+    public UnityEvent meleeAoeAbilityEvent;
     protected override void Start()
     {
         base.Start();
@@ -24,7 +26,9 @@ public class MeleeBoss : BossBehaviour
         abilitiesManager = GameObject.FindGameObjectWithTag("AbilitiesManager").GetComponent<AbilitesManager>();
         meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(_attackRange, _damage, gameObject)));
         shieldAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.Shield(15, gameObject)));
-        suicideAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.Suicide(gameObject)));
+        meleeAoeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAoe(15, gameObject)));
+        HealthSystem healthSystem = GetComponent<HealthSystem>();
+        healthSystem.OnDeath += Die;
     }
 
     protected override void FixedUpdate()
@@ -63,10 +67,7 @@ public class MeleeBoss : BossBehaviour
             ChasePlayer();
         }
     }
-    public void Die()
-    {
-        suicideAbilityEvent.Invoke();
-    }
+   
     public override void ChasePlayer()
     {
         StartCoroutine(ChasePlayerCoroutine());
@@ -92,5 +93,9 @@ public class MeleeBoss : BossBehaviour
     {
         meleeAbilityEvent.Invoke();
         Debug.Log("Attack");
+    }
+    public override void Die()
+    {
+        Destroy(gameObject);
     }
 }
