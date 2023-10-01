@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 6957438289423742194}
   - component: {fileID: 17385918029405317}
   - component: {fileID: 8283673943222109464}
+  - component: {fileID: 5163095585128629162}
   - component: {fileID: 7681222419362172533}
   - component: {fileID: 1377242625499528612}
   m_Layer: 3
@@ -276,6 +277,23 @@ MonoBehaviour:
   _aggroRadius: 10
   _attackRange: 2
   _damage: 10
+  _attackCooldown: 0
+  abilitiesManager: {fileID: 0}
+  meleeAbilityEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &5163095585128629162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901108463139392171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &7681222419362172533
 NavMeshAgent:
   m_ObjectHideFlags: 0

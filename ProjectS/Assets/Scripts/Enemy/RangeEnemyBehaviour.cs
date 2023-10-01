@@ -13,8 +13,6 @@ public class RangeEnemyBehaviour : EnemyBehaviour
     public GameObject projectilePrefab;
     private float _attackCooldown = 0f;
     public float projectileSpeed = 10f;
-    public float projectileLifetime = 3f;
-    
     protected override void Start()
     {
         base.Start();
@@ -22,6 +20,7 @@ public class RangeEnemyBehaviour : EnemyBehaviour
         _detectionRadius = 15f;
         _agent = GetComponent<NavMeshAgent>();
         HealthSystem healthSystem = GetComponent<HealthSystem>();
+        _characteristics=gameObject.GetComponent<Characteristics>(); 
         healthSystem.OnDeath += Die;
     }
 
@@ -71,7 +70,7 @@ public class RangeEnemyBehaviour : EnemyBehaviour
         Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
         projectileRigidbody.velocity = transform.forward * projectileSpeed;
 
-        Destroy(projectile, projectileLifetime);
+        Destroy(projectile, _characteristics.charDic["projectileLife"]);
     }
 
     public override void ChasePlayer()

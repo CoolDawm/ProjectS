@@ -6,8 +6,6 @@ using UnityEngine.AI;
 public class SummonsBehaviour : EnemyBehaviour
 {
     [SerializeField]
-    private float _damage = 15f;
-    [SerializeField]
     private float _attackCooldown = 0;
     private NavMeshAgent _agent;
 
@@ -18,6 +16,7 @@ public class SummonsBehaviour : EnemyBehaviour
         _attackRange = 2f;
         _agent = GetComponent<NavMeshAgent>();
         HealthSystem healthSystem = GetComponent<HealthSystem>();
+        _characteristics=gameObject.GetComponent<Characteristics>(); 
         healthSystem.OnDeath += Die;
     }
 
@@ -65,7 +64,7 @@ public class SummonsBehaviour : EnemyBehaviour
     }
     public override void Attack()
     {
-        _player.GetComponent<HealthSystem>().TakeDamage(_damage);
+        _player.GetComponent<HealthSystem>().TakeDamage(_characteristics.charDic["damage"]);
         Debug.Log("Boom");
     }
     public override void Die()

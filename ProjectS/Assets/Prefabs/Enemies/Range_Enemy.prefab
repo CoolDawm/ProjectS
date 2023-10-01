@@ -311,6 +311,7 @@ GameObject:
   - component: {fileID: 2187964713789599124}
   - component: {fileID: 8329743715778502479}
   - component: {fileID: 2782481888697822659}
+  - component: {fileID: 6822938193077719243}
   - component: {fileID: 2587239086752343145}
   - component: {fileID: 1225523548582032665}
   m_Layer: 3
@@ -428,7 +429,18 @@ MonoBehaviour:
   _rotationSpeed: 6
   projectilePrefab: {fileID: 9014779570299617286, guid: 1b32035462c00844a82c3b4dd912e555, type: 3}
   projectileSpeed: 10
-  projectileLifetime: 3
+--- !u!114 &6822938193077719243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5420211379135837910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &2587239086752343145
 NavMeshAgent:
   m_ObjectHideFlags: 0

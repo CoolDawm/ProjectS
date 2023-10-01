@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.4964127, b: 0.57481724, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1115,6 +1115,11 @@ MonoBehaviour:
   m_Bidirectional: 1
   m_AutoUpdatePosition: 0
   m_Area: 2
+--- !u!1 &935763529 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8935003735110599363, guid: 2698629a003f3b840915d5ceaf7ac3a7, type: 3}
+  m_PrefabInstance: {fileID: 1640476772}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1032379062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1999,7 +2004,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9db9aaa9b88a84e43a683aaf569137fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bombTimer: 0
   cursorObject: {fileID: 2002723675}
   areaOfEffectRadius: 5
   projectilePrefab: {fileID: 2416214550007718432, guid: f9852ad8712bd3540bbad50a9cf5e932, type: 3}
@@ -2330,6 +2334,9 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6765348477108020771, guid: 2698629a003f3b840915d5ceaf7ac3a7, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1640476791}
+    - targetCorrespondingSourceObject: {fileID: 6765348477108020771, guid: 2698629a003f3b840915d5ceaf7ac3a7, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1640476782}
   m_SourcePrefab: {fileID: 100100000, guid: 2698629a003f3b840915d5ceaf7ac3a7, type: 3}
 --- !u!4 &1640476773 stripped
@@ -2364,6 +2371,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 118
   m_CollisionDetection: 0
+--- !u!114 &1640476791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289132007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60090309f4adddd4993eda15d292877a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damagePerSecond: 1
+  slowAmount: 0.5
+  duration: 5
+  beamRange: 10
+  point: {fileID: 935763529}
 --- !u!1 &1744797958
 GameObject:
   m_ObjectHideFlags: 0
@@ -2802,6 +2826,10 @@ PrefabInstance:
     - target: {fileID: 4978508901575385926, guid: ee6bdbff539b3a6448c4f58d50c5857e, type: 3}
       propertyPath: m_Name
       value: EnemySpawner (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4978508901575385926, guid: ee6bdbff539b3a6448c4f58d50c5857e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

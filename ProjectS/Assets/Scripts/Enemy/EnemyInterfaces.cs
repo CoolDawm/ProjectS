@@ -5,8 +5,6 @@ public interface IEnemy
 {
     float detectionRadius { get; }
     float aggroRadius { get; }
-    float attackRange { get; }
-
     void Attack();
     void Die();
 }
@@ -17,7 +15,6 @@ public interface IEnemyAbilitiesUse
 }
 public interface IEnemyMovement
 {
-    float detectionRadius { get; }
     bool isAggro { get; }
     void ChasePlayer();
     void Idle();

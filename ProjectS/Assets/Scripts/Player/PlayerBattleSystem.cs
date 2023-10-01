@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,35 +15,30 @@ public class PlayerBattleSystem : MonoBehaviour
     private bool _abilityIsActive = true;
     public float _maxMana = 100;
     private GameObject  freeLook;
-    public float meleeAbilityRange;
-    public float rangedAbilityProjectileLifetime;
-    public float areaAbilityRadius;
-    public float areaAbilityRange;
+    private Characteristics _characteristics;
     private bool isUsingAbility;
     public float currentMana;
-    public GameObject cursorObject;
     public float manaGenerationRate;
     public float meleeRange = 3f;
     public float projectileSpeed = 1500f;
     public float projectileLifeTime = 3f;
-    public float areaOfEffectRadius = 10f;
-    public float summonRange = 10f;
-    public GameObject projectilePrefab;
     public AbilitesManager abilitiesManager;
-    public UnityEvent meleeAbilityEvent;
-    public UnityEvent rangeAbilityEvent;
-    public UnityEvent aoeAbilityEvent;
-    public UnityEvent meleeAoeAbilityEvent;
-    public UnityEvent shieldAbilityEvent;
+    public Action OnmeleeAbilityEvent;
+    public Action OnrangeAbilityEvent;
+    public Action OnaoeAbilityEvent;
+    public Action OnmeleeAoeAbilityEvent;
+    public Action OnshieldAbilityEvent;
+
     void Start()
     {
         currentMana = _maxMana;
         freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
-        meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(meleeRange, meleeDamage,gameObject)));
-        rangeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.RangeAbility( currentMana, projectileLifeTime,  projectileSpeed, shootingPosition)));
-        aoeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.AoeAbility(currentMana,aoeDamage)));
-        meleeAoeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAoe(meleeDamage,gameObject)));
-        shieldAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.Shield(currentMana,gameObject)));
+        _characteristics = gameObject.GetComponent<Characteristics>();
+        OnmeleeAbilityEvent += () => abilitiesManager.MeleeAbility(meleeRange, meleeDamage, gameObject);
+        OnrangeAbilityEvent += () => abilitiesManager.RangeAbility(currentMana, projectileLifeTime, projectileSpeed, shootingPosition);
+        OnaoeAbilityEvent += () => abilitiesManager.AoeAbility(currentMana, aoeDamage);
+        OnmeleeAoeAbilityEvent += () => abilitiesManager.MeleeAoe(meleeDamage, gameObject);
+        OnshieldAbilityEvent += () => abilitiesManager.Shield(currentMana, gameObject);
     }
 
 
@@ -56,27 +52,27 @@ public class PlayerBattleSystem : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            meleeAbilityEvent.Invoke();
+            OnmeleeAbilityEvent.Invoke();
             GenerateMana(10);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            rangeAbilityEvent.Invoke();
+            OnrangeAbilityEvent.Invoke();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            aoeAbilityEvent.Invoke();
+            OnaoeAbilityEvent.Invoke();
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            meleeAoeAbilityEvent.Invoke();
+            OnmeleeAoeAbilityEvent.Invoke();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            shieldAbilityEvent.Invoke();
+            OnshieldAbilityEvent.Invoke();
         }
 
     }

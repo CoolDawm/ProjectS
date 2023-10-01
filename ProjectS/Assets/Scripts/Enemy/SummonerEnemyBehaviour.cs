@@ -21,6 +21,7 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
         _detectionRadius = 15f;
         _agent = GetComponent<NavMeshAgent>();
         HealthSystem healthSystem = GetComponent<HealthSystem>();
+        _characteristics=gameObject.GetComponent<Characteristics>(); 
         healthSystem.OnDeath += Die;
     }
 

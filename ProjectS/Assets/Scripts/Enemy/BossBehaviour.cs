@@ -9,16 +9,13 @@ public abstract class BossBehaviour : MonoBehaviour, IEnemy, IEnemyMovement,IEne
     [SerializeField]
     private float _aggroRadius = 10f;
     [SerializeField]
-    protected float _attackRange = 6f;
-    [SerializeField]
     protected float _abilityCooldown = 0f;
     protected GameObject _player;
     protected bool _isAggro = false;
-
+    protected Characteristics _characteristics; 
     // Implementing properties from IEnemy
     public float detectionRadius { get { return _detectionRadius; } }
     public float aggroRadius { get { return _aggroRadius; } }
-    public float attackRange { get { return _attackRange; } }
     public float abilityCooldown { get { return _abilityCooldown; } }
     // Implementing properties from IEnemyMovement
     public bool isAggro { get { return _isAggro; } }
@@ -26,7 +23,6 @@ public abstract class BossBehaviour : MonoBehaviour, IEnemy, IEnemyMovement,IEne
     protected virtual void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
-        
     }
 
     protected virtual void FixedUpdate()

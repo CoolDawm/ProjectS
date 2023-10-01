@@ -11,9 +11,11 @@ public class AbilitesManager : MonoBehaviour
     public GameObject projectilePrefab;
     private bool _abilityIsActive = false;
     private GameObject freeLook;
+    private PlayerBattleSystem _playerBattleSystem;
     public void Start()
     {    
         freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
+        _playerBattleSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBattleSystem>();
     }
     public void FixedUpdate()
     {

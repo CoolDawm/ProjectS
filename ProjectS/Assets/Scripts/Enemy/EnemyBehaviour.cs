@@ -10,7 +10,7 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
     private float _aggroRadius = 10f;
     [SerializeField]
     protected float _attackRange = 4f;
-
+    protected Characteristics _characteristics; 
     protected GameObject _player;
     protected bool _isAggro = false;
 

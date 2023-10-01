@@ -24,10 +24,11 @@ public class MeleeBoss : BossBehaviour
         base.Start();
         _agent = GetComponent<NavMeshAgent>();
         abilitiesManager = GameObject.FindGameObjectWithTag("AbilitiesManager").GetComponent<AbilitesManager>();
-        meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(_attackRange, _damage, gameObject)));
+        meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _damage, gameObject)));
         shieldAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.Shield(15, gameObject)));
         meleeAoeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAoe(15, gameObject)));
         HealthSystem healthSystem = GetComponent<HealthSystem>();
+        _characteristics=gameObject.GetComponent<Characteristics>(); 
         healthSystem.OnDeath += Die;
     }
 
@@ -37,7 +38,7 @@ public class MeleeBoss : BossBehaviour
         {
 
             _isAggro = true;
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+            if (Vector3.Distance(transform.position, _player.transform.position) <=_characteristics.charDic["meleeRange"])
             {
                 Idle();
                 _agent.SetDestination(transform.position);
