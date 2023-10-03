@@ -390,7 +390,6 @@
 "Assets/Scripts/Enemy/RangeEnemyBehaviour.cs"
 "Assets/Scripts/Enemy/SummonerEnemyBehaviour.cs"
 "Assets/Scripts/Enemy/SummonsBehaviour.cs"
-"Assets/Scripts/FrostyBeam.cs"
 "Assets/Scripts/HealthBar.cs"
 "Assets/Scripts/HealthSystem.cs"
 "Assets/Scripts/IAura.cs"

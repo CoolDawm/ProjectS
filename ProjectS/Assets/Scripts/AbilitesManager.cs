@@ -12,6 +12,7 @@ public class AbilitesManager : MonoBehaviour
     private bool _abilityIsActive = false;
     private GameObject freeLook;
     private PlayerBattleSystem _playerBattleSystem;
+    private bool isUsingSkill = false;
     public void Start()
     {    
         freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
@@ -197,5 +198,42 @@ public class AbilitesManager : MonoBehaviour
             }
         }
         
+    }
+
+    public void StartFrostBeam(Transform point, float damagePerSecond, float duration, float beamRange, string aim)
+    {
+        StartCoroutine(FrostBeam(point, damagePerSecond, duration, beamRange, aim));
+    }
+    IEnumerator FrostBeam(Transform point,float damagePerSecond,float duration,float beamRange,string aim)
+    {
+        isUsingSkill = true;
+        float elapsedTime = 0f;
+        while (isUsingSkill)
+        {
+            Ray ray = new Ray(point.position, point.forward);
+            RaycastHit hit;
+
+            Debug.DrawRay(point.position, point.forward,Color.magenta);
+
+            if (Physics.Raycast(ray, out hit, beamRange))
+            {
+
+                if (hit.collider.CompareTag(aim))
+                {
+
+                    hit.collider.GetComponent<HealthSystem>().TakeDamage(damagePerSecond);
+                   
+                    Debug.Log("Hit");
+                }
+            }
+            elapsedTime+= Time.deltaTime;
+            if (elapsedTime>=duration)
+            {
+                isUsingSkill = false;
+                Debug.Log("AbilityExit");
+            }
+        
+            yield return null;
+        }
     }
 }

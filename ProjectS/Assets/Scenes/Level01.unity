@@ -1115,11 +1115,6 @@ MonoBehaviour:
   m_Bidirectional: 1
   m_AutoUpdatePosition: 0
   m_Area: 2
---- !u!1 &935763529 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8935003735110599363, guid: 2698629a003f3b840915d5ceaf7ac3a7, type: 3}
-  m_PrefabInstance: {fileID: 1640476772}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1032379062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2383,11 +2378,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60090309f4adddd4993eda15d292877a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagePerSecond: 1
-  slowAmount: 0.5
-  duration: 5
-  beamRange: 10
-  point: {fileID: 935763529}
 --- !u!1 &1744797958
 GameObject:
   m_ObjectHideFlags: 0
