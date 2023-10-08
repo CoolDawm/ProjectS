@@ -380,6 +380,7 @@ GameObject:
   - component: {fileID: 2523807205190426137}
   - component: {fileID: 6123845652709149503}
   - component: {fileID: 3139499319733717052}
+  - component: {fileID: 2379572909478360635}
   m_Layer: 0
   m_Name: Fast_Player
   m_TagString: Player
@@ -488,7 +489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14aef505bd3ff8d4f9139151b0faa31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 1
   _rotationSpeed: 4
   moveSpeed: 5
   jumpForce: 5
@@ -496,11 +496,15 @@ MonoBehaviour:
   _movementControl: {fileID: -3932271724807136565, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _jumpControl: {fileID: 1133799795342885305, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _sprintControl: {fileID: 8500305945049028988, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
+  _maxStamina: 10
+  _currentStamina: 0
+  isRolling: 0
   currentSpeed: 0
-  stamina: 150
   staminaRecoveryRate: 15
+  staminaSpendingRate: 1
+  rollDistance: 5
+  rollCost: 5
   rollDuration: 0
-  rollInvincibilityDuration: 0
 --- !u!143 &5365075009883104660
 CharacterController:
   m_ObjectHideFlags: 0
@@ -544,19 +548,12 @@ MonoBehaviour:
   meleeDamage: 25
   _abilityIsActive: 1
   _maxMana: 100
-  meleeAbilityRange: 2
-  rangedAbilityProjectileLifetime: 5
-  areaAbilityRadius: 3
-  areaAbilityRange: 4
   currentMana: 0
-  cursorObject: {fileID: 0}
   manaGenerationRate: 0
   meleeRange: 2
   projectileSpeed: 10
-  projectileLifetime: 5
-  areaOfEffectRadius: 5
-  summonRange: 10
-  projectilePrefab: {fileID: 2416214550007718432, guid: f9852ad8712bd3540bbad50a9cf5e932, type: 3}
+  projectileLifeTime: 3
+  abilitiesManager: {fileID: 0}
 --- !u!114 &6123845652709149503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,6 +570,7 @@ MonoBehaviour:
   currentHealth: 0
   maxShield: 50
   currentShield: 0
+  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
 --- !u!114 &3139499319733717052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -591,6 +589,20 @@ MonoBehaviour:
   manaPotionCooldown: 0
   healthPotionCount: 0
   manaPotionCount: 0
+--- !u!114 &2379572909478360635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8170727818798247065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 1
+  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
 --- !u!1 &8983187510214984942
 GameObject:
   m_ObjectHideFlags: 0

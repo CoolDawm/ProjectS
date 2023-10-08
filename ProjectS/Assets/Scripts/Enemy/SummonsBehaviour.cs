@@ -47,20 +47,12 @@ public class SummonsBehaviour : EnemyBehaviour
 
     public override void ChasePlayer()
     {
-        StartCoroutine(ChasePlayerCoroutine());
+        _agent.speed = _characteristics.charDic["movementSpeed"];
+        _agent.SetDestination(_player.transform.position);
     }
     public override void Idle()
     {
         StopAllCoroutines();
-    }
-
-    private IEnumerator ChasePlayerCoroutine()
-    {
-        while (_isAggro)
-        {
-            _agent.SetDestination(_player.transform.position);
-            yield return null;
-        }
     }
     public override void Attack()
     {

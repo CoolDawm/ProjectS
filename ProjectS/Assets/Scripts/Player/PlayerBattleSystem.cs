@@ -29,6 +29,7 @@ public class PlayerBattleSystem : MonoBehaviour
     public Action OnmeleeAoeAbilityEvent;
     public Action OnshieldAbilityEvent;
     public Action OnFrostBeamAbilityEvent;
+    public Action OnSlowAuraAbilityEvent;
     void Start()
     {
         currentMana = _maxMana;
@@ -40,6 +41,7 @@ public class PlayerBattleSystem : MonoBehaviour
         OnmeleeAoeAbilityEvent += () => abilitiesManager.MeleeAoe(meleeDamage, gameObject);
         OnshieldAbilityEvent += () => abilitiesManager.Shield(currentMana, gameObject);
         OnFrostBeamAbilityEvent += () => abilitiesManager.StartFrostBeam(shootingPosition, 1f, 10f, 25f, "Enemy");
+        OnSlowAuraAbilityEvent += () => abilitiesManager.SlowingAura(gameObject,"Enemy");
     }
 
 
@@ -80,6 +82,10 @@ public class PlayerBattleSystem : MonoBehaviour
             OnshieldAbilityEvent.Invoke();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            OnSlowAuraAbilityEvent.Invoke();
+        }
     }
    
 }

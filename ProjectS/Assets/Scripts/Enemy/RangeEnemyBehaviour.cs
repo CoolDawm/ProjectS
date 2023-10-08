@@ -27,36 +27,38 @@ public class RangeEnemyBehaviour : EnemyBehaviour
     protected override void FixedUpdate()
     {
 
-        
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
-            {
 
-                if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
+        {
+
+            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+            {
+                _agent.SetDestination(transform.position);
+                _attackCooldown += Time.deltaTime;
+                Vector3 targetDirection = _player.transform.position - transform.position;
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                transform.rotation =
+                    Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
+                if (_attackCooldown > 3f)
                 {
-                    _agent.SetDestination(transform.position);
-                    _attackCooldown += Time.deltaTime;
-                    Vector3 targetDirection = _player.transform.position - transform.position;
-                    Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-                    transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
-                    if (_attackCooldown > 3f)
-                    {
-                        _attackCooldown = 0;
-                        Attack();
-                    }
-                }
-                else
-                {
-                    ChasePlayer();
+                    _attackCooldown = 0;
+                    Attack();
                 }
             }
             else
             {
-                _isAggro = false;
                 ChasePlayer();
             }
-            
-        
+        }
+        else
+        {
+            _isAggro = false;
+            ChasePlayer();
+        }
+
+
     }
+
     public override void Idle()
     {
         StopAllCoroutines();
@@ -75,6 +77,7 @@ public class RangeEnemyBehaviour : EnemyBehaviour
 
     public override void ChasePlayer()
     {
+        _agent.speed = _characteristics.charDic["movementSpeed"];
         _agent.SetDestination(_player.transform.position);
     }
     public override void Die()

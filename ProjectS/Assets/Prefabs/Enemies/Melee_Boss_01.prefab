@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: -7004220508776204095}
   - component: {fileID: 9209640436709587989}
   - component: {fileID: 925323567026633364}
+  - component: {fileID: 4455849979981840896}
   m_Layer: 3
   m_Name: Melee_Boss_01
   m_TagString: Enemy
@@ -403,15 +404,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detectionRadius: 20
   _aggroRadius: 10
-  _attackRange: 6
   _abilityCooldown: 0
   _damage: 10
   _attackCooldown: 0
+  _bombTimer: 0
   abilitiesManager: {fileID: 0}
   meleeAbilityEvent:
     m_PersistentCalls:
       m_Calls: []
   shieldAbilityEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  meleeAoeAbilityEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &925323567026633364
@@ -430,6 +434,21 @@ MonoBehaviour:
   currentHealth: 0
   maxShield: 100
   currentShield: 0
+  _floatingText: {fileID: 0}
+--- !u!114 &4455849979981840896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3869819920990903474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 1
+  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
 --- !u!1 &5308363508580773440
 GameObject:
   m_ObjectHideFlags: 0

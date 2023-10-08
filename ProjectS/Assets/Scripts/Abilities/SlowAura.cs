@@ -12,12 +12,13 @@ public class SlowAura : Aura
         Range = 15f;
         Power = 3f;
         Duration = 15f;
-        Effect = "Slow";
+        Effect = "movementSpeed";
     }
 
 
     public override void StartEmitting(GameObject emitter,String aim)
     {
+        
         StartCoroutine(EmittingCoroutine(emitter, aim));
     }
 

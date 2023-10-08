@@ -1,8 +1,8 @@
+using System;
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class AbilitesManager : MonoBehaviour
 {
     
@@ -13,6 +13,7 @@ public class AbilitesManager : MonoBehaviour
     private GameObject freeLook;
     private PlayerBattleSystem _playerBattleSystem;
     private bool isUsingSkill = false;
+    public SlowAura _slowAura;
     public void Start()
     {    
         freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
@@ -57,6 +58,11 @@ public class AbilitesManager : MonoBehaviour
         
     }
 
+    public void SlowingAura(GameObject emmiter,String aim)
+    {
+        _slowAura.StartEmitting(emmiter, aim);
+    } 
+    
     public void RangeAbility(float currentMana,float projectileLifeTime,float projectileSpeed, Transform shootingPosition)
     {
         Debug.Log(currentMana);

@@ -294,6 +294,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: 1
+  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
 --- !u!195 &7681222419362172533
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -332,6 +334,7 @@ MonoBehaviour:
   currentHealth: 0
   maxShield: 50
   currentShield: 0
+  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
 --- !u!1 &5325729461820291410
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,7 +541,7 @@ GameObject:
   - component: {fileID: 6341395278966904481}
   - component: {fileID: 5638427535226998665}
   - component: {fileID: 7631256760044905556}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

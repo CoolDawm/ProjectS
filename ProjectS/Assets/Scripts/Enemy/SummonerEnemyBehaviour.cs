@@ -74,6 +74,7 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
     public override void ChasePlayer()
     {
         _agent.SetDestination(_player.transform.position);
+        _agent.speed = _characteristics.charDic["movementSpeed"];
     }
     public override void Die()
     {
