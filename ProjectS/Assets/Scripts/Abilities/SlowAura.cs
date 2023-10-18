@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using UnityEditor.Build.Content;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class SlowAura : Aura
 {

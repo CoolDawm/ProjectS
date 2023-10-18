@@ -26,7 +26,6 @@ public class DamageUpAura :  Aura
         else
         {
             StartCoroutine(EmittingCoroutine(emitter, aim));
-            Debug.Log("Emmiting");
         }
     }
  

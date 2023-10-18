@@ -375,12 +375,12 @@ GameObject:
   - component: {fileID: 434322582040103339}
   - component: {fileID: 5121676594027456574}
   - component: {fileID: 5186447683312471285}
+  - component: {fileID: 1726559018761734196}
   - component: {fileID: 4105892402125910491}
   - component: {fileID: 5365075009883104660}
   - component: {fileID: 2523807205190426137}
   - component: {fileID: 6123845652709149503}
   - component: {fileID: 3139499319733717052}
-  - component: {fileID: 1726559018761734196}
   - component: {fileID: 2379572909478360635}
   m_Layer: 0
   m_Name: Fast_Player
@@ -478,6 +478,42 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1726559018761734196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8170727818798247065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b17dde0f3c8d3e4e9fac118910b2bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dirKeys:
+  - maxSpeed
+  - damage
+  - stamina
+  - maxhp
+  - maxmana
+  - meleeRange
+  - projectileLife
+  - movementSpeed
+  - staminaRecoveryRate
+  - staminaSpendingRate
+  - aoeDamage
+  dirValues:
+  - 13
+  - 10
+  - 120
+  - 80
+  - 100
+  - 2
+  - 5
+  - 5
+  - 1.5
+  - 1
+  - 15
 --- !u!114 &4105892402125910491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,7 +530,7 @@ MonoBehaviour:
   jumpForce: 5
   isRolling: 0
   rollDistance: 5
-  rollCost: 5
+  rollCost: 3
   _movementControl: {fileID: -3932271724807136565, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _jumpControl: {fileID: 1133799795342885305, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _sprintControl: {fileID: 8500305945049028988, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
@@ -578,42 +614,6 @@ MonoBehaviour:
   manaPotionCooldown: 0
   healthPotionCount: 0
   manaPotionCount: 0
---- !u!114 &1726559018761734196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8170727818798247065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b17dde0f3c8d3e4e9fac118910b2bbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dirKeys:
-  - maxSpeed
-  - damage
-  - stamina
-  - maxhp
-  - maxmana
-  - meleeRange
-  - projectileLife
-  - movementSpeed
-  - staminaRecoveryRate
-  - staminaSpendingRate
-  - aoeDamage
-  dirValues:
-  - 10
-  - 15
-  - 100
-  - 100
-  - 100
-  - 2
-  - 5
-  - 5
-  - 1
-  - 1
-  - 30
 --- !u!114 &2379572909478360635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,7 +627,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 1
-  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
 --- !u!1 &8983187510214984942
 GameObject:
   m_ObjectHideFlags: 0

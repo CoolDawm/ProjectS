@@ -492,13 +492,13 @@ GameObject:
   - component: {fileID: 5214663221259216297}
   - component: {fileID: 1882172429626325440}
   - component: {fileID: 8658856154997412618}
+  - component: {fileID: 4639185495773013327}
   - component: {fileID: 3724434196563804583}
   - component: {fileID: 1224879229212159805}
   - component: {fileID: 3951038155357437379}
   - component: {fileID: 2494007885783738307}
   - component: {fileID: 6521348528420509108}
   - component: {fileID: 4893829579317190066}
-  - component: {fileID: 4639185495773013327}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -595,6 +595,42 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4639185495773013327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861272822325234659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b17dde0f3c8d3e4e9fac118910b2bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dirKeys:
+  - maxSpeed
+  - damage
+  - stamina
+  - maxhp
+  - maxmana
+  - meleeRange
+  - projectileLife
+  - movementSpeed
+  - staminaRecoveryRate
+  - staminaSpendingRate
+  - aoeDamage
+  dirValues:
+  - 10
+  - 15
+  - 100
+  - 100
+  - 100
+  - 2
+  - 5
+  - 5
+  - 1
+  - 1
+  - 30
 --- !u!114 &3724434196563804583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,40 +744,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 1
-  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
---- !u!114 &4639185495773013327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8861272822325234659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b17dde0f3c8d3e4e9fac118910b2bbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dirKeys:
-  - maxSpeed
-  - damage
-  - stamina
-  - maxhp
-  - maxmana
-  - meleeRange
-  - projectileLife
-  - movementSpeed
-  - staminaRecoveryRate
-  - staminaSpendingRate
-  - aoeDamage
-  dirValues:
-  - 10
-  - 15
-  - 100
-  - 100
-  - 100
-  - 2
-  - 5
-  - 5
-  - 1
-  - 1
-  - 30

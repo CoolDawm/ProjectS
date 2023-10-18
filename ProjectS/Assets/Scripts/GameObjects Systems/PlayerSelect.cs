@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
         private GameObject[] characters;
         private int index;
 
-        private void Start()
+        private void OnEnable()
         {
             index = PlayerPrefs.GetInt("CharacterSelected");
             characters = new GameObject[transform.childCount];
@@ -54,7 +54,7 @@ using UnityEngine.SceneManagement;
         public void StartScene()
         {
             PlayerPrefs.SetInt("CharacterSelected", index);
-            SceneManager.LoadScene("Level1");
+            SceneManager.LoadScene("Level01");
         }
     }
 

@@ -28,7 +28,6 @@ public class PlayerBattleSystem : MonoBehaviour
     {
         freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
         _characteristics = gameObject.GetComponent<Characteristics>();
-        currentMana = _characteristics.charDic["maxmana"];
         OnmeleeAbilityEvent += () => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _characteristics.charDic["damage"], gameObject);
         OnrangeAbilityEvent += () => abilitiesManager.RangeAbility(currentMana,_characteristics.charDic["projectileLife"] , projectileSpeed, shootingPosition);
         OnaoeAbilityEvent += () => abilitiesManager.AoeAbility(currentMana, _characteristics.charDic["aoeDamage"]);
@@ -37,6 +36,8 @@ public class PlayerBattleSystem : MonoBehaviour
         OnFrostBeamAbilityEvent += () => abilitiesManager.StartFrostBeam(shootingPosition, 1f, 10f, 25f, "Enemy");
         OnSlowAuraAbilityEvent += () => abilitiesManager.SlowingAura(gameObject,"Enemy");
         OnDamageAuraAbilityEvent += () => abilitiesManager.DamageUpAura(gameObject,"Player");
+        Debug.Log(_characteristics.charDic.Count);
+        currentMana = _characteristics.charDic["maxmana"];
     }
 
 

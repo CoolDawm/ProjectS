@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4987721838859969113}
   - component: {fileID: 1422509445226126285}
   - component: {fileID: 5048163083396327713}
-  - component: {fileID: 1375471522670247320}
+  - component: {fileID: 6764961048989872792}
   m_Layer: 0
   m_Name: FloatText
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.01, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -112,7 +112,7 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294903296
---- !u!95 &1375471522670247320
+--- !u!95 &6764961048989872792
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -122,7 +122,7 @@ Animator:
   m_GameObject: {fileID: 5422491863811663276}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 010780a055344e6428bc389a8e3db8b9, type: 2}
+  m_Controller: {fileID: 9100000, guid: fcbc13a36c0585442af9bbdd4842a8e5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

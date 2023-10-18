@@ -9,17 +9,19 @@ public class AbilitesManager : MonoBehaviour
     public GameObject cursorObject;
     public float areaOfEffectRadius;
     public GameObject projectilePrefab;
-    private bool _abilityIsActive = false;
-    private GameObject freeLook;
-    private PlayerBattleSystem _playerBattleSystem;
-    private bool isUsingSkill = false;
     public SlowAura _slowAura;
     public DamageUpAura _damageUpAura;
     public SpeedScream _speedScream;
+    private bool _abilityIsActive = false; 
+    private GameObject freeLook; 
+    private PlayerBattleSystem _playerBattleSystem;
+    private bool isUsingSkill = false;
+    private FloatTextManager _floatingTextManager;
     public void Start()
     {    
         freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
         _playerBattleSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBattleSystem>();
+        _floatingTextManager = GameObject.FindGameObjectWithTag("FloatingTextManager").GetComponent<FloatTextManager>();
     }
     public void FixedUpdate()
     {
@@ -63,21 +65,22 @@ public class AbilitesManager : MonoBehaviour
     public void SlowingAura(GameObject emmiter,String aim)
     {
         _slowAura.StartEmitting(emmiter, aim);
+        _floatingTextManager.ShowFloatingText(emmiter,"Slow Aura"); 
     } 
     public void DamageUpAura(GameObject emmiter,String aim)
     {
         _damageUpAura.StartEmitting(emmiter, aim);
+        _floatingTextManager.ShowFloatingText(emmiter,"Damage Up Aura"); 
     } 
     public void SpeedScream(GameObject emmiter,String aim)
     {
         _speedScream.StartEmitting(emmiter, aim);
+        _floatingTextManager.ShowFloatingText(emmiter,"Speed Scream"); 
     } 
     public void RangeAbility(float currentMana,float projectileLifeTime,float projectileSpeed, Transform shootingPosition)
     {
-        Debug.Log(currentMana);
         if (currentMana >= 10)
         {
-            currentMana -= 10;
             GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
             Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
             projectileRigidbody.velocity = shootingPosition.transform.forward * projectileSpeed;
