@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 6822938193077719243}
   - component: {fileID: 2587239086752343145}
   - component: {fileID: 1225523548582032665}
+  - component: {fileID: 6878742721904858225}
   m_Layer: 3
   m_Name: Range_Enemy
   m_TagString: Enemy
@@ -481,7 +482,37 @@ MonoBehaviour:
   currentHealth: 0
   maxShield: 50
   currentShield: 0
-  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
+  _floatingTextManager: {fileID: 0}
+--- !u!114 &6878742721904858225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5420211379135837910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b17dde0f3c8d3e4e9fac118910b2bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dirKeys:
+  - maxSpeed
+  - damage
+  - stamina
+  - maxhp
+  - maxmana
+  - meleeRange
+  - projectileLife
+  - movementSpeed
+  dirValues:
+  - 10
+  - 15
+  - 100
+  - 100
+  - 100
+  - 2
+  - 5
+  - 5
 --- !u!1 &7261421700994241129
 GameObject:
   m_ObjectHideFlags: 0

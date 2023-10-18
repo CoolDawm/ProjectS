@@ -14,6 +14,8 @@ public class AbilitesManager : MonoBehaviour
     private PlayerBattleSystem _playerBattleSystem;
     private bool isUsingSkill = false;
     public SlowAura _slowAura;
+    public DamageUpAura _damageUpAura;
+    public SpeedScream _speedScream;
     public void Start()
     {    
         freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
@@ -62,7 +64,14 @@ public class AbilitesManager : MonoBehaviour
     {
         _slowAura.StartEmitting(emmiter, aim);
     } 
-    
+    public void DamageUpAura(GameObject emmiter,String aim)
+    {
+        _damageUpAura.StartEmitting(emmiter, aim);
+    } 
+    public void SpeedScream(GameObject emmiter,String aim)
+    {
+        _speedScream.StartEmitting(emmiter, aim);
+    } 
     public void RangeAbility(float currentMana,float projectileLifeTime,float projectileSpeed, Transform shootingPosition)
     {
         Debug.Log(currentMana);

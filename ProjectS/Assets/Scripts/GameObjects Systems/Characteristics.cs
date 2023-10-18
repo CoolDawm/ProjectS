@@ -16,24 +16,13 @@ public class Characteristics : MonoBehaviour
         _floatingTextManager = GameObject.FindGameObjectWithTag("FloatingTextManager").GetComponent<FloatTextManager>();
     }
 
-    public Dictionary<string, float> charDic = new Dictionary<string, float>()
-    {
-        {"maxSpeed",10f},
-        {"damage",30f},
-        {"stamina",100f},
-        {"hp",100f},
-        {"mana",100f},
-        {"meleeRange",2f},
-        {"projectileLife",5f},
-        {"movementSpeed",5f}
-    };
+    public Dictionary<string, float> charDic = new Dictionary<string, float>();
     
     IEnumerator DebuffAura(String effect, float power)
     {
         debuffAply = true;
         float tmpChar = charDic[effect];
         charDic[effect] = tmpChar - power;
-        _floatingTextManager.ShowFloatingText(gameObject,"-"+effect);
         while (debuffAply)
         {
             timer -= Time.deltaTime;
@@ -50,24 +39,26 @@ public class Characteristics : MonoBehaviour
     {
         buffAply = true;
         float tmpChar = charDic[effect];
-        charDic[effect] = tmpChar +power;
-        _floatingTextManager.ShowFloatingText(gameObject,"-"+effect);
-        while (debuffAply)
+        charDic[effect] = tmpChar + power;
+        
+        while (buffAply)
         {
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
                 timer = 1f;
                 charDic[effect]=tmpChar;
-                debuffAply = false;
+                buffAply = false;
+                _floatingTextManager.ShowFloatingText(gameObject,"-"+effect);
             }
+            yield return null;
         }
-        yield return null;
     }
     public void ApplyDebuffAura(String effect, float power)
     {
         if (!debuffAply)
         {
+            _floatingTextManager.ShowFloatingText(gameObject,"-"+effect);
             StartCoroutine(DebuffAura( effect, power));
         }
     }
@@ -75,7 +66,48 @@ public class Characteristics : MonoBehaviour
     {
         if (!buffAply)
         {
+            _floatingTextManager.ShowFloatingText(gameObject,"+"+effect);
             StartCoroutine(BuffAura( effect, power));
+        }
+    }
+
+    public void ApplyDebuff(String effect, float power,float duration)
+    {
+        bool debuffAply = true;
+        float tmpChar = charDic[effect];
+        charDic[effect] = tmpChar - power;
+        while (debuffAply)
+        {
+            duration -= Time.deltaTime;
+            if (duration <= 0)
+            {
+                charDic[effect]=tmpChar;
+                debuffAply = false;
+                _floatingTextManager.ShowFloatingText(gameObject,"-"+effect);
+            }
+        }
+    }
+    public void ApplyBuff(String effect, float power, float duration)
+    {
+        _floatingTextManager.ShowFloatingText(gameObject,"+"+effect); 
+        StartCoroutine(Buff( effect, power,duration));
+    }
+    IEnumerator Buff(String effect, float power, float duration)
+    {
+        bool buffAply = true;
+        float tmpChar = charDic[effect];
+        charDic[effect] = tmpChar + power;
+        while (buffAply)
+        {
+            duration -= Time.deltaTime;
+            if (duration <= 0)
+            {
+                charDic[effect] = tmpChar;
+                buffAply = false;
+                _floatingTextManager.ShowFloatingText(gameObject, "-" + effect);
+            }
+
+            yield return null;
         }
     }
 }

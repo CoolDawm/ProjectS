@@ -9,19 +9,12 @@ public class PlayerBattleSystem : MonoBehaviour
 {
     [SerializeField]
     private Transform shootingPosition;
-    public float aoeDamage=15;
-    public float meleeDamage = 25;
     [SerializeField]
-    private bool _abilityIsActive = true;
-    public float _maxMana = 100;
     private GameObject  freeLook;
     private Characteristics _characteristics;
     private bool isUsingAbility;
     public float currentMana;
-    public float manaGenerationRate;
-    public float meleeRange = 3f;
     public float projectileSpeed = 1500f;
-    public float projectileLifeTime = 3f;
     public AbilitesManager abilitiesManager;
     public Action OnmeleeAbilityEvent;
     public Action OnrangeAbilityEvent;
@@ -30,18 +23,20 @@ public class PlayerBattleSystem : MonoBehaviour
     public Action OnshieldAbilityEvent;
     public Action OnFrostBeamAbilityEvent;
     public Action OnSlowAuraAbilityEvent;
+    public Action OnDamageAuraAbilityEvent;
     void Start()
     {
-        currentMana = _maxMana;
         freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
         _characteristics = gameObject.GetComponent<Characteristics>();
-        OnmeleeAbilityEvent += () => abilitiesManager.MeleeAbility(meleeRange, meleeDamage, gameObject);
-        OnrangeAbilityEvent += () => abilitiesManager.RangeAbility(currentMana, projectileLifeTime, projectileSpeed, shootingPosition);
-        OnaoeAbilityEvent += () => abilitiesManager.AoeAbility(currentMana, aoeDamage);
-        OnmeleeAoeAbilityEvent += () => abilitiesManager.MeleeAoe(meleeDamage, gameObject);
+        currentMana = _characteristics.charDic["maxmana"];
+        OnmeleeAbilityEvent += () => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _characteristics.charDic["damage"], gameObject);
+        OnrangeAbilityEvent += () => abilitiesManager.RangeAbility(currentMana,_characteristics.charDic["projectileLife"] , projectileSpeed, shootingPosition);
+        OnaoeAbilityEvent += () => abilitiesManager.AoeAbility(currentMana, _characteristics.charDic["aoeDamage"]);
+        OnmeleeAoeAbilityEvent += () => abilitiesManager.MeleeAoe(_characteristics.charDic["aoeDamage"], gameObject);
         OnshieldAbilityEvent += () => abilitiesManager.Shield(currentMana, gameObject);
         OnFrostBeamAbilityEvent += () => abilitiesManager.StartFrostBeam(shootingPosition, 1f, 10f, 25f, "Enemy");
         OnSlowAuraAbilityEvent += () => abilitiesManager.SlowingAura(gameObject,"Enemy");
+        OnDamageAuraAbilityEvent += () => abilitiesManager.DamageUpAura(gameObject,"Player");
     }
 
 
@@ -85,6 +80,10 @@ public class PlayerBattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             OnSlowAuraAbilityEvent.Invoke();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            OnDamageAuraAbilityEvent.Invoke();
         }
     }
    

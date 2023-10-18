@@ -14,23 +14,5 @@ public interface IAura
     
 }
 
-public interface IBuff
-{
-    float Value { get; }
-    int Price { get; }
-    float Duration { get; }
 
-    void Start();
-    void Stop();
-}
-
-public interface IDebuff
-{
-    float Value { get; }
-    int Price { get; }
-    float Duration { get; }
-
-    void Start();
-    void Stop();
-}
 

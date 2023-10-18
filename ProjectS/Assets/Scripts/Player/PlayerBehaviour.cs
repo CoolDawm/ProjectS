@@ -6,9 +6,10 @@ using UnityEngine.InputSystem;
 public class PlayerBehaviour : MonoBehaviour
 {
     public float _rotationSpeed = 4f;
-    public float moveSpeed = 5f;
     public float jumpForce = 1f;
-    public float sprintSpeed = 10f;
+    public bool isRolling;
+    public float rollDistance = 5f;
+    public float rollCost = 5f;
     [SerializeField]
     private InputActionReference _movementControl;
     [SerializeField]
@@ -21,14 +22,9 @@ public class PlayerBehaviour : MonoBehaviour
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
-    private float gravityValue = -9.81f;   
-    public bool isRolling;
-    public float currentSpeed;
-    public float staminaRecoveryRate=1f;
-    public float staminaSpendingRate = 1f;
-    public float rollDistance = 5f;
-    public float rollCost = 5f;
-    public float rollDuration;        
+    private float gravityValue = -9.81f;
+    private float _currentSpeed;
+    private Characteristics _characteristics;
     private void OnEnable()
     {
         _jumpControl.action.Enable();
@@ -50,6 +46,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         _currentStamina = _maxStamina;
         HealthSystem healthSystem = GetComponent<HealthSystem>();
+        _characteristics = gameObject.GetComponent<Characteristics>();
         healthSystem.OnDeath += Die;
     }
     
@@ -76,20 +73,20 @@ public class PlayerBehaviour : MonoBehaviour
         move.y = 0f;
         if (_sprintControl.action.IsPressed()&&_currentStamina>0)
         {
-            currentSpeed = sprintSpeed;
+            _currentSpeed = _characteristics.charDic["maxSpeed"];
             //stamina spending
-            _currentStamina -= Time.deltaTime*staminaSpendingRate;
+            _currentStamina -= Time.deltaTime*_characteristics.charDic["staminaSpendingRate"];
         }
         else
         {
-            currentSpeed = moveSpeed;
+            _currentSpeed = _characteristics.charDic["movementSpeed"];
             //Stamina recovery
             if (_currentStamina < _maxStamina)
             {
-                _currentStamina += Time.deltaTime * staminaRecoveryRate;
+                _currentStamina += Time.deltaTime * _characteristics.charDic["staminaRecoveryRate"];
             }       
         }
-        controller.Move(move * Time.deltaTime * currentSpeed);
+        controller.Move(move * Time.deltaTime * _currentSpeed);
         if (_jumpControl.action.triggered && groundedPlayer)
         {
             playerVelocity.y += Mathf.Sqrt(jumpForce * -3.0f * gravityValue);

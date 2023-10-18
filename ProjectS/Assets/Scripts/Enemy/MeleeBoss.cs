@@ -11,14 +11,11 @@ public class MeleeBoss : BossBehaviour
     private float _damage = 10f;
     [SerializeField]
     private float _attackCooldown = 0;
-    [SerializeField]
-    private float _bombTimer = 0f;
-    private bool _boom;
     private NavMeshAgent _agent;
     public AbilitesManager abilitiesManager;
     public UnityEvent meleeAbilityEvent;
     public UnityEvent shieldAbilityEvent;
-    public UnityEvent meleeAoeAbilityEvent;
+    public UnityEvent SpeedScreamAbilityEvent;
     protected override void Start()
     {
         base.Start();
@@ -26,7 +23,7 @@ public class MeleeBoss : BossBehaviour
         abilitiesManager = GameObject.FindGameObjectWithTag("AbilitiesManager").GetComponent<AbilitesManager>();
         meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _damage, gameObject)));
         shieldAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.Shield(15, gameObject)));
-        meleeAoeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAoe(15, gameObject)));
+        SpeedScreamAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.SpeedScream(gameObject,"Enemy")));
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
         healthSystem.OnDeath += Die;
@@ -38,28 +35,28 @@ public class MeleeBoss : BossBehaviour
         {
 
             _isAggro = true;
+            _abilityCooldown += Time.deltaTime;
+            if (_abilityCooldown > 20f)
+            {
+                _abilityCooldown = 0;
+                UseAbility();
+            }
             if (Vector3.Distance(transform.position, _player.transform.position) <=_characteristics.charDic["meleeRange"])
             {
                 Idle();
                 _agent.SetDestination(transform.position);
 
                 _attackCooldown += Time.deltaTime;
-                _abilityCooldown += Time.deltaTime;
+                
                 if (_attackCooldown > 3f)
                 {
                     _attackCooldown = 0;
                     Attack();
                 }
-                if (_abilityCooldown > 10f)
-                {
-                    _abilityCooldown = 0;
-                    UseAbility();
-                }
             }
             else
             {
                 ChasePlayer();
-                Debug.Log("gsg");
             }
         }
         else
@@ -88,7 +85,9 @@ public class MeleeBoss : BossBehaviour
     }
     public override void UseAbility()
     {
+        Debug.Log("Aility");
         shieldAbilityEvent.Invoke();
+        SpeedScreamAbilityEvent.Invoke();
     }
     public override void Attack()
     {

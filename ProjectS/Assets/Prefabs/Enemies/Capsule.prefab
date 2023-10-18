@@ -360,6 +360,7 @@ GameObject:
   - component: {fileID: 5702294411477117896}
   - component: {fileID: 1592795863372094410}
   - component: {fileID: 2279334616565093981}
+  - component: {fileID: 4146449061688015501}
   m_Layer: 3
   m_Name: Capsule
   m_TagString: Enemy
@@ -472,7 +473,7 @@ MonoBehaviour:
   currentHealth: 0
   maxShield: 50
   currentShield: 0
-  _floatingText: {fileID: 0}
+  _floatingTextManager: {fileID: 0}
 --- !u!114 &5702294411477117896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,3 +526,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timer: 1
   _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
+--- !u!114 &4146449061688015501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8938062592449663484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b17dde0f3c8d3e4e9fac118910b2bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dirKeys:
+  - maxSpeed
+  - damage
+  - stamina
+  - maxhp
+  - maxmana
+  - meleeRange
+  - projectileLife
+  - movementSpeed
+  dirValues:
+  - 10
+  - 15
+  - 100
+  - 100
+  - 100
+  - 2
+  - 5
+  - 5

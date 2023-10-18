@@ -10,7 +10,7 @@ public class SlowAura : Aura
     private void Start()
     {
         Range = 15f;
-        Power = 3f;
+        Power = 2f;
         Duration = 15f;
         Effect = "movementSpeed";
     }
@@ -18,8 +18,14 @@ public class SlowAura : Aura
 
     public override void StartEmitting(GameObject emitter,String aim)
     {
-        
-        StartCoroutine(EmittingCoroutine(emitter, aim));
+        if (isEmitting)
+        {
+            
+        }
+        else
+        {
+            StartCoroutine(EmittingCoroutine(emitter, aim));
+        }
     }
 
     IEnumerator EmittingCoroutine(GameObject emitter,String aim)
@@ -41,8 +47,8 @@ public class SlowAura : Aura
                 isEmitting = false;
             }
             timer+=Time.deltaTime;
+            yield return null;
         }
-        yield return null;
     }
 }
 

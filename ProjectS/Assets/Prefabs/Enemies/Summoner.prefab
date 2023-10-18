@@ -283,6 +283,7 @@ GameObject:
   - component: {fileID: -3532515767351574201}
   - component: {fileID: -1517283425872222285}
   - component: {fileID: 2349147665485907998}
+  - component: {fileID: 6530659441740812367}
   m_Layer: 3
   m_Name: Summoner
   m_TagString: Enemy
@@ -413,7 +414,7 @@ MonoBehaviour:
   currentHealth: 0
   maxShield: 50
   currentShield: 0
-  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
+  _floatingTextManager: {fileID: 0}
 --- !u!195 &-1517283425872222285
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -450,6 +451,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timer: 1
   _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
+--- !u!114 &6530659441740812367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3431352532678410866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b17dde0f3c8d3e4e9fac118910b2bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dirKeys:
+  - maxSpeed
+  - damage
+  - stamina
+  - maxhp
+  - maxmana
+  - meleeRange
+  - projectileLife
+  - movementSpeed
+  dirValues:
+  - 10
+  - 15
+  - 100
+  - 100
+  - 100
+  - 2
+  - 5
+  - 5
 --- !u!1 &6862394910462884993
 GameObject:
   m_ObjectHideFlags: 0

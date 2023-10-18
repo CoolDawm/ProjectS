@@ -467,6 +467,7 @@ GameObject:
   - component: {fileID: 6510031172208376582}
   - component: {fileID: 6473006953353033153}
   - component: {fileID: 6480742516694337997}
+  - component: {fileID: 4209720052529077745}
   m_Layer: 0
   m_Name: Smart_Player
   m_TagString: Player
@@ -576,21 +577,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotationSpeed: 4
-  moveSpeed: 5
   jumpForce: 5
-  sprintSpeed: 10
+  isRolling: 0
+  rollDistance: 5
+  rollCost: 5
   _movementControl: {fileID: -3932271724807136565, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _jumpControl: {fileID: 1133799795342885305, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _sprintControl: {fileID: 8500305945049028988, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _maxStamina: 10
   _currentStamina: 0
-  isRolling: 0
-  currentSpeed: 0
-  staminaRecoveryRate: 0
-  staminaSpendingRate: 1
-  rollDistance: 5
-  rollCost: 5
-  rollDuration: 0
 --- !u!143 &8338841158745678350
 CharacterController:
   m_ObjectHideFlags: 0
@@ -656,7 +651,7 @@ MonoBehaviour:
   currentHealth: 0
   maxShield: 50
   currentShield: 0
-  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
+  _floatingTextManager: {fileID: 0}
 --- !u!114 &6473006953353033153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -689,6 +684,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timer: 1
   _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
+--- !u!114 &4209720052529077745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765348477108020771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b17dde0f3c8d3e4e9fac118910b2bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dirKeys:
+  - maxSpeed
+  - damage
+  - stamina
+  - maxhp
+  - maxmana
+  - meleeRange
+  - projectileLife
+  - movementSpeed
+  - staminaRecoveryRate
+  - staminaSpendingRate
+  - aoeDamage
+  dirValues:
+  - 10
+  - 15
+  - 100
+  - 100
+  - 100
+  - 2
+  - 5
+  - 5
+  - 1
+  - 1
+  - 30
 --- !u!1 &8935003735110599363
 GameObject:
   m_ObjectHideFlags: 0

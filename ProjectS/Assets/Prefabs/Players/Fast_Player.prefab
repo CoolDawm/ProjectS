@@ -380,6 +380,7 @@ GameObject:
   - component: {fileID: 2523807205190426137}
   - component: {fileID: 6123845652709149503}
   - component: {fileID: 3139499319733717052}
+  - component: {fileID: 1726559018761734196}
   - component: {fileID: 2379572909478360635}
   m_Layer: 0
   m_Name: Fast_Player
@@ -490,21 +491,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotationSpeed: 4
-  moveSpeed: 5
   jumpForce: 5
-  sprintSpeed: 13
+  isRolling: 0
+  rollDistance: 5
+  rollCost: 5
   _movementControl: {fileID: -3932271724807136565, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _jumpControl: {fileID: 1133799795342885305, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _sprintControl: {fileID: 8500305945049028988, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _maxStamina: 10
   _currentStamina: 0
-  isRolling: 0
-  currentSpeed: 0
-  staminaRecoveryRate: 15
-  staminaSpendingRate: 1
-  rollDistance: 5
-  rollCost: 5
-  rollDuration: 0
 --- !u!143 &5365075009883104660
 CharacterController:
   m_ObjectHideFlags: 0
@@ -544,15 +539,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootingPosition: {fileID: 1555733872510296171}
-  aoeDamage: 50
-  meleeDamage: 25
-  _abilityIsActive: 1
-  _maxMana: 100
+  freeLook: {fileID: 0}
   currentMana: 0
-  manaGenerationRate: 0
-  meleeRange: 2
   projectileSpeed: 10
-  projectileLifeTime: 3
   abilitiesManager: {fileID: 0}
 --- !u!114 &6123845652709149503
 MonoBehaviour:
@@ -570,7 +559,7 @@ MonoBehaviour:
   currentHealth: 0
   maxShield: 50
   currentShield: 0
-  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
+  _floatingTextManager: {fileID: 0}
 --- !u!114 &3139499319733717052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,6 +578,42 @@ MonoBehaviour:
   manaPotionCooldown: 0
   healthPotionCount: 0
   manaPotionCount: 0
+--- !u!114 &1726559018761734196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8170727818798247065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b17dde0f3c8d3e4e9fac118910b2bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dirKeys:
+  - maxSpeed
+  - damage
+  - stamina
+  - maxhp
+  - maxmana
+  - meleeRange
+  - projectileLife
+  - movementSpeed
+  - staminaRecoveryRate
+  - staminaSpendingRate
+  - aoeDamage
+  dirValues:
+  - 10
+  - 15
+  - 100
+  - 100
+  - 100
+  - 2
+  - 5
+  - 5
+  - 1
+  - 1
+  - 30
 --- !u!114 &2379572909478360635
 MonoBehaviour:
   m_ObjectHideFlags: 0
