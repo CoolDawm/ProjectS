@@ -161,12 +161,12 @@ GameObject:
   - component: {fileID: 2549279226283694826}
   - component: {fileID: 9145879510755261777}
   - component: {fileID: 6957438289423742194}
-  - component: {fileID: 17385918029405317}
   - component: {fileID: 8283673943222109464}
   - component: {fileID: 5163095585128629162}
   - component: {fileID: 7681222419362172533}
   - component: {fileID: 1377242625499528612}
   - component: {fileID: 3487506715432808987}
+  - component: {fileID: 8110108038535536094}
   m_Layer: 3
   m_Name: Melee_enemy
   m_TagString: Enemy
@@ -241,27 +241,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &17385918029405317
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4901108463139392171}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8283673943222109464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,7 +275,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 1
-  _floatingText: {fileID: 5422491863811663276, guid: 7a037a4e54c8e634f9baff1147b3ee65, type: 3}
 --- !u!195 &7681222419362172533
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -366,6 +344,27 @@ MonoBehaviour:
   - 2
   - 5
   - 5
+--- !u!65 &8110108038535536094
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901108463139392171}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5325729461820291410
 GameObject:
   m_ObjectHideFlags: 0

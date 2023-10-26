@@ -30,6 +30,7 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
 
     protected virtual void FixedUpdate()
     {
+        
         // Implement your physics-related logic here
     }
 

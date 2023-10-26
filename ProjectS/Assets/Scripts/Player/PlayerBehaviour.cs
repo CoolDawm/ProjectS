@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerBehaviour : MonoBehaviour
 {
     public float _rotationSpeed = 4f;
-    public float jumpForce = 1f;
+    public float jumpForce = 0.5f;
     public bool isRolling;
     public float rollDistance = 5f;
     public float rollCost = 5f;
@@ -23,9 +23,10 @@ public class PlayerBehaviour : MonoBehaviour
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
-    private float gravityValue = -9.81f;
+    private float gravityValue = -25f;
     private float _currentSpeed;
     private Characteristics _characteristics;
+    private GameObject _afterDeathPanel;
     private void OnEnable()
     {
         _jumpControl.action.Enable();
@@ -40,6 +41,7 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void Awake()
     {
+        _afterDeathPanel = GameObject.FindGameObjectWithTag("AfterDeathPanel");
         controller = gameObject.GetComponent<CharacterController>();
         cameraMain = Camera.main.transform;
     }
@@ -49,6 +51,8 @@ public class PlayerBehaviour : MonoBehaviour
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics = gameObject.GetComponent<Characteristics>();
         healthSystem.OnDeath += Die;
+        _afterDeathPanel=GameObject.FindGameObjectWithTag("AfterDeathPanel");
+        _afterDeathPanel.SetActive(false);
     }
     
     private void Update()
@@ -90,7 +94,7 @@ public class PlayerBehaviour : MonoBehaviour
         controller.Move(move * Time.deltaTime * _currentSpeed);
         if (_jumpControl.action.triggered && groundedPlayer)
         {
-            playerVelocity.y += Mathf.Sqrt(jumpForce * -3.0f * gravityValue);
+            playerVelocity.y += Mathf.Sqrt(jumpForce * -1.0f * gravityValue);
         }       
         // Changes the height position of the player.. 
         playerVelocity.y += gravityValue * Time.deltaTime;
@@ -112,6 +116,9 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void Die()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        _afterDeathPanel.SetActive(true);
         Destroy(gameObject);
     }
     private IEnumerator Roll()

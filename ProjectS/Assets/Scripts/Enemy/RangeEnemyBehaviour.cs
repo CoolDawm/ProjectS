@@ -26,8 +26,10 @@ public class RangeEnemyBehaviour : EnemyBehaviour
 
     protected override void FixedUpdate()
     {
-
-
+        if (_player == null)
+        {
+            return;
+        }
         if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
         {
 
@@ -66,8 +68,6 @@ public class RangeEnemyBehaviour : EnemyBehaviour
 
     public override void Attack()
     {
-        Debug.Log("Attack");
-
         GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
         Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
         projectileRigidbody.velocity = transform.forward * projectileSpeed;

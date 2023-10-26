@@ -5,8 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class AbilitesManager : MonoBehaviour
 {
-    
-    public GameObject cursorObject;
+    public GameObject cursorPrefab;
     public float areaOfEffectRadius;
     public GameObject projectilePrefab;
     public SlowAura _slowAura;
@@ -35,14 +34,18 @@ public class AbilitesManager : MonoBehaviour
         if (attacker.tag == "Enemy")
         {
             Collider[] colliders = Physics.OverlapSphere(attacker.transform.position, meleeRange);
+
             foreach (Collider collider in colliders)
             {
-                
-                if (collider.CompareTag("Player"))
+                Vector3 directionToTarget = collider.transform.position - attacker.transform.position;
+                if (Vector3.Dot(attacker.transform.forward, directionToTarget) > 0)
                 {
+                    if (collider.CompareTag("Player"))
+                    {
 
-                    collider.gameObject.GetComponent<HealthSystem>().TakeDamage(meleeDamage);
-                    break;
+                        collider.gameObject.GetComponent<HealthSystem>().TakeDamage(meleeDamage);
+                        break;
+                    }
                 }
             }
         }
@@ -51,13 +54,15 @@ public class AbilitesManager : MonoBehaviour
             Collider[] colliders = Physics.OverlapSphere(attacker.transform.position, meleeRange);
             foreach (Collider collider in colliders)
             {
-                
-                if (collider.CompareTag("Enemy"))
+                Vector3 directionToTarget = collider.transform.position - attacker.transform.position;
+                if (Vector3.Dot(attacker.transform.forward, directionToTarget) > 0)
                 {
-                    collider.gameObject.GetComponent<HealthSystem>().TakeDamage(meleeDamage);
+                    if (collider.CompareTag("Enemy"))
+                    {
+                        collider.gameObject.GetComponent<HealthSystem>().TakeDamage(meleeDamage);
+                    }
                 }
             }
-
         }
         
     }
@@ -99,7 +104,9 @@ public class AbilitesManager : MonoBehaviour
 
     IEnumerator AoeAbilityCoroutine(float aoeDamage)
     {
+        Cursor.lockState = CursorLockMode.None;
         freeLook.GetComponent<CinemachineInputProvider>().enabled = false;
+        GameObject cursorObject=  Instantiate(cursorPrefab);
         while (_abilityIsActive)
         {
 
@@ -112,11 +119,9 @@ public class AbilitesManager : MonoBehaviour
                 if (hit.collider.CompareTag("Enemy"))
                 {
                     cursorObject.transform.position = hit.collider.transform.position;
-                    ShowAbilityArea(cursorObject);
-
                     if (Input.GetMouseButtonDown(0))
                     {
-                        Collider[] colliders = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius);
+                        Collider[] colliders = Physics.OverlapSphere(cursorObject. transform.position, areaOfEffectRadius);
                         foreach (Collider collider in colliders)
                         {
                             
@@ -135,8 +140,6 @@ public class AbilitesManager : MonoBehaviour
                 {
                     // If not, show where cursor lands at the end
                     cursorObject.transform.position = hit.point;
-                    ShowAbilityArea(cursorObject);
-
                     // Overlapsphere to find enemies within the area of effect
                     Collider[] colliders = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius, LayerMask.GetMask("Enemy"));
                     if (colliders.Length > 0)
@@ -171,25 +174,35 @@ public class AbilitesManager : MonoBehaviour
                             _abilityIsActive = false;
                         }
                     }
+                    else
+                    {
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            Collider[] colliders1 = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius);
+                            foreach (Collider collider in colliders)
+                            {
+                                
+                                if (collider.CompareTag("Enemy"))
+                                {
+                                    collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
+                                }
+                            }
+                           
+                            //Attack
+                            _abilityIsActive = false;
+                        }
+                    }
                 }
             }
-
+           
             yield return null;
         }
+        Destroy(cursorObject);
+        Cursor.lockState = CursorLockMode.Locked;
         freeLook.GetComponent<CinemachineInputProvider>().enabled = true;
         // Hide ability area when ability is not active
-        HideAbilityArea(cursorObject);
     }
-    private void ShowAbilityArea(GameObject point)
-    {
-        cursorObject.SetActive(true);
-
-    }
-    private void HideAbilityArea(GameObject point)
-    {
-        cursorObject.SetActive(false);
-
-    }
+    
     public void Shield(float currentMana,GameObject abilityObject)
     {
         abilityObject.GetComponent<HealthSystem>().ShieldCharge(100);

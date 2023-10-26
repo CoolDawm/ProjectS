@@ -27,8 +27,10 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
 
     protected override void FixedUpdate()
     {
-
-
+        if (_player == null)
+        {
+            return;
+        }
         if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
         {
 

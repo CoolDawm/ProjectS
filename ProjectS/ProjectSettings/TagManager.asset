@@ -8,6 +8,8 @@ TagManager:
   - FreeLookCamera
   - AbilitiesManager
   - FloatingTextManager
+  - AfterDeathPanel
+  - DontDestroy
   layers:
   - Default
   - TransparentFX

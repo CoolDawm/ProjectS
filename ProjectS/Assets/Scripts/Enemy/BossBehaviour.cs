@@ -27,7 +27,7 @@ public abstract class BossBehaviour : MonoBehaviour, IEnemy, IEnemyMovement,IEne
 
     protected virtual void FixedUpdate()
     {
-        
+      
     }
     public abstract void Die();
     public abstract void UseAbility();
