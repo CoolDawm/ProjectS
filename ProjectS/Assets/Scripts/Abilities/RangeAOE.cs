@@ -1,30 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using UnityEditor;
 using UnityEngine;
 
 public class RangeAOE : MonoBehaviour
 {
-    public GameObject cursorObject;
-    public float areaOfEffectRadius;
+    private GameObject cursorPrefab;
+    public float areaOfEffectRadius=10f;
     private bool _abilityIsActive = false; 
     private GameObject freeLook; 
     public void Start()
     {    
+        cursorPrefab=Resources.Load<GameObject>("Prefabs/SceneObjects/Cursors/CursorObject");
         freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
     }
-   public void AoeAbility(float currentMana,float aoeDamage)
+
+    public void AoeAbility(float aoeDamage)
     {
-        if (currentMana >= 20)
+        if (freeLook == null)
         {
-            _abilityIsActive = true;
-            StartCoroutine(AoeAbilityCoroutine(aoeDamage));
+            freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
         }
+        _abilityIsActive = true;
+        StartCoroutine(AoeAbilityCoroutine(aoeDamage));
     }
 
     IEnumerator AoeAbilityCoroutine(float aoeDamage)
     {
+        Cursor.lockState = CursorLockMode.None;
         freeLook.GetComponent<CinemachineInputProvider>().enabled = false;
+        GameObject cursorObject=  Instantiate(cursorPrefab);
         while (_abilityIsActive)
         {
 
@@ -37,11 +43,9 @@ public class RangeAOE : MonoBehaviour
                 if (hit.collider.CompareTag("Enemy"))
                 {
                     cursorObject.transform.position = hit.collider.transform.position;
-                    ShowAbilityArea(cursorObject);
-
                     if (Input.GetMouseButtonDown(0))
                     {
-                        Collider[] colliders = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius);
+                        Collider[] colliders = Physics.OverlapSphere(cursorObject. transform.position, areaOfEffectRadius);
                         foreach (Collider collider in colliders)
                         {
                             
@@ -60,8 +64,6 @@ public class RangeAOE : MonoBehaviour
                 {
                     // If not, show where cursor lands at the end
                     cursorObject.transform.position = hit.point;
-                    ShowAbilityArea(cursorObject);
-
                     // Overlapsphere to find enemies within the area of effect
                     Collider[] colliders = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius, LayerMask.GetMask("Enemy"));
                     if (colliders.Length > 0)
@@ -116,21 +118,12 @@ public class RangeAOE : MonoBehaviour
                     }
                 }
             }
-
+           
             yield return null;
         }
+        Destroy(cursorObject);
+        Cursor.lockState = CursorLockMode.Locked;
         freeLook.GetComponent<CinemachineInputProvider>().enabled = true;
         // Hide ability area when ability is not active
-        HideAbilityArea(cursorObject);
-    }
-    private void ShowAbilityArea(GameObject point)
-    {
-        cursorObject.SetActive(true);
-
-    }
-    private void HideAbilityArea(GameObject point)
-    {
-        cursorObject.SetActive(false);
-
     }
 }

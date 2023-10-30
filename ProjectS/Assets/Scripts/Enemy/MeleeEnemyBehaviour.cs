@@ -8,19 +8,13 @@ using UnityEngine.InputSystem;
 public class MeleeEnemyBehaviour : EnemyBehaviour
 {
     [SerializeField]
-    private float _damage = 10f;
-    [SerializeField]
     private float _attackCooldown =0;
     private NavMeshAgent _agent;
-    public AbilitesManager abilitiesManager;
-    public UnityEvent meleeAbilityEvent;
     protected override void Start()
     {
         base.Start();
         _agent = GetComponent<NavMeshAgent>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
-        abilitiesManager = GameObject.FindGameObjectWithTag("AbilitiesManager").GetComponent<AbilitesManager>();
-        meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(_attackRange, _characteristics.charDic["damage"],gameObject)));
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         healthSystem.OnDeath += Die;
         
@@ -36,7 +30,7 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
         {
 
             _isAggro = true;
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+            if (Vector3.Distance(transform.position, _player.transform.position) <= _characteristics.charDic["attackRange"])
             {
                 Idle();
                 _agent.SetDestination(transform.position);
@@ -71,8 +65,7 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
    
     public override void Attack()
     {
-        meleeAbilityEvent.Invoke();
-        Debug.Log("Attack");
+        _player.GetComponent<HealthSystem>().TakeDamage(_characteristics.charDic["damage"]);
     }
 
     public override void Die()

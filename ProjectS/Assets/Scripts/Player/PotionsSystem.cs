@@ -6,14 +6,8 @@ public class PotionsSystem : MonoBehaviour
 {
     public float healthPotionHealAmount = 5;
     public float manaPotionManaAmount = 5;
-    public float healthPotionCooldown;
-    public float manaPotionCooldown;
-    public int healthPotionCount;
-    public int manaPotionCount;
     private HealthSystem _healthSystem;
     private PlayerBattleSystem _playerBattleSystem;
-    private bool canUseHealthPotion = true;
-    private bool canUseManaPotion = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,13 +34,11 @@ public class PotionsSystem : MonoBehaviour
                 UseManaPotion(30);
                 manaPotionManaAmount--;
             }
-
     }
     private void UseHealthPotion(float health)
     {
         _healthSystem.IncreaseCurrentHealth(health);
     }
-
     private void UseManaPotion(float mana)
     {
         _playerBattleSystem.currentMana += mana;

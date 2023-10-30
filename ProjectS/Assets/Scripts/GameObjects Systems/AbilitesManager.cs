@@ -5,32 +5,34 @@ using System.Collections.Generic;
 using UnityEngine;
 public class AbilitesManager : MonoBehaviour
 {
-    public GameObject cursorPrefab;
     public float areaOfEffectRadius;
     public GameObject projectilePrefab;
-    public SlowAura _slowAura;
-    public DamageUpAura _damageUpAura;
-    public SpeedScream _speedScream;
-    private bool _abilityIsActive = false; 
-    private GameObject freeLook; 
-    private PlayerBattleSystem _playerBattleSystem;
-    private bool isUsingSkill = false;
+    //Abilities
+    public SlowAura slowAura;
+    public DamageUpAura damageUpAura;
+    public SpeedScream speedScream;
+    public RangeAOE rangeAoe;
+    public FrostBeam frostBeam;
+    //
     private FloatTextManager _floatingTextManager;
+    private Utilities _utilities=new Utilities();
+
     public void Start()
-    {    
-        freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
-        _playerBattleSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBattleSystem>();
+    {
         _floatingTextManager = GameObject.FindGameObjectWithTag("FloatingTextManager").GetComponent<FloatTextManager>();
+        slowAura=GetComponent<SlowAura>();
+        damageUpAura=GetComponent<DamageUpAura>();
+        speedScream=GetComponent<SpeedScream>();
+        rangeAoe=GetComponent<RangeAOE>();
+        frostBeam=GetComponent<FrostBeam>();
     }
-    public void FixedUpdate()
+    public void MeleeAbility(float meleeRange,float meleeDamage,GameObject attacker,float chance)
     {
-        if(freeLook == null)
+        if (!_utilities.CalculateChance(chance))
         {
-            freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
+            _floatingTextManager.ShowFloatingText(attacker.transform,"Failed"); 
+            return;
         }
-    }
-    public void MeleeAbility(float meleeRange,float meleeDamage,GameObject attacker)
-    {
         if (attacker.tag == "Enemy")
         {
             Collider[] colliders = Physics.OverlapSphere(attacker.transform.position, meleeRange);
@@ -67,149 +69,80 @@ public class AbilitesManager : MonoBehaviour
         
     }
 
-    public void SlowingAura(GameObject emmiter,String aim)
+    public void SlowingAura(GameObject emmiter,String aim,float chance)
     {
-        _slowAura.StartEmitting(emmiter, aim);
-        _floatingTextManager.ShowFloatingText(emmiter,"Slow Aura"); 
-    } 
-    public void DamageUpAura(GameObject emmiter,String aim)
-    {
-        _damageUpAura.StartEmitting(emmiter, aim);
-        _floatingTextManager.ShowFloatingText(emmiter,"Damage Up Aura"); 
-    } 
-    public void SpeedScream(GameObject emmiter,String aim)
-    {
-        _speedScream.StartEmitting(emmiter, aim);
-        _floatingTextManager.ShowFloatingText(emmiter,"Speed Scream"); 
-    } 
-    public void RangeAbility(float currentMana,float projectileLifeTime,float projectileSpeed, Transform shootingPosition)
-    {
-        if (currentMana >= 10)
+        if (!_utilities.CalculateChance(chance))
         {
-            GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
-            Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
-            projectileRigidbody.velocity = shootingPosition.transform.forward * projectileSpeed;
-            Destroy(projectile, projectileLifeTime);
+            _floatingTextManager.ShowFloatingText(emmiter.transform,"Failed"); 
+            return;
         }
+        slowAura.StartEmitting(emmiter, aim);
+        _floatingTextManager.ShowFloatingText(emmiter.transform,"Slow Aura"); 
+    } 
+    public void DamageUpAura(GameObject emmiter,String aim,float chance)
+    {
+        if (!_utilities.CalculateChance(chance))
+        {
+            _floatingTextManager.ShowFloatingText(emmiter.transform,"Failed"); 
+            return;
+        }
+        damageUpAura.StartEmitting(emmiter, aim);
+        _floatingTextManager.ShowFloatingText(emmiter.transform,"Damage Up Aura"); 
+    } 
+    public void SpeedScream(GameObject emmiter,String aim,float chance)
+    {
+        if (!_utilities.CalculateChance(chance))
+        {
+            _floatingTextManager.ShowFloatingText(emmiter.transform,"Failed"); 
+            return;
+        }
+        speedScream.StartEmitting(emmiter, aim);
+        _floatingTextManager.ShowFloatingText(emmiter.transform,"Speed Scream"); 
     }
 
-    public void AoeAbility(float currentMana,float aoeDamage)
+    public void RangeAbility(float projectileLifeTime, float projectileSpeed, Transform shootingPosition, float chance)
     {
-        if (currentMana >= 20)
+        if (!_utilities.CalculateChance(chance))
         {
-            _abilityIsActive = true;
-            StartCoroutine(AoeAbilityCoroutine(aoeDamage));
+            _floatingTextManager.ShowFloatingText(shootingPosition.gameObject.GetComponentInParent<Transform>(),
+                "Failed");
+            return;
         }
+
+        GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
+        Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
+        projectileRigidbody.velocity = shootingPosition.transform.forward * projectileSpeed;
+        Destroy(projectile, projectileLifeTime);
+
     }
 
-    IEnumerator AoeAbilityCoroutine(float aoeDamage)
+    public void AoeAbility(float aoeDamage, float chance)
     {
-        Cursor.lockState = CursorLockMode.None;
-        freeLook.GetComponent<CinemachineInputProvider>().enabled = false;
-        GameObject cursorObject=  Instantiate(cursorPrefab);
-        while (_abilityIsActive)
+        if (!_utilities.CalculateChance(chance))
         {
-
-            // Ray from camera to cursor
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-            {
-                // If ray lands on enemy, show it
-                if (hit.collider.CompareTag("Enemy"))
-                {
-                    cursorObject.transform.position = hit.collider.transform.position;
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        Collider[] colliders = Physics.OverlapSphere(cursorObject. transform.position, areaOfEffectRadius);
-                        foreach (Collider collider in colliders)
-                        {
-                            
-                            if (collider.CompareTag("Enemy"))
-                            {
-
-                                collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
-                            }
-                        }
-                        
-                        //Attack
-                        _abilityIsActive = false;
-                    }
-                }
-                else
-                {
-                    // If not, show where cursor lands at the end
-                    cursorObject.transform.position = hit.point;
-                    // Overlapsphere to find enemies within the area of effect
-                    Collider[] colliders = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius, LayerMask.GetMask("Enemy"));
-                    if (colliders.Length > 0)
-                    {
-                        // Find the closest enemy to the center of the overlapsphere
-                        Vector3 centerOfSphere = cursorObject.transform.position;
-                        Collider closestEnemy = colliders[0];
-                        float closestDistance = Vector3.Distance(centerOfSphere, closestEnemy.transform.position);
-
-                        foreach (Collider collider in colliders)
-                        {
-                            float distance = Vector3.Distance(centerOfSphere, collider.transform.position);
-                            if (distance < closestDistance)
-                            {
-                                closestEnemy = collider;
-                                closestDistance = distance;
-                            }
-                        }
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            Collider[] colliders1 = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius);
-                            foreach (Collider collider in colliders)
-                            {
-                                
-                                if (collider.CompareTag("Enemy"))
-                                {
-                                    collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
-                                }
-                            }
-                           
-                            //Attack
-                            _abilityIsActive = false;
-                        }
-                    }
-                    else
-                    {
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            Collider[] colliders1 = Physics.OverlapSphere(cursorObject.transform.position, areaOfEffectRadius);
-                            foreach (Collider collider in colliders)
-                            {
-                                
-                                if (collider.CompareTag("Enemy"))
-                                {
-                                    collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
-                                }
-                            }
-                           
-                            //Attack
-                            _abilityIsActive = false;
-                        }
-                    }
-                }
-            }
-           
-            yield return null;
+            return;
         }
-        Destroy(cursorObject);
-        Cursor.lockState = CursorLockMode.Locked;
-        freeLook.GetComponent<CinemachineInputProvider>().enabled = true;
-        // Hide ability area when ability is not active
+        rangeAoe.AoeAbility(aoeDamage);
     }
-    
-    public void Shield(float currentMana,GameObject abilityObject)
+
+    public void Shield(GameObject abilityObject, float chance)
     {
+        if (!_utilities.CalculateChance(chance))
+        {
+            _floatingTextManager.ShowFloatingText(abilityObject.transform, "Failed");
+            return;
+        }
+
         abilityObject.GetComponent<HealthSystem>().ShieldCharge(100);
     }
-    
-    public void MeleeAoe(float damage,GameObject user)
+
+    public void MeleeAoe(float damage,GameObject user,float chance)
     {
+        if (!_utilities.CalculateChance(chance))
+        {
+            _floatingTextManager.ShowFloatingText(user.transform,"Failed"); 
+            return;
+        }
         if (user.tag == "Player")
         {
             Collider[] colliders = Physics.OverlapSphere(user.transform.position, areaOfEffectRadius, LayerMask.GetMask("Enemy"));
@@ -231,40 +164,14 @@ public class AbilitesManager : MonoBehaviour
         
     }
 
-    public void StartFrostBeam(Transform point, float damagePerSecond, float duration, float beamRange, string aim)
+    public void StartFrostBeam(Transform point, float damagePerSecond, float duration, float beamRange, string aim, float chance)
     {
-        StartCoroutine(FrostBeam(point, damagePerSecond, duration, beamRange, aim));
-    }
-    IEnumerator FrostBeam(Transform point,float damagePerSecond,float duration,float beamRange,string aim)
-    {
-        isUsingSkill = true;
-        float elapsedTime = 0f;
-        while (isUsingSkill)
+        if (!_utilities.CalculateChance(chance))
         {
-            Ray ray = new Ray(point.position, point.forward);
-            RaycastHit hit;
-
-            Debug.DrawRay(point.position, point.forward,Color.magenta);
-
-            if (Physics.Raycast(ray, out hit, beamRange))
-            {
-
-                if (hit.collider.CompareTag(aim))
-                {
-
-                    hit.collider.GetComponent<HealthSystem>().TakeDamage(damagePerSecond);
-                   
-                    Debug.Log("Hit");
-                }
-            }
-            elapsedTime+= Time.deltaTime;
-            if (elapsedTime>=duration)
-            {
-                isUsingSkill = false;
-                Debug.Log("AbilityExit");
-            }
-        
-            yield return null;
+            _floatingTextManager.ShowFloatingText(point.gameObject.GetComponentInParent<Transform>(), "Failed");
+            return;
         }
+
+        frostBeam.StartFrostBeam(point, damagePerSecond, duration, beamRange, aim);
     }
 }

@@ -9,10 +9,6 @@ public class PlayerBattleSystem : MonoBehaviour
 {
     [SerializeField]
     private Transform shootingPosition;
-    [SerializeField]
-    private GameObject  freeLook;
-    private Characteristics _characteristics;
-    private bool isUsingAbility;
     public float currentMana;
     public float projectileSpeed = 1500f;
     public AbilitesManager abilitiesManager;
@@ -24,18 +20,18 @@ public class PlayerBattleSystem : MonoBehaviour
     public Action OnFrostBeamAbilityEvent;
     public Action OnSlowAuraAbilityEvent;
     public Action OnDamageAuraAbilityEvent;
+    private Characteristics _characteristics;
     void Start()
     {
-        freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
         _characteristics = gameObject.GetComponent<Characteristics>();
-        OnmeleeAbilityEvent += () => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _characteristics.charDic["damage"], gameObject);
-        OnrangeAbilityEvent += () => abilitiesManager.RangeAbility(currentMana,_characteristics.charDic["projectileLife"] , projectileSpeed, shootingPosition);
-        OnaoeAbilityEvent += () => abilitiesManager.AoeAbility(currentMana, _characteristics.charDic["aoeDamage"]);
-        OnmeleeAoeAbilityEvent += () => abilitiesManager.MeleeAoe(_characteristics.charDic["aoeDamage"], gameObject);
-        OnshieldAbilityEvent += () => abilitiesManager.Shield(currentMana, gameObject);
-        OnFrostBeamAbilityEvent += () => abilitiesManager.StartFrostBeam(shootingPosition, 1f, 10f, 25f, "Enemy");
-        OnSlowAuraAbilityEvent += () => abilitiesManager.SlowingAura(gameObject,"Enemy");
-        OnDamageAuraAbilityEvent += () => abilitiesManager.DamageUpAura(gameObject,"Player");
+        OnmeleeAbilityEvent += () => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _characteristics.charDic["damage"], gameObject,80);
+        OnrangeAbilityEvent += () => abilitiesManager.RangeAbility(_characteristics.charDic["projectileLife"] , projectileSpeed, shootingPosition,80);
+        OnaoeAbilityEvent += () => abilitiesManager.AoeAbility(_characteristics.charDic["aoeDamage"],80);
+        OnmeleeAoeAbilityEvent += () => abilitiesManager.MeleeAoe(_characteristics.charDic["aoeDamage"], gameObject,80);
+        OnshieldAbilityEvent += () => abilitiesManager.Shield( gameObject,80);
+        OnFrostBeamAbilityEvent += () => abilitiesManager.StartFrostBeam(shootingPosition, 1f, 10f, 25f, "Enemy",80);
+        OnSlowAuraAbilityEvent += () => abilitiesManager.SlowingAura(gameObject,"Enemy",80);
+        OnDamageAuraAbilityEvent += () => abilitiesManager.DamageUpAura(gameObject,"Player",80);
         Debug.Log(_characteristics.charDic.Count);
         currentMana = _characteristics.charDic["maxmana"];
     }
@@ -49,41 +45,54 @@ public class PlayerBattleSystem : MonoBehaviour
 
     private void Update()
     {
+        //MainMelee
         if(Input.GetMouseButtonDown(0))
         {
+            GenerateMana(10);
             OnmeleeAbilityEvent.Invoke();
             GenerateMana(10);
         }
-        if(Input.GetMouseButtonDown(1))
+        //FrostBeam
+        if (Input.GetMouseButtonDown(1) && currentMana >= 30)
         {
+            currentMana -= 30;
             OnFrostBeamAbilityEvent.Invoke();
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        //RangeProjectile
+        if (Input.GetKeyDown(KeyCode.Alpha2)&&currentMana >=10)
         {
+            currentMana -= 10;
             OnrangeAbilityEvent.Invoke();
         }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+        //RangeAoe
+        if (Input.GetKeyDown(KeyCode.Alpha3)&&currentMana >=30)
         {
+            currentMana -= 30;
             OnaoeAbilityEvent.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
+        //MeleeAoe
+        if (Input.GetKeyDown(KeyCode.Alpha4)&&currentMana >=25)
         {
+            currentMana -= 25;
             OnmeleeAoeAbilityEvent.Invoke();
         }
-
-        if (Input.GetKeyDown(KeyCode.Alpha5))
+        //Shield
+        if (Input.GetKeyDown(KeyCode.Alpha5)&&currentMana >=25)
         {
+            currentMana -= 25;
             OnshieldAbilityEvent.Invoke();
         }
-
-        if (Input.GetKeyDown(KeyCode.Alpha6))
+        //Slow Aura
+        if (Input.GetKeyDown(KeyCode.Alpha6)&&currentMana >=30)
         {
+            currentMana -= 30;
             OnSlowAuraAbilityEvent.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.Alpha7))
+        //DamageUp Aura
+        if (Input.GetKeyDown(KeyCode.Alpha7)&&currentMana >=30)
         {
+            currentMana -= 30;
             OnDamageAuraAbilityEvent.Invoke();
         }
     }

@@ -8,11 +8,8 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
     
     [SerializeField]
     private float _rotationSpeed = 3f;
-    [SerializeField]
-    private float _summonRadius = 6f;
     private NavMeshAgent _agent;
     public GameObject summonPrefab;
-    public GameObject projectilePrefab;
     private float _attackCooldown = 0f;
     protected override void Start()
     {
@@ -34,7 +31,7 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
         if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
         {
 
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+            if (Vector3.Distance(transform.position, _player.transform.position) <= _characteristics.charDic["attackRange"])
             {
                 StopAllCoroutines();
                 _agent.SetDestination(transform.position);
@@ -69,7 +66,7 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
     public override void Attack()
     {
         Debug.Log("Attack");
-        Vector3 summonPosition = transform.position + Random.insideUnitSphere * _summonRadius; 
+        Vector3 summonPosition = transform.position + Random.insideUnitSphere *_characteristics.charDic["summonRadius"]; 
         GameObject newBeast = Instantiate(summonPrefab, summonPosition, Quaternion.identity); 
     }
 

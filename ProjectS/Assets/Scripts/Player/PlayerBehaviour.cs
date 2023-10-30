@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
+
 public class PlayerBehaviour : MonoBehaviour
 {
-    public float _rotationSpeed = 4f;
+    public float rotationSpeed = 4f;
     public float jumpForce = 0.5f;
     public bool isRolling;
     public float rollDistance = 5f;
@@ -17,13 +19,12 @@ public class PlayerBehaviour : MonoBehaviour
     private InputActionReference _jumpControl;
     [SerializeField]
     private InputActionReference _sprintControl;
-    public float _maxStamina = 10;
-    public float _currentStamina = 0f;
-    private Transform cameraMain;  
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    private bool groundedPlayer;
-    private float gravityValue = -25f;
+    private float _currentStamina;
+    private Transform _cameraMain;  
+    private CharacterController _controller;
+    private Vector3 _playerVelocity;
+    private bool _groundedPlayer;
+    private float _gravityValue = -25f;
     private float _currentSpeed;
     private Characteristics _characteristics;
     private GameObject _afterDeathPanel;
@@ -42,14 +43,14 @@ public class PlayerBehaviour : MonoBehaviour
     private void Awake()
     {
         _afterDeathPanel = GameObject.FindGameObjectWithTag("AfterDeathPanel");
-        controller = gameObject.GetComponent<CharacterController>();
-        cameraMain = Camera.main.transform;
+        _controller = gameObject.GetComponent<CharacterController>();
+        _cameraMain = Camera.main.transform;
     }
     private void Start()
     {
-        _currentStamina = _maxStamina;
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics = gameObject.GetComponent<Characteristics>();
+        _currentStamina = _characteristics.charDic["stamina"];
         healthSystem.OnDeath += Die;
         _afterDeathPanel=GameObject.FindGameObjectWithTag("AfterDeathPanel");
         _afterDeathPanel.SetActive(false);
@@ -63,18 +64,18 @@ public class PlayerBehaviour : MonoBehaviour
    
     private void MovePlayer()
     {
-        if (cameraMain == null)
+        if (_cameraMain == null)
         {
-            cameraMain = Camera.main.transform;
+            _cameraMain = Camera.main.transform;
         }
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
+        _groundedPlayer = _controller.isGrounded;
+        if (_groundedPlayer && _playerVelocity.y < 0)
         {
-            playerVelocity.y = 0f;
+            _playerVelocity.y = 0f;
         }
         Vector2 movement = _movementControl.action.ReadValue<Vector2>();
         Vector3 move = new Vector3(movement.x,0,movement.y);
-        move = cameraMain.forward * move.z + cameraMain.right * move.x;
+        move = _cameraMain.forward * move.z + _cameraMain.right * move.x;
         move.y = 0f;
         if (_sprintControl.action.IsPressed()&&_currentStamina>0)
         {
@@ -86,24 +87,24 @@ public class PlayerBehaviour : MonoBehaviour
         {
             _currentSpeed = _characteristics.charDic["movementSpeed"];
             //Stamina recovery
-            if (_currentStamina < _maxStamina)
+            if (_currentStamina < _characteristics.charDic["stamina"])
             {
                 _currentStamina += Time.deltaTime * _characteristics.charDic["staminaRecoveryRate"];
             }       
         }
-        controller.Move(move * Time.deltaTime * _currentSpeed);
-        if (_jumpControl.action.triggered && groundedPlayer)
+        _controller.Move(move * Time.deltaTime * _currentSpeed);
+        if (_jumpControl.action.triggered && _groundedPlayer)
         {
-            playerVelocity.y += Mathf.Sqrt(jumpForce * -1.0f * gravityValue);
+            _playerVelocity.y += Mathf.Sqrt(jumpForce * -1.0f * _gravityValue);
         }       
         // Changes the height position of the player.. 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        _playerVelocity.y += _gravityValue * Time.deltaTime;
+        _controller.Move(_playerVelocity * Time.deltaTime);
         if(movement!= Vector2.zero)
         {
-            float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg+cameraMain.eulerAngles.y;
+            float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg+_cameraMain.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
-            transform.rotation = Quaternion.Lerp(transform.rotation,rotation,Time.deltaTime*_rotationSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation,rotation,Time.deltaTime*rotationSpeed);
         }
         //Roll
         if (!isRolling && Input.GetKeyDown(KeyCode.LeftControl)&&_currentStamina>=rollCost)

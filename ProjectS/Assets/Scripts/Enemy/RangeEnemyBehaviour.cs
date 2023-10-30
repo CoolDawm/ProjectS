@@ -16,8 +16,6 @@ public class RangeEnemyBehaviour : EnemyBehaviour
     protected override void Start()
     {
         base.Start();
-        _attackRange = 10f;
-        _detectionRadius = 15f;
         _agent = GetComponent<NavMeshAgent>();
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
@@ -33,7 +31,7 @@ public class RangeEnemyBehaviour : EnemyBehaviour
         if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
         {
 
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+            if (Vector3.Distance(transform.position, _player.transform.position) <=_characteristics.charDic["attackRange"])
             {
                 _agent.SetDestination(transform.position);
                 _attackCooldown += Time.deltaTime;

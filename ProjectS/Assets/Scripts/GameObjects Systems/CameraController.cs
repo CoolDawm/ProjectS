@@ -8,12 +8,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float distance = 5f;
     [SerializeField] private float height = 2f;
     [SerializeField] private float smoothSpeed = 0.125f;
-
-    private CinemachineVirtualCamera virtualCamera;
+    private CinemachineVirtualCamera _virtualCamera;
 
     private void Awake()
     {
-        virtualCamera = GetComponent<CinemachineVirtualCamera>();
+        _virtualCamera = GetComponent<CinemachineVirtualCamera>();
     }
 
     private void LateUpdate()

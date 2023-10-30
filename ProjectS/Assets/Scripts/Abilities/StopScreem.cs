@@ -1,18 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class StopScreem : MonoBehaviour
+public class StopScreem :Aura
 {
-    // Start is called before the first frame update
-    void Start()
+    private bool isEmitting;
+
+    private void Start()
     {
-        
+        Range = 15f;
+        Duration = 10f;
+        Effect = "movementSpeed";
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public override void StartEmitting(GameObject emitter, String aim)
     {
-        
+        Collider[] colliders = Physics.OverlapSphere(emitter.transform.position, Range, LayerMask.GetMask(aim));
+        foreach (Collider collider in colliders)
+        {
+            float tmpChar = collider.gameObject.GetComponent<Characteristics>().charDic[Effect];
+            collider.gameObject.GetComponent<Characteristics>().ApplyBuff(Effect, tmpChar,Duration);
+        }
     }
 }

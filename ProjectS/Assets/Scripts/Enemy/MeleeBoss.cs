@@ -6,22 +6,20 @@ using UnityEngine.Events;
 public class MeleeBoss : BossBehaviour
 {
     [SerializeField]
-    private float _damage = 10f;
-    [SerializeField]
     private float _attackCooldown = 0;
-    private NavMeshAgent _agent;
     public AbilitesManager abilitiesManager;
     public UnityEvent meleeAbilityEvent;
     public UnityEvent shieldAbilityEvent;
     public UnityEvent SpeedScreamAbilityEvent;
+    private NavMeshAgent _agent;
     protected override void Start()
     {
         base.Start();
         _agent = GetComponent<NavMeshAgent>();
         abilitiesManager = GameObject.FindGameObjectWithTag("AbilitiesManager").GetComponent<AbilitesManager>();
-        meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _damage, gameObject)));
-        shieldAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.Shield(15, gameObject)));
-        SpeedScreamAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.SpeedScream(gameObject,"Enemy")));
+        meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _characteristics.charDic["damage"], gameObject,80)));
+        shieldAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.Shield( gameObject,80)));
+        SpeedScreamAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.SpeedScream(gameObject,"Enemy",70)));
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
         healthSystem.OnDeath += Die;
@@ -43,7 +41,7 @@ public class MeleeBoss : BossBehaviour
                 _abilityCooldown = 0;
                 UseAbility();
             }
-            if (Vector3.Distance(transform.position, _player.transform.position) <=_characteristics.charDic["meleeRange"])
+            if (Vector3.Distance(transform.position, _player.transform.position) <=_characteristics.charDic["attackRange"])
             {
                 Idle();
                 _agent.SetDestination(transform.position);

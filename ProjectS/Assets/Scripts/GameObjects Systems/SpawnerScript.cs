@@ -10,29 +10,27 @@ public class SpawnerScript : MonoBehaviour
     [SerializeField]
     private int _maxEnemy = 5;
     [SerializeField]
-    private float timeSpawn = 2f;
+    private float _timeSpawn = 2f;
     [SerializeField]
     private int _childCount = 0;
-    [SerializeField]
-    public float distance = 4;
-    private float timer;
-
+    private float _timer;
+    private Utilities _utils = new Utilities();
 
     private void Start()
     {
-        timer = timeSpawn;
+        _timer = _timeSpawn;
     }
 
     private void Update()
     {
-        timer -= Time.deltaTime;
-        if (timer <= 0)
+        _timer -= Time.deltaTime;
+        if (_timer <= 0)
         {
-            timer = timeSpawn;
+            _timer = _timeSpawn;
             if (_childCount < _maxEnemy)
             {
                 _childCount++;
-                Instantiate(_enemyPrefab, Random.insideUnitCircle * distance, Quaternion.identity);
+                Instantiate(_enemyPrefab,_utils.GetRandomVector(gameObject.transform.position) , Quaternion.identity);
             }
         }
     }

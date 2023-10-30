@@ -8,12 +8,12 @@ public class ProjectileScript : MonoBehaviour
     private float damage = 15;
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.tag == "Player")
+        if (collision.collider.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage);
             Destroy(gameObject);
         }
-        if (collision.collider.tag == "Enemy")
+        if (collision.collider.CompareTag("Enemy"))
         {
             collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage);
             Destroy(gameObject);

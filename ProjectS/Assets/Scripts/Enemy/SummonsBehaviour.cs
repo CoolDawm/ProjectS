@@ -5,15 +5,10 @@ using UnityEngine.AI;
 
 public class SummonsBehaviour : EnemyBehaviour
 {
-    [SerializeField]
-    private float _attackCooldown = 0;
     private NavMeshAgent _agent;
-
-
     protected override void Start()
     {
         base.Start();
-        _attackRange = 2f;
         _agent = GetComponent<NavMeshAgent>();
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
@@ -30,7 +25,7 @@ public class SummonsBehaviour : EnemyBehaviour
         {
 
             _isAggro = true;
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+            if (Vector3.Distance(transform.position, _player.transform.position) <=_characteristics.charDic["attackRange"])
             {
                 Idle();
                 _agent.SetDestination(transform.position);          
@@ -61,6 +56,7 @@ public class SummonsBehaviour : EnemyBehaviour
     public override void Attack()
     {
         _player.GetComponent<HealthSystem>().TakeDamage(_characteristics.charDic["damage"]);
+        Die();
         Debug.Log("Boom");
     }
     public override void Die()

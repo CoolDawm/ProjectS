@@ -5,41 +5,40 @@ using UnityEngine;
 
 public class Characteristics : MonoBehaviour
 {
-    private bool buffAply=false;
-    private bool debuffAply=false;
     public float timer = 1f;
     public Dictionary<string, float> charDic = new Dictionary<string, float>();
-    
+    private bool _buffAply=false;
+    private bool _debuffAply=false;
     IEnumerator DebuffAura(String effect, float power)
     {
-        debuffAply = true;
+        _debuffAply = true;
         float tmpChar = charDic[effect];
         charDic[effect] = tmpChar - power;
-        while (debuffAply)
+        while (_debuffAply)
         {
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
                 timer = 1f;
                 charDic[effect]=tmpChar;
-                debuffAply = false;
+                _debuffAply = false;
             }
             yield return null;
         }
     }
     IEnumerator BuffAura(String effect, float power)
     {
-        buffAply = true;
+        _buffAply = true;
         float tmpChar = charDic[effect];
         charDic[effect] = tmpChar + power;
-        while (buffAply)
+        while (_buffAply)
         {
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
                 timer = 1f;
                 charDic[effect]=tmpChar;
-                buffAply = false;
+                _buffAply = false;
                 
             }
             yield return null;
@@ -47,14 +46,14 @@ public class Characteristics : MonoBehaviour
     }
     public void ApplyDebuffAura(String effect, float power)
     {
-        if (!debuffAply)
+        if (!_debuffAply)
         {
             StartCoroutine(DebuffAura( effect, power));
         }
     }
     public void ApplyBuffAura(String effect, float power)
     {
-        if (!buffAply)
+        if (!_buffAply)
         {
             StartCoroutine(BuffAura( effect, power));
         }
