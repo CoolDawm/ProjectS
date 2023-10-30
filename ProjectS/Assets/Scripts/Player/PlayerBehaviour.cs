@@ -42,7 +42,6 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void Awake()
     {
-        _afterDeathPanel = GameObject.FindGameObjectWithTag("AfterDeathPanel");
         _controller = gameObject.GetComponent<CharacterController>();
         _cameraMain = Camera.main.transform;
     }
@@ -50,10 +49,9 @@ public class PlayerBehaviour : MonoBehaviour
     {
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics = gameObject.GetComponent<Characteristics>();
-        _currentStamina = _characteristics.charDic["stamina"];
+        _currentStamina = 100;
+        _afterDeathPanel = Resources.Load<GameObject>("Prefabs/UI/AfterDeathUICanvas");
         healthSystem.OnDeath += Die;
-        _afterDeathPanel=GameObject.FindGameObjectWithTag("AfterDeathPanel");
-        _afterDeathPanel.SetActive(false);
     }
     
     private void Update()
@@ -119,7 +117,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        _afterDeathPanel.SetActive(true);
+        Instantiate(_afterDeathPanel, null);
         Destroy(gameObject);
     }
     private IEnumerator Roll()

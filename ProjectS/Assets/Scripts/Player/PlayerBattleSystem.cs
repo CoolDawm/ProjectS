@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
 public class PlayerBattleSystem : MonoBehaviour
 {
     [SerializeField]
@@ -33,7 +32,7 @@ public class PlayerBattleSystem : MonoBehaviour
         OnSlowAuraAbilityEvent += () => abilitiesManager.SlowingAura(gameObject,"Enemy",80);
         OnDamageAuraAbilityEvent += () => abilitiesManager.DamageUpAura(gameObject,"Player",80);
         Debug.Log(_characteristics.charDic.Count);
-        currentMana = _characteristics.charDic["maxmana"];
+        currentMana = 100;
     }
 
 

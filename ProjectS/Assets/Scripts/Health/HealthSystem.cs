@@ -106,6 +106,7 @@ public class HealthSystem : MonoBehaviour
     private void Die()
     {
         OnDeath?.Invoke();
+        _floatingTextManager.ShowFloatingText(gameObject.transform,"Died");
     }
 }
 

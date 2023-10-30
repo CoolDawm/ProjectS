@@ -18,10 +18,4 @@ public class CharacteristicsLoader : MonoBehaviour
             _characteristics.charDic.Add(dirKeys[i],dirValues[i]);
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

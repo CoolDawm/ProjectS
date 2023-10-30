@@ -461,13 +461,13 @@ GameObject:
   - component: {fileID: 192590892428507117}
   - component: {fileID: 7085668999039982480}
   - component: {fileID: 2362978708891051318}
+  - component: {fileID: 6480742516694337997}
   - component: {fileID: 4209720052529077745}
   - component: {fileID: 8326493963995363807}
   - component: {fileID: 8338841158745678350}
   - component: {fileID: 5077140723063834932}
   - component: {fileID: 6510031172208376582}
   - component: {fileID: 6473006953353033153}
-  - component: {fileID: 6480742516694337997}
   m_Layer: 0
   m_Name: Smart_Player
   m_TagString: Player
@@ -564,6 +564,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6480742516694337997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765348477108020771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 1
 --- !u!114 &4209720052529077745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,8 +593,7 @@ MonoBehaviour:
   - maxSpeed
   - damage
   - stamina
-  - maxhp
-  - maxmana
+  - maxMana
   - meleeRange
   - projectileLife
   - movementSpeed
@@ -592,7 +604,6 @@ MonoBehaviour:
   - 10
   - 10
   - 8
-  - 90
   - 150
   - 2
   - 5
@@ -612,7 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14aef505bd3ff8d4f9139151b0faa31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotationSpeed: 4
+  rotationSpeed: 4
   jumpForce: 5
   isRolling: 0
   rollDistance: 5
@@ -659,7 +670,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootingPosition: {fileID: 7955051689130861782}
-  freeLook: {fileID: 0}
   currentMana: 0
   projectileSpeed: 10
   abilitiesManager: {fileID: 0}
@@ -694,19 +704,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPotionHealAmount: 5
   manaPotionManaAmount: 5
---- !u!114 &6480742516694337997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6765348477108020771}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 1
 --- !u!1 &8935003735110599363
 GameObject:
   m_ObjectHideFlags: 0

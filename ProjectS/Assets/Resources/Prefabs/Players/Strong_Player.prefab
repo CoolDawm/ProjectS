@@ -492,13 +492,13 @@ GameObject:
   - component: {fileID: 7959257328851254595}
   - component: {fileID: 4231825002508103529}
   - component: {fileID: 7175195670571316006}
+  - component: {fileID: 2701526051851266565}
   - component: {fileID: 2065077739561839712}
   - component: {fileID: 4301744863715150289}
   - component: {fileID: 874399654147286203}
   - component: {fileID: 8940190205207286395}
   - component: {fileID: 5681736770726154263}
   - component: {fileID: 4224376643888555297}
-  - component: {fileID: 2701526051851266565}
   m_Layer: 0
   m_Name: Strong_Player
   m_TagString: Player
@@ -595,6 +595,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2701526051851266565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5211045298977360935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 1
 --- !u!114 &2065077739561839712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -611,7 +624,7 @@ MonoBehaviour:
   - maxSpeed
   - damage
   - stamina
-  - maxmana
+  - maxMana
   - meleeRange
   - projectileLife
   - movementSpeed
@@ -641,7 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14aef505bd3ff8d4f9139151b0faa31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotationSpeed: 4
+  rotationSpeed: 4
   jumpForce: 6
   isRolling: 0
   rollDistance: 5
@@ -688,7 +701,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootingPosition: {fileID: 8566450720927950328}
-  freeLook: {fileID: 0}
   currentMana: 0
   projectileSpeed: 10
   abilitiesManager: {fileID: 0}
@@ -723,16 +735,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPotionHealAmount: 5
   manaPotionManaAmount: 5
---- !u!114 &2701526051851266565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5211045298977360935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 1
