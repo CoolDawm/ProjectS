@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 2587239086752343145}
   - component: {fileID: 1225523548582032665}
   - component: {fileID: 6878742721904858225}
+  - component: {fileID: 7549060017773499452}
   - component: {fileID: 3945596770616699216}
   m_Layer: 3
   m_Name: Range_Enemy
@@ -487,6 +488,19 @@ MonoBehaviour:
   - 12
   - 5
   - 5
+--- !u!114 &7549060017773499452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5420211379135837910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea84d894aae7d1249af99ad7fa0d8ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 1
 --- !u!65 &3945596770616699216
 BoxCollider:
   m_ObjectHideFlags: 0

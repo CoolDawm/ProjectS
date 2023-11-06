@@ -13,6 +13,8 @@ public class AbilitesManager : MonoBehaviour
     public SpeedScream speedScream;
     public RangeAOE rangeAoe;
     public FrostBeam frostBeam;
+    public SimpleMelee simpleMelee;
+    public SimpleRange simpleRange;
     //
     private FloatTextManager _floatingTextManager;
     private Utilities _utilities=new Utilities();
@@ -33,40 +35,7 @@ public class AbilitesManager : MonoBehaviour
             _floatingTextManager.ShowFloatingText(attacker.transform,"Failed"); 
             return;
         }
-        if (attacker.tag == "Enemy")
-        {
-            Collider[] colliders = Physics.OverlapSphere(attacker.transform.position, meleeRange);
-
-            foreach (Collider collider in colliders)
-            {
-                Vector3 directionToTarget = collider.transform.position - attacker.transform.position;
-                if (Vector3.Dot(attacker.transform.forward, directionToTarget) > 0)
-                {
-                    if (collider.CompareTag("Player"))
-                    {
-
-                        collider.gameObject.GetComponent<HealthSystem>().TakeDamage(meleeDamage);
-                        break;
-                    }
-                }
-            }
-        }
-        else if (attacker.tag == "Player")
-        {
-            Collider[] colliders = Physics.OverlapSphere(attacker.transform.position, meleeRange);
-            foreach (Collider collider in colliders)
-            {
-                Vector3 directionToTarget = collider.transform.position - attacker.transform.position;
-                if (Vector3.Dot(attacker.transform.forward, directionToTarget) > 0)
-                {
-                    if (collider.CompareTag("Enemy"))
-                    {
-                        collider.gameObject.GetComponent<HealthSystem>().TakeDamage(meleeDamage);
-                    }
-                }
-            }
-        }
-        
+        simpleMelee.Melee(meleeRange,meleeDamage,attacker);
     }
 
     public void SlowingAura(GameObject emmiter,String aim,float chance)
@@ -109,10 +78,7 @@ public class AbilitesManager : MonoBehaviour
             return;
         }
 
-        GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
-        Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
-        projectileRigidbody.velocity = shootingPosition.transform.forward * projectileSpeed;
-        Destroy(projectile, projectileLifeTime);
+        simpleRange.Shoot(projectileLifeTime, projectileSpeed, shootingPosition);
 
     }
 

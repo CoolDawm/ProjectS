@@ -38,10 +38,10 @@ public class DamageUpAura :  Aura
             Collider[] colliders = Physics.OverlapSphere(emitter.transform.position, Range, LayerMask.GetMask(aim));
             if (timer <= Duration)
             {
-                emitter.GetComponent<Characteristics>().ApplyBuffAura(Effect,Power);
+                emitter.GetComponent<EffectsApplying>().ApplyBuffAura(Effect,Power);
                 foreach (Collider collider in colliders)
                 {
-                    collider.gameObject.GetComponent<Characteristics>().ApplyBuffAura(Effect,Power);
+                    collider.gameObject.GetComponent<EffectsApplying>().ApplyBuffAura(Effect,Power);
                 }
             }
             else

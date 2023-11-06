@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 925323567026633364}
   - component: {fileID: 4455849979981840896}
   - component: {fileID: 6517460809112856950}
+  - component: {fileID: 4412979941537943727}
   - component: {fileID: 7833186932951432224}
   m_Layer: 3
   m_Name: Melee_Boss_01
@@ -385,7 +386,6 @@ MonoBehaviour:
   _detectionRadius: 20
   _aggroRadius: 10
   _abilityCooldown: 0
-  _damage: 10
   _attackCooldown: 0
   abilitiesManager: {fileID: 0}
   meleeAbilityEvent:
@@ -453,6 +453,19 @@ MonoBehaviour:
   - 2
   - 5
   - 5
+--- !u!114 &4412979941537943727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3869819920990903474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea84d894aae7d1249af99ad7fa0d8ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 1
 --- !u!65 &7833186932951432224
 BoxCollider:
   m_ObjectHideFlags: 0

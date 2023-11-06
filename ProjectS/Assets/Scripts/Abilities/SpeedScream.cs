@@ -21,7 +21,7 @@ public class SpeedScream : Aura
         Collider[] colliders = Physics.OverlapSphere(emitter.transform.position, Range, LayerMask.GetMask(aim));
             foreach (Collider collider in colliders)
             {
-                collider.gameObject.GetComponent<Characteristics>().ApplyBuff(Effect, Power,Duration);
+                collider.gameObject.GetComponent<EffectsApplying>().ApplyBuff(Effect, Power,Duration);
             }
     }
 }

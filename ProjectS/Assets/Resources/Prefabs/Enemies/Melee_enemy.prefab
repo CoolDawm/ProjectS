@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 7681222419362172533}
   - component: {fileID: 1377242625499528612}
   - component: {fileID: 3487506715432808987}
+  - component: {fileID: -1102421807338258618}
   - component: {fileID: 8110108038535536094}
   m_Layer: 3
   m_Name: Melee_enemy
@@ -256,12 +257,7 @@ MonoBehaviour:
   _detectionRadius: 10
   _aggroRadius: 10
   _attackRange: 2
-  _damage: 10
   _attackCooldown: 0
-  abilitiesManager: {fileID: 0}
-  meleeAbilityEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5163095585128629162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,6 +336,19 @@ MonoBehaviour:
   - 2
   - 5
   - 5
+--- !u!114 &-1102421807338258618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901108463139392171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea84d894aae7d1249af99ad7fa0d8ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 1
 --- !u!65 &8110108038535536094
 BoxCollider:
   m_ObjectHideFlags: 0

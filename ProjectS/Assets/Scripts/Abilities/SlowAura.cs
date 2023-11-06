@@ -37,7 +37,7 @@ public class SlowAura : Aura
             {
                 foreach (Collider collider in colliders)
                 {
-                    collider.gameObject.GetComponent<Characteristics>().ApplyDebuffAura(Effect,Power);
+                    collider.gameObject.GetComponent<EffectsApplying>().ApplyDebuffAura(Effect,Power);
                 }
             }
             else

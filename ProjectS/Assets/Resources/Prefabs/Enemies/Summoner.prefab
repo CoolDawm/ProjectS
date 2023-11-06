@@ -283,6 +283,7 @@ GameObject:
   - component: {fileID: -1517283425872222285}
   - component: {fileID: 2349147665485907998}
   - component: {fileID: 6530659441740812367}
+  - component: {fileID: 8073238616506395112}
   - component: {fileID: 2196284520558805313}
   m_Layer: 3
   m_Name: Summoner
@@ -455,6 +456,19 @@ MonoBehaviour:
   - 5
   - 5
   - 6
+--- !u!114 &8073238616506395112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3431352532678410866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea84d894aae7d1249af99ad7fa0d8ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 1
 --- !u!65 &2196284520558805313
 BoxCollider:
   m_ObjectHideFlags: 0
