@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerSave : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private GameStateTransition _gameStateTransition;
     void Awake()
     {
+        _gameStateTransition = GameObject.FindGameObjectWithTag("GameStateManager").GetComponent<GameStateTransition>();
+        _gameStateTransition.destroyList.Add(this.gameObject);
+        Debug.Log(_gameStateTransition.destroyList.Count);
         DontDestroyOnLoad(this.gameObject);
     }
-
-    
 }

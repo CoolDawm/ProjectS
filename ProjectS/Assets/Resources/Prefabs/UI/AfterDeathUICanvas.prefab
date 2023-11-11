@@ -191,7 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1598057007777498680}
   - component: {fileID: 3171840066508442091}
-  - component: {fileID: 364961117739129996}
+  - component: {fileID: 3700889626554877758}
   - component: {fileID: 8907931451519178325}
   m_Layer: 0
   m_Name: Panel
@@ -230,7 +230,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2109960237647354171}
   m_CullTransparentMesh: 1
---- !u!114 &364961117739129996
+--- !u!114 &3700889626554877758
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2109960237647354171}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1895712e81752143b5dcfe30107987d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9eee7c186fa09974c8ea291649008237, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8907931451519178325
@@ -472,8 +472,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 364961117739129996}
-        m_TargetAssemblyTypeName: GameStateTransition, Assembly-CSharp
+      - m_Target: {fileID: 3700889626554877758}
+        m_TargetAssemblyTypeName: AfterDeathPanelLinksToManagers, Assembly-CSharp
         m_MethodName: ToCharacterSelector
         m_Mode: 1
         m_Arguments:
@@ -605,8 +605,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 364961117739129996}
-        m_TargetAssemblyTypeName: GameStateTransition, Assembly-CSharp
+      - m_Target: {fileID: 3700889626554877758}
+        m_TargetAssemblyTypeName: AfterDeathPanelLinksToManagers, Assembly-CSharp
         m_MethodName: QuitTheGame
         m_Mode: 1
         m_Arguments:

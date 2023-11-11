@@ -10,6 +10,7 @@ TagManager:
   - FloatingTextManager
   - AfterDeathPanel
   - DontDestroy
+  - GameStateManager
   layers:
   - Default
   - TransparentFX

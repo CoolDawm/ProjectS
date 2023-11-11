@@ -2790,7 +2790,7 @@ GameObject:
   - component: {fileID: 1624053948}
   m_Layer: 0
   m_Name: GameStateManager
-  m_TagString: Untagged
+  m_TagString: GameStateManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2822,6 +2822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1895712e81752143b5dcfe30107987d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyList: []
 --- !u!1 &1674181908
 GameObject:
   m_ObjectHideFlags: 0
@@ -3777,7 +3778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8183524883535470440, guid: 60d5c12e9e6b70c4c91188909e925f84, type: 3}
       propertyPath: m_TagString
-      value: DontDestroy
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

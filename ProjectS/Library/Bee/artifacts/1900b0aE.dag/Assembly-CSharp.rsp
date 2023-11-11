@@ -416,6 +416,7 @@
 "Assets/Scripts/Player/PotionsSystem.cs"
 "Assets/Scripts/PlayerSave.cs"
 "Assets/Scripts/TransitionToNewLevel.cs"
+"Assets/Scripts/UI/AfterDeathPanelLinksToManagers.cs"
 "Assets/Scripts/UI/FloatText.cs"
 "Assets/Scripts/UI/FloatTextManager.cs"
 "Assets/Scripts/UI/UIManager.cs"

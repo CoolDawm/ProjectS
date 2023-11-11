@@ -5,25 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class GameStateTransition : MonoBehaviour
 {
-   private GameObject[] destroyList;
-   private GameObject object1;
-   private GameObject object2;
-
-   private void Start()
-   {
-      destroyList = GameObject.FindGameObjectsWithTag("DontDestroy");
-      object1 = GameObject.FindGameObjectWithTag("FloatingTextManager");
-      object2 = GameObject.FindGameObjectWithTag("AbilitiesManager");
-   }
-   //Need to rework that by doing adding gameobjects to this list through player save script
+   public List<GameObject> destroyList = new List<GameObject>();
    public void ToCharacterSelector()
    {
       foreach (GameObject obj in destroyList)
       {
+         Debug.Log(obj.name);
          Destroy(obj);
       }
-      Destroy(object1);
-      Destroy(object2);
       SceneManager.LoadScene("CharacterSelection");
    }
    public void QuitTheGame()
