@@ -13,7 +13,6 @@ using UnityEngine.SceneManagement;
         {
             _index = PlayerPrefs.GetInt("CharacterSelected");
             _characters = new GameObject[transform.childCount];
-
             for (int i = 0; i < transform.childCount; i++)
             {
                 _characters[i] = transform.GetChild(i).gameObject;
@@ -23,10 +22,11 @@ using UnityEngine.SceneManagement;
                 go.SetActive(false);
             }
 
-            if (_characters[_index])
+            if (_index < 0 || _index >= _characters.Length) 
             {
-                _characters[_index].SetActive(true);
+                _index = 0;
             }
+            _characters[_index].SetActive(true);
         }
 
         public void SelectLeft()
@@ -44,7 +44,7 @@ using UnityEngine.SceneManagement;
         {
             _characters[_index].SetActive(false);
             _index++;
-            if (_index == _characters.Length)
+            if (_index >= _characters.Length)
             {
                 _index = 0;
             }

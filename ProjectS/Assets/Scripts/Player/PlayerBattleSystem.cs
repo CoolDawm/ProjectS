@@ -23,6 +23,7 @@ public class PlayerBattleSystem : MonoBehaviour
     void Start()
     {
         _characteristics = gameObject.GetComponent<Characteristics>();
+        abilitiesManager = GameObject.FindGameObjectWithTag("AbilitiesManager").GetComponent<AbilitesManager>();
         OnmeleeAbilityEvent += () => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _characteristics.charDic["damage"], gameObject,80);
         OnrangeAbilityEvent += () => abilitiesManager.RangeAbility(_characteristics.charDic["projectileLife"] , projectileSpeed, shootingPosition,80);
         OnaoeAbilityEvent += () => abilitiesManager.AoeAbility(_characteristics.charDic["aoeDamage"],80);

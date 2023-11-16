@@ -28,6 +28,7 @@ public class PlayerBehaviour : MonoBehaviour
     private float _currentSpeed;
     private Characteristics _characteristics;
     private GameObject _afterDeathPanel;
+    private Animator _animator;
     private void OnEnable()
     {
         _jumpControl.action.Enable();
@@ -42,7 +43,7 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void Awake()
     {
-        _controller = gameObject.GetComponent<CharacterController>();
+        _controller = gameObject.GetComponentInChildren<CharacterController>();
         _cameraMain = Camera.main.transform;
     }
     private void Start()
@@ -52,6 +53,8 @@ public class PlayerBehaviour : MonoBehaviour
         _currentStamina = 100;
         _afterDeathPanel = Resources.Load<GameObject>("Prefabs/UI/AfterDeathUICanvas");
         healthSystem.OnDeath += Die;
+        _animator = GetComponentInChildren<Animator>();
+        Debug.Log(_animator);
     }
     
     private void Update()
@@ -71,13 +74,44 @@ public class PlayerBehaviour : MonoBehaviour
         {
             _playerVelocity.y = 0f;
         }
+
+        if (_controller.isGrounded)
+        {
+            _animator.SetBool("IsGrounded",true);
+        }
+        //Roll
+        if (!isRolling && Input.GetKeyDown(KeyCode.LeftControl)&&_currentStamina>=rollCost)
+        {
+            Debug.Log("Roll");
+            _currentStamina -= rollCost;
+            StartCoroutine(Roll());
+        }
+        //Jump
+        if (_jumpControl.action.triggered && _groundedPlayer)
+        {
+            _animator.SetBool("IsGrounded",false);
+            _playerVelocity.y += Mathf.Sqrt(jumpForce * -1.0f * _gravityValue);
+        }       
+        // Changes the height position of the player.. 
+        _playerVelocity.y += _gravityValue * Time.deltaTime;
+        _controller.Move(_playerVelocity * Time.deltaTime);
+        //Movement
         Vector2 movement = _movementControl.action.ReadValue<Vector2>();
+        if (movement != Vector2.zero)
+        {
+            _animator.SetInteger("Speed",1);
+        }
+        else
+        {
+            _animator.SetInteger("Speed",0);
+        }
         Vector3 move = new Vector3(movement.x,0,movement.y);
         move = _cameraMain.forward * move.z + _cameraMain.right * move.x;
         move.y = 0f;
         if (_sprintControl.action.IsPressed()&&_currentStamina>0)
         {
             _currentSpeed = _characteristics.charDic["maxSpeed"];
+            _animator.SetInteger("Speed",2);
             //stamina spending
             _currentStamina -= Time.deltaTime*_characteristics.charDic["staminaSpendingRate"];
         }
@@ -91,26 +125,14 @@ public class PlayerBehaviour : MonoBehaviour
             }       
         }
         _controller.Move(move * Time.deltaTime * _currentSpeed);
-        if (_jumpControl.action.triggered && _groundedPlayer)
-        {
-            _playerVelocity.y += Mathf.Sqrt(jumpForce * -1.0f * _gravityValue);
-        }       
-        // Changes the height position of the player.. 
-        _playerVelocity.y += _gravityValue * Time.deltaTime;
-        _controller.Move(_playerVelocity * Time.deltaTime);
+        
         if(movement!= Vector2.zero)
         {
             float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg+_cameraMain.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
             transform.rotation = Quaternion.Lerp(transform.rotation,rotation,Time.deltaTime*rotationSpeed);
         }
-        //Roll
-        if (!isRolling && Input.GetKeyDown(KeyCode.LeftControl)&&_currentStamina>=rollCost)
-        {
-            Debug.Log("Roll");
-            _currentStamina -= rollCost;
-            StartCoroutine(Roll());
-        }
+        
     }
 
     public void Die()
