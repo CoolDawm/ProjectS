@@ -14,6 +14,7 @@ public class HealthSystem : MonoBehaviour
     public float currentShield;
     public FloatTextManager _floatingTextManager;
     public Action OnDeath;
+    public Action OnTakeDamage;
     private HealthBar _healthBar;
     private string _objectTag;
     void Start()
@@ -48,12 +49,14 @@ public class HealthSystem : MonoBehaviour
                     {
 
                         currentHealth -= (damageAmount - currentShield);
+                        OnTakeDamage?.Invoke();
                         currentShield = 0;
                     }
                 }
                 else
                 {
                     currentHealth -= damageAmount;
+                        OnTakeDamage?.Invoke();
                 }
                 _floatingTextManager.ShowFloatingNumbers(gameObject.transform,damageAmount);
                 _healthBar.UpdateHealthBar(maxHealth, currentHealth);

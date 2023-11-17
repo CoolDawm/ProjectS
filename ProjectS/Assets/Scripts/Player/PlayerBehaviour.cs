@@ -53,6 +53,7 @@ public class PlayerBehaviour : MonoBehaviour
         _currentStamina = 100;
         _afterDeathPanel = Resources.Load<GameObject>("Prefabs/UI/AfterDeathUICanvas");
         healthSystem.OnDeath += Die;
+        healthSystem.OnTakeDamage += TakeDamageAnim;
         _animator = GetComponentInChildren<Animator>();
         Debug.Log(_animator);
     }
@@ -134,14 +135,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         
     }
-
-    public void Die()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        Instantiate(_afterDeathPanel, null);
-        Destroy(gameObject);
-    }
+   
     private IEnumerator Roll()
     {
         isRolling = true;
@@ -157,5 +151,21 @@ public class PlayerBehaviour : MonoBehaviour
             yield return null;
         }
         isRolling = false;
+    }
+    public void Die()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Instantiate(_afterDeathPanel, null);
+        Destroy(gameObject);
+    }
+    //Animations Triggers
+    public void TakeDamageAnim()
+    {
+        _animator.SetTrigger("IsGetHurt");
+    }
+    public void AttackAnim(String attackTrigger)
+    {
+        _animator.SetTrigger(attackTrigger);
     }
 }

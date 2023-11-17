@@ -24,6 +24,9 @@ public class PlayerBattleSystem : MonoBehaviour
     {
         _characteristics = gameObject.GetComponent<Characteristics>();
         abilitiesManager = GameObject.FindGameObjectWithTag("AbilitiesManager").GetComponent<AbilitesManager>();
+        //Animations Trigger Subscription
+        OnmeleeAbilityEvent += () => GetComponent<PlayerBehaviour>().AttackAnim("IsMeleeMainAttack");
+        //Abilities Trigger Subscription
         OnmeleeAbilityEvent += () => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _characteristics.charDic["damage"], gameObject,80);
         OnrangeAbilityEvent += () => abilitiesManager.RangeAbility(_characteristics.charDic["projectileLife"] , projectileSpeed, shootingPosition,80);
         OnaoeAbilityEvent += () => abilitiesManager.AoeAbility(_characteristics.charDic["aoeDamage"],80);
