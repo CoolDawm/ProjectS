@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   manaCost: 0
-  AbilityImage: {fileID: 0}
+  abilityImage: {fileID: 21300000, guid: 7f79a611403ab90409fe128fe72ed134, type: 3}
   meleeDamage: 20
   meleeRange: 20

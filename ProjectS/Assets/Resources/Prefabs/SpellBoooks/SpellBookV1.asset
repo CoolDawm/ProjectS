@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4401560a9567234438cdb20769beb54c, type: 3}
+  m_Name: SpellBookV1
+  m_EditorClassIdentifier: 
+  abilities:
+  - {fileID: 11400000, guid: 9f43cd6abb0f28c4482f50325593e8b4, type: 2}
+  - {fileID: 11400000, guid: e3786cec721e1b347a054303f0b95b7a, type: 2}
+  - {fileID: 11400000, guid: a68853d423ae16144a96b90ac40d2d7b, type: 2}
+  - {fileID: 11400000, guid: 4e3d38657b630c543bbc3a107773c360, type: 2}
+  - {fileID: 11400000, guid: 99fdc35741df70845a5927b6963bf1de, type: 2}
+  - {fileID: 11400000, guid: 99ede60a082b49f4594dfadf60a60992, type: 2}
+  - {fileID: 11400000, guid: 35c1997721435ab4da542b9ed8c7c242, type: 2}
+  - {fileID: 11400000, guid: 7a4f8e6ea49dd6a419a50e5e04fb885f, type: 2}

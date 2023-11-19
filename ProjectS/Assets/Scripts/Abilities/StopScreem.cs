@@ -22,7 +22,7 @@ public class StopScreem :Aura
         foreach (Collider collider in colliders)
         {
             float tmpChar = collider.gameObject.GetComponent<Characteristics>().charDic[Effect];
-            collider.gameObject.GetComponent<EffectsApplying>().ApplyBuff(Effect, tmpChar,Duration);
+            collider.gameObject.GetComponent<EffectsApplying>().ApplyDebuff(Effect, tmpChar,Duration);
         }
     }
 }

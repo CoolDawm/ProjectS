@@ -6,7 +6,7 @@ public class Ability : ScriptableObject
 {
     public new string name;
     public float manaCost;
-    public Sprite AbilityImage;
+    public Sprite abilityImage;
     public virtual void Activate(GameObject user,CoroutineRunner coroutineRunner)
     {
         

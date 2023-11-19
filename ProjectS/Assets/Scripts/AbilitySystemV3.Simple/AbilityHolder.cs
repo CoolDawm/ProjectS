@@ -13,9 +13,13 @@ public class AbilityHolder : MonoBehaviour
         coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
     }
 
+    public List<Ability> GetAbilitiesList()
+    {
+        return abilityList;
+    }
     public void ChanageAbility(Ability ability,int place)
     {
-       
+        abilityList[place] = ability;
     }
     private void Update()
     {
