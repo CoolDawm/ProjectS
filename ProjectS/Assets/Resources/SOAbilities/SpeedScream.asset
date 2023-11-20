@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: SpeedScream
   m_EditorClassIdentifier: 
   name: 
-  manaCost: 0
+  manaCost: 20
   abilityImage: {fileID: 21300000, guid: 9f0e5f423eafd5348b8b2e5e5338d983, type: 3}
+  description: Speed Scream
   Range: 10
   Power: 15
   Duration: 5

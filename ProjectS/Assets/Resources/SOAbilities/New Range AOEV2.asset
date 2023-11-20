@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ded04549bb2e1646acbc4a419e3643e, type: 3}
   m_Name: New Range AOEV2
   m_EditorClassIdentifier: 
-  name: 
-  manaCost: 0
-  AbilityImage: {fileID: 0}
+  name: Range AOE
+  manaCost: 20
+  abilityImage: {fileID: 0}
+  description: Range AOE
   cursorPrefab: {fileID: 1973950452618818868, guid: a0cca236beded79438dd75e69b42383b, type: 3}
   areaOfEffectRadius: 10
   damage: 60

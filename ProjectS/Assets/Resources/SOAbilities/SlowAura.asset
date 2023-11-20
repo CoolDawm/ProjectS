@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: SlowAura
   m_EditorClassIdentifier: 
   name: 
-  manaCost: 0
-  AbilityImage: {fileID: 0}
+  manaCost: 20
+  abilityImage: {fileID: 0}
+  description: Slow Aura
   Range: 15
   Power: 5
   Duration: 10

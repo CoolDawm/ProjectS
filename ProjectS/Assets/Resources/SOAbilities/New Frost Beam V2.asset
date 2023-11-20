@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: New Frost Beam V2
   m_EditorClassIdentifier: 
   name: 
-  manaCost: 0
-  AbilityImage: {fileID: 0}
-  damagePerSecond: 0.5
+  manaCost: 15
+  abilityImage: {fileID: 0}
+  description: Frost Beam
+  damagePerSecond: 0.2
   duration: 5
   beamRange: 20
   aim: Enemy

@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: New Neg Screem
   m_EditorClassIdentifier: 
   name: 
-  manaCost: 0
-  AbilityImage: {fileID: 0}
+  manaCost: 20
+  abilityImage: {fileID: 0}
+  description: Slow Scream
   Range: 20
   Power: 1000
   Duration: 5

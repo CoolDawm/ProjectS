@@ -12,6 +12,7 @@ TagManager:
   - DontDestroy
   - GameStateManager
   - CoroutineRunner
+  - PlayerHUD
   layers:
   - Default
   - TransparentFX

@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: DamageUp
   m_EditorClassIdentifier: 
   name: 
-  manaCost: 0
+  manaCost: 20
   abilityImage: {fileID: 21300000, guid: 84b658920c084b143a22592045f57a82, type: 3}
+  description: Damage Up Aura
   Range: 15
   Power: 5
   Duration: 10
