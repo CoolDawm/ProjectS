@@ -23,10 +23,14 @@ public class HUDManager : MonoBehaviour
         {
             if (_spellBook.activeSelf)
             {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 _spellBook.SetActive(false);
             }
             else
             {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 _spellBook.SetActive(true);
             }
         }
@@ -45,10 +49,14 @@ public class HUDManager : MonoBehaviour
         {
             if (_character.activeSelf)
             {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 _character.SetActive(false);
             }
             else
             {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 _character.SetActive(true);
             }
         }
@@ -56,10 +64,14 @@ public class HUDManager : MonoBehaviour
         {
             if (_inventory.activeSelf)
             {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 _inventory.SetActive(false);
             }
             else
             {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 _inventory.SetActive(true);
             }
         }

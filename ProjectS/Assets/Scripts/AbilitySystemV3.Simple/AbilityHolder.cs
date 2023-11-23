@@ -17,9 +17,11 @@ public class AbilityHolder : MonoBehaviour
     {
         return abilityList;
     }
-    public void ChanageAbility(Ability ability,int place)
+    public void ChangeAbility(Ability ability,int place)
     {
+        Debug.Log(abilityList[place].name);
         abilityList[place] = ability;
+        Debug.Log(abilityList[place].name);
     }
     private void Update()
     {

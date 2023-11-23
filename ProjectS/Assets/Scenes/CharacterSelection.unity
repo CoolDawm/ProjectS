@@ -139,14 +139,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -2.2
       objectReference: {fileID: 0}
-    - target: {fileID: 1540835891184200056, guid: 6533495dd2d85bf4a9d5e9974313f03b, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -102
-      objectReference: {fileID: 0}
-    - target: {fileID: 3605228011479730963, guid: 6533495dd2d85bf4a9d5e9974313f03b, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -101
-      objectReference: {fileID: 0}
     - target: {fileID: 4547305457832948801, guid: 6533495dd2d85bf4a9d5e9974313f03b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -174,10 +166,6 @@ PrefabInstance:
     - target: {fileID: 4547305457832948801, guid: 6533495dd2d85bf4a9d5e9974313f03b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714739582767338924, guid: 6533495dd2d85bf4a9d5e9974313f03b, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 187
       objectReference: {fileID: 0}
     - target: {fileID: 6709482617158823994, guid: 6533495dd2d85bf4a9d5e9974313f03b, type: 3}
       propertyPath: m_Color.a
