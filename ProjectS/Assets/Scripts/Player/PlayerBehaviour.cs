@@ -100,11 +100,11 @@ public class PlayerBehaviour : MonoBehaviour
         Vector2 movement = _movementControl.action.ReadValue<Vector2>();
         if (movement != Vector2.zero)
         {
-            _animator.SetInteger("Speed",1);
+            _animator.SetFloat("Speed", 0.5f);
         }
         else
         {
-            _animator.SetInteger("Speed",0);
+            _animator.SetFloat("Speed", 0);
         }
         Vector3 move = new Vector3(movement.x,0,movement.y);
         move = _cameraMain.forward * move.z + _cameraMain.right * move.x;
@@ -112,7 +112,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (_sprintControl.action.IsPressed()&&_currentStamina>0)
         {
             _currentSpeed = _characteristics.charDic["maxSpeed"];
-            _animator.SetInteger("Speed",2);
+            _animator.SetFloat("Speed", 1);
             //stamina spending
             _currentStamina -= Time.deltaTime*_characteristics.charDic["staminaSpendingRate"];
         }
@@ -126,14 +126,12 @@ public class PlayerBehaviour : MonoBehaviour
             }       
         }
         _controller.Move(move * Time.deltaTime * _currentSpeed);
-        
         if(movement!= Vector2.zero)
         {
             float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg+_cameraMain.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
             transform.rotation = Quaternion.Lerp(transform.rotation,rotation,Time.deltaTime*rotationSpeed);
         }
-        
     }
    
     private IEnumerator Roll()
