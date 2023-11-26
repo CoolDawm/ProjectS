@@ -14,6 +14,16 @@ public class BarSlot : MonoBehaviour,IDropHandler
     }
     public void OnDrop(PointerEventData eventData)
     {
+        Transform spell = gameObject.transform.Find("Spell");
+        if (spell != null)
+        {
+            Destroy(spell.gameObject);
+            isEmpty = true;
+        }
+        if (spell == null)
+        {
+            isEmpty = true;
+        }
         if (isEmpty)
         {
             GameObject dropped = eventData.pointerDrag;
@@ -23,15 +33,5 @@ public class BarSlot : MonoBehaviour,IDropHandler
             _abilitiesbBar.abilityHolder.ChangeAbility(ability,slotNumber);
             isEmpty = false;
         }
-        else
-        {
-            Destroy(gameObject.transform.Find("Spell").gameObject);
-            GameObject dropped = eventData.pointerDrag;
-            DragableItem dragableItem = dropped.GetComponent<DragableItem>();
-            dragableItem.parentAfterDrag = transform;
-            Ability ability = dragableItem.ability;
-            _abilitiesbBar.abilityHolder.ChangeAbility(ability,slotNumber);
-        }
-       
     }
 }
