@@ -8,10 +8,12 @@ public class AbilityHolder : MonoBehaviour
     private Characteristics _characteristics;
     private CoroutineRunner _coroutineRunner;
     private float _currentMana;
+    private PlayerBehaviour _playerBehaviour;
     private void Start()
     {
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
         _currentMana = 100;
+        _playerBehaviour=GetComponent<PlayerBehaviour>();
     }
     private void GenerateMana(float mana)
     {
@@ -36,6 +38,7 @@ public class AbilityHolder : MonoBehaviour
         {
             GenerateMana(10);
             abilityList[0].Activate(gameObject,_coroutineRunner);
+           _playerBehaviour.AttackAnim("IsMeleeMainAttack");
         }
         //FrostBeam
         if (Input.GetMouseButtonDown(1)&& _currentMana >= abilityList[1].manaCost )

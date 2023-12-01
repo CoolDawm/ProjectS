@@ -11,7 +11,8 @@ public class PlayerBehaviour : MonoBehaviour
     public float rotationSpeed = 4f;
     public float jumpForce = 0.5f;
     public bool isRolling;
-    public float rollDistance = 5f;
+    public float rollSpeed = 10f;
+    public float rollDistance = 0.5f;
     public float rollCost = 5f;
     [SerializeField]
     private InputActionReference _movementControl;
@@ -60,8 +61,7 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void Update()
     { 
-        // Movement handling with movement speed
-        MovePlayer();                         
+        MovePlayer();
     }
    
     private void MovePlayer()
@@ -70,7 +70,7 @@ public class PlayerBehaviour : MonoBehaviour
         {
             _cameraMain = Camera.main.transform;
         }
-        _groundedPlayer = _controller.isGrounded;
+        _groundedPlayer = IsGrounded();
         if (_groundedPlayer && _playerVelocity.y < 0)
         {
             _playerVelocity.y = 0f;
@@ -84,6 +84,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (!isRolling && Input.GetKeyDown(KeyCode.LeftControl)&&_currentStamina>=rollCost)
         {
             Debug.Log("Roll");
+            
             _currentStamina -= rollCost;
             StartCoroutine(Roll());
         }
@@ -100,7 +101,24 @@ public class PlayerBehaviour : MonoBehaviour
         Vector2 movement = _movementControl.action.ReadValue<Vector2>();
         if (movement != Vector2.zero)
         {
-            _animator.SetFloat("Speed", 0.5f);
+            
+            if (_sprintControl.action.IsPressed()&&_currentStamina>0)
+            {
+                _currentSpeed = _characteristics.charDic["maxSpeed"];
+                _animator.SetFloat("Speed", 1);
+                //stamina spending
+                _currentStamina -= Time.deltaTime*_characteristics.charDic["staminaSpendingRate"];
+            }
+            else
+            {
+                _currentSpeed = _characteristics.charDic["movementSpeed"];
+                _animator.SetFloat("Speed", 0.5f);
+                //Stamina recovery
+                if (_currentStamina < _characteristics.charDic["stamina"])
+                {
+                    _currentStamina += Time.deltaTime * _characteristics.charDic["staminaRecoveryRate"];
+                }       
+            }
         }
         else
         {
@@ -109,23 +127,10 @@ public class PlayerBehaviour : MonoBehaviour
         Vector3 move = new Vector3(movement.x,0,movement.y);
         move = _cameraMain.forward * move.z + _cameraMain.right * move.x;
         move.y = 0f;
-        if (_sprintControl.action.IsPressed()&&_currentStamina>0)
+        if (!isRolling)
         {
-            _currentSpeed = _characteristics.charDic["maxSpeed"];
-            _animator.SetFloat("Speed", 1);
-            //stamina spending
-            _currentStamina -= Time.deltaTime*_characteristics.charDic["staminaSpendingRate"];
+            _controller.Move(move * Time.deltaTime * _currentSpeed);
         }
-        else
-        {
-            _currentSpeed = _characteristics.charDic["movementSpeed"];
-            //Stamina recovery
-            if (_currentStamina < _characteristics.charDic["stamina"])
-            {
-                _currentStamina += Time.deltaTime * _characteristics.charDic["staminaRecoveryRate"];
-            }       
-        }
-        _controller.Move(move * Time.deltaTime * _currentSpeed);
         if(movement!= Vector2.zero)
         {
             float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg+_cameraMain.eulerAngles.y;
@@ -137,18 +142,25 @@ public class PlayerBehaviour : MonoBehaviour
     private IEnumerator Roll()
     {
         isRolling = true;
+        if (_animator.GetFloat("Speed") == 0)
+        {
+            _animator.SetFloat("DashSpeed", 0.5f);
+        }
+        else
+        {
+            _animator.SetFloat("DashSpeed", _animator.GetFloat("Speed"));
+        }
         Vector3 dashDirection = transform.forward;
-        Vector3 dashEndPosition = transform.position + dashDirection * rollDistance;
-        Vector3 startPosition = transform.position;
         float elapsedTime = 0f;
         while (elapsedTime < rollDistance)
         {
             float t = elapsedTime / rollDistance;
-            transform.position = Vector3.Lerp(startPosition, dashEndPosition, t);
-            elapsedTime += Time.deltaTime*15;
+            _controller.Move(dashDirection * Time.deltaTime * rollSpeed); 
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
         isRolling = false;
+        _animator.SetFloat("DashSpeed", 0);
     }
     public void Die()
     {
@@ -156,6 +168,21 @@ public class PlayerBehaviour : MonoBehaviour
         Cursor.visible = true;
         Instantiate(_afterDeathPanel, null);
         Destroy(gameObject);
+    }
+    private bool IsGrounded()
+    {
+        float rayDistance = 0.15f; // расстояние, на которое будет выпущен луч
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, rayDistance))
+        {
+            if (hit.collider != null && hit.collider.tag == "Ground") 
+            {
+                Debug.DrawRay(transform.position, Vector3.down,Color.magenta);
+                return true;
+            }
+        }
+        
+        return false;
     }
     //Animations Triggers
     public void TakeDamageAnim()

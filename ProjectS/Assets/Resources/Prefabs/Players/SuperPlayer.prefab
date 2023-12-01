@@ -1833,7 +1833,8 @@ MonoBehaviour:
   rotationSpeed: 4
   jumpForce: 5
   isRolling: 0
-  rollDistance: 5
+  rollSpeed: 10
+  rollDistance: 0.5
   rollCost: 5
   _movementControl: {fileID: -3932271724807136565, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _jumpControl: {fileID: 1133799795342885305, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}

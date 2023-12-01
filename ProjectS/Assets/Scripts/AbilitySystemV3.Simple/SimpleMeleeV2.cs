@@ -10,7 +10,6 @@ public class SimpleMeleeV2 : Ability
     public string aim;
     public override void Activate(GameObject user, CoroutineRunner coroutineRunner)
     {
-
         Collider[] colliders = Physics.OverlapSphere(user.transform.position, meleeRange);
         foreach (Collider collider in colliders)
         {

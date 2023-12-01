@@ -13,6 +13,7 @@ TagManager:
   - GameStateManager
   - CoroutineRunner
   - PlayerHUD
+  - Ground
   layers:
   - Default
   - TransparentFX
