@@ -7,7 +7,7 @@ public class BarSlot : MonoBehaviour,IDropHandler
 {
     public int slotNumber;
     private AbilitiesbBar _abilitiesbBar;
-    private bool isEmpty = true;
+    private bool isEmpty = false;
     void Start()
     {
         _abilitiesbBar = GetComponentInParent<AbilitiesbBar>();
@@ -22,6 +22,7 @@ public class BarSlot : MonoBehaviour,IDropHandler
         }
         if (spell == null)
         {
+            //probably didnt  seethe object NEED TO FIX
             isEmpty = true;
         }
         if (isEmpty)
@@ -33,6 +34,7 @@ public class BarSlot : MonoBehaviour,IDropHandler
             _abilitiesbBar.abilityHolder.ChangeAbility(ability,slotNumber);
             _abilitiesbBar.BarUpdate();
             isEmpty = false;
+            Debug.Log(gameObject.transform.childCount);
         }
     }
 }

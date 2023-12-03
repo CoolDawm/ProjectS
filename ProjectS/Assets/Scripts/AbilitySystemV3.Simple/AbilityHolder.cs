@@ -37,34 +37,45 @@ public class AbilityHolder : MonoBehaviour
             return;
         }
         //MainMelee
-        if(Input.GetMouseButtonDown(0)&&Time.time > timers[0] + abilityList[0].cooldown)
+        if(Input.GetMouseButtonDown(0)&&timers[0] <= 0)
         {
             GenerateMana(10);
             abilityList[0].Activate(gameObject,_coroutineRunner);
            _playerBehaviour.AttackAnim("IsMeleeMainAttack");
-           timers[0] = Time.time;
+           timers[0] =abilityList[0].cooldown;
         }
         //FrostBeam
-        if (Input.GetMouseButtonDown(1)&& _currentMana >= abilityList[1].manaCost && Time.time > timers[1] + abilityList[1].cooldown )
+        if (Input.GetMouseButtonDown(1)&& _currentMana >= abilityList[1].manaCost && timers[1] <= 0 )
         {
             _currentMana-=abilityList[1].manaCost;
             abilityList[1].Activate(gameObject,_coroutineRunner);
-            timers[1] = Time.time;
+            timers[1] = abilityList[1].cooldown;
         }
 
         //RangeProjectile
-        if (Input.GetKeyDown(KeyCode.Alpha1)&& _currentMana >= abilityList[2].manaCost && Time.time > timers[2] + abilityList[2].cooldown)
+        if (Input.GetKeyDown(KeyCode.Alpha1)&& _currentMana >= abilityList[2].manaCost && timers[2] <= 0)
         {
             _currentMana-=abilityList[2].manaCost; 
             abilityList[2].Activate(gameObject,_coroutineRunner);
-            timers[2] = Time.time;
+            timers[2] = abilityList[2].cooldown;
         }
         //RangeAoe
-        if (Input.GetKeyDown(KeyCode.Alpha2)&& _currentMana >= abilityList[3].manaCost && Time.time > timers[3] + abilityList[3].cooldown)
+        if (Input.GetKeyDown(KeyCode.Alpha2)&& _currentMana >= abilityList[3].manaCost && timers[3] <= 0)
         {
             _currentMana-=abilityList[3].manaCost;
             abilityList[3].Activate(gameObject,_coroutineRunner);
-            timers[3] = Time.time;
+            timers[3] = abilityList[3].cooldown;
+        }
+        for (int i = 0; i < timers.Length; i++)
+        {
+            if (timers[i] > 0)
+            {
+                timers[i] -= Time.deltaTime;
+            }
+            else
+            {
+                timers[i] = 0;
+            }
         }
     }
 }

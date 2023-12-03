@@ -7,46 +7,64 @@ using UnityEngine.UI;
 
 public class AbilitiesbBar : MonoBehaviour
 {
-   [HideInInspector]public AbilityHolder abilityHolder;
-   private float[] _timers;
-   private List<float> _cooldowns=new List<float>();
+    [HideInInspector] public AbilityHolder abilityHolder;
+    private float[] _timers;
     public List<GameObject> _spells;
+
     void Start()
     {
         abilityHolder = GameObject.FindWithTag("Player").GetComponent<AbilityHolder>();
         _timers = abilityHolder.timers;
-        BarUpdate();
+        //BarUpdate();
     }
 
     private void Update()
     {
-        if(Time.time>_timers[0] +  _cooldowns[0])
+        if (!CheckForChild())
         {
-            _spells[0].GetComponentInChildren<Image>().color=Color.red;
-        } 
-        if (Time.time > _timers[1] + _cooldowns[1])
-        {
-            _spells[1].GetComponentInChildren<Image>().color=Color.red;
+            return;
         }
 
-        if (Time.time > _timers[2] + _cooldowns[2])
+        for (int i = 0; i < _timers.Length; i++)
         {
-            _spells[2].GetComponentInChildren<Image>().color=Color.red;
-        }
+            Image img = _spells[i].transform.GetChild(0).gameObject.GetComponent<Image>();
 
-        if (Time.time > _timers[3] + _cooldowns[3])
-        {
-            _spells[3].GetComponentInChildren<Image>().color=Color.red;
+            if (_timers[i] > 0)
+            {
+                img.color = Color.red;
+            }
+            else
+            {
+                _timers[i] = 0;
+                img.color = Color.green;
+            }
         }
     }
 
     public void BarUpdate()
     {
         var abList = abilityHolder.GetAbilitiesList();
-        for (int i=0; i < _spells.Count; i++)
+        for (int i = 0; i < _spells.Count; i++)
         {
-            _spells[i].GetComponentInChildren<Image>().sprite = abList[i].abilityImage;
-            _cooldowns.Add(abList[i].cooldown);
+            _spells[i].GetComponent<Image>().sprite = abList[i].abilityImage;
         }
+    }
+
+    private bool CheckForChild()
+    {
+        bool check = false;
+        for (int i = 0; i < _spells.Count; i++)
+        {
+            if (_spells[i].transform.childCount!=0)
+            {
+                check = true;
+            }
+            else
+            {
+                check = false;
+            }
+            
+        }
+        return check;
     }
 }
