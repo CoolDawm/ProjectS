@@ -31,6 +31,7 @@ public class BarSlot : MonoBehaviour,IDropHandler
             dragableItem.parentAfterDrag = transform;
             Ability ability = dragableItem.ability;
             _abilitiesbBar.abilityHolder.ChangeAbility(ability,slotNumber);
+            _abilitiesbBar.BarUpdate();
             isEmpty = false;
         }
     }

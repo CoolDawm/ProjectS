@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   manaCost: 20
+  cooldown: 3
   abilityImage: {fileID: 0}
   description: Slow Scream
   Range: 20

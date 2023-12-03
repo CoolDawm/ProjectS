@@ -440,6 +440,7 @@
 "Assets/Scripts/UI/SpellManagement/AbilitiesbBar.cs"
 "Assets/Scripts/UI/SpellManagement/BarSlot.cs"
 "Assets/Scripts/UI/SpellManagement/DragableItem.cs"
+"Assets/Scripts/UI/SpellManagement/SkillCooldownShow.cs"
 "Assets/Scripts/UI/SpellManagement/SpellBookShow.cs"
 "Assets/Scripts/UI/UIManager.cs"
 "Assets/Scripts/Utilities.cs"

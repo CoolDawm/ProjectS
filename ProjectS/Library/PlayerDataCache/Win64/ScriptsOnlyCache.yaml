@@ -45,6 +45,7 @@ ScriptsOnlyBuild:
     - AbilitiesbBar
     - AbilityHolder
     - AddPlayerToCamera
+    - AfterDeathPanelLinksToManagers
     - BarSlot
     - CameraMovement
     - CharacterPanel
@@ -123,6 +124,8 @@ ScriptsOnlyBuild:
     - UnityEngine.InputSystem.InputActionAsset
     - UnityEngine.InputSystem.InputActionReference
     Unity.InputSystem.dll:
+    - UnityEngine.InputSystem.Editor.InputActionAssetEditor
+    - UnityEngine.InputSystem.Editor.InputActionImporterEditor
     - UnityEngine.InputSystem.InputActionAsset
     - UnityEngine.InputSystem.InputActionReference
     - UnityEngine.InputSystem.InputSettings
@@ -136,7 +139,6 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnimatorStateTransitionInspector
     - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
@@ -1843,7 +1845,7 @@ ScriptsOnlyBuild:
     className: SimpleMelee
   - hash:
       serializedVersion: 2
-      Hash: 7a7d85f98e04e3402fe69ec5b54f2454
+      Hash: 0317166c4e1254220e10dfd3b4a730be
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: PlayerBehaviour

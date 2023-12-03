@@ -521,12 +521,13 @@ MonoBehaviour:
   rotationSpeed: 4
   jumpForce: 5
   isRolling: 0
-  rollTime: 1
+  rollSpeed: 10
   rollDistance: 2
   rollCost: 5
   _movementControl: {fileID: -3932271724807136565, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _jumpControl: {fileID: 1133799795342885305, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _sprintControl: {fileID: 8500305945049028988, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
+  _rollControl: {fileID: -2358325575279042230, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
 --- !u!114 &5133367393820096902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,7 +600,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0.85, z: 0}
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!65 &8891623661130091572
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -620,7 +621,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.5, y: 1.7303302, z: 0.48776525}
-  m_Center: {x: 0, y: 0.86894524, z: 0.007440597}
+  m_Center: {x: 0, y: 0.9, z: 0.007440597}
 --- !u!1 &1403527195674742191
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,8 @@ public class PlayerBehaviour : MonoBehaviour
     private InputActionReference _jumpControl;
     [SerializeField]
     private InputActionReference _sprintControl;
+    [SerializeField]
+    private InputActionReference _rollControl;
     private float _currentStamina;
     private Transform _cameraMain;  
     private CharacterController _controller;
@@ -30,17 +32,20 @@ public class PlayerBehaviour : MonoBehaviour
     private Characteristics _characteristics;
     private GameObject _afterDeathPanel;
     private Animator _animator;
+    private Vector2 _movement; 
     private void OnEnable()
     {
         _jumpControl.action.Enable();
         _movementControl.action.Enable();
         _sprintControl.action.Enable();
+        _rollControl.action.Enable();
     }
     private void OnDisable()
     {
         _jumpControl.action.Disable();
         _movementControl.action.Disable();
         _sprintControl.action.Disable();
+        _rollControl.action.Disable();
     }
     private void Awake()
     {
@@ -81,10 +86,9 @@ public class PlayerBehaviour : MonoBehaviour
             _animator.SetBool("IsGrounded",true);
         }
         //Roll
-        if (!isRolling && Input.GetKeyDown(KeyCode.LeftControl)&&_currentStamina>=rollCost)
+        if ( _rollControl.action.triggered &&!isRolling&&_currentStamina>=rollCost)
         {
             Debug.Log("Roll");
-            
             _currentStamina -= rollCost;
             StartCoroutine(Roll());
         }
@@ -98,8 +102,11 @@ public class PlayerBehaviour : MonoBehaviour
         _playerVelocity.y += _gravityValue * Time.deltaTime;
         _controller.Move(_playerVelocity * Time.deltaTime);
         //Movement
-        Vector2 movement = _movementControl.action.ReadValue<Vector2>();
-        if (movement != Vector2.zero)
+        if (_movementControl.action.triggered)
+        {
+            _movement = _movementControl.action.ReadValue<Vector2>();
+        }
+        if (_movement != Vector2.zero)
         {
             
             if (_sprintControl.action.IsPressed()&&_currentStamina>0)
@@ -124,16 +131,16 @@ public class PlayerBehaviour : MonoBehaviour
         {
             _animator.SetFloat("Speed", 0);
         }
-        Vector3 move = new Vector3(movement.x,0,movement.y);
+        Vector3 move = new Vector3(_movement.x,0,_movement.y);
         move = _cameraMain.forward * move.z + _cameraMain.right * move.x;
         move.y = 0f;
         if (!isRolling)
         {
             _controller.Move(move * Time.deltaTime * _currentSpeed);
         }
-        if(movement!= Vector2.zero)
+        if(_movement!= Vector2.zero)
         {
-            float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg+_cameraMain.eulerAngles.y;
+            float targetAngle = Mathf.Atan2(_movement.x, _movement.y) * Mathf.Rad2Deg+_cameraMain.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
             transform.rotation = Quaternion.Lerp(transform.rotation,rotation,Time.deltaTime*rotationSpeed);
         }
@@ -171,7 +178,7 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private bool IsGrounded()
     {
-        float rayDistance = 0.15f; // расстояние, на которое будет выпущен луч
+        float rayDistance = 0.1f; // расстояние, на которое будет выпущен луч
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, rayDistance))
         {

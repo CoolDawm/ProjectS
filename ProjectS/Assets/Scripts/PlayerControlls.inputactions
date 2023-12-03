@@ -15,6 +15,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Roll",
+                    "type": "Button",
+                    "id": "9ae4a081-b727-41af-a682-59699a968a94",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Movement",
                     "type": "PassThrough",
                     "id": "4eac2642-dac2-4fa7-b064-7c4c3b490717",
@@ -36,15 +45,6 @@
                     "name": "Sprint",
                     "type": "Button",
                     "id": "f7508cf9-e3c8-40a3-a08c-80322e793871",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Roll",
-                    "type": "Button",
-                    "id": "9ae4a081-b727-41af-a682-59699a968a94",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -133,7 +133,7 @@
                     "name": "",
                     "id": "c9e0899c-ecaa-4d5e-bbd4-4c724cfd828e",
                     "path": "<Keyboard>/leftShift",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "",
                     "action": "Sprint",
@@ -142,7 +142,7 @@
                 },
                 {
                     "name": "",
-                    "id": "bbc4aafc-32c5-4c52-bece-3e8fd262625d",
+                    "id": "ac1e3fb1-c10a-480c-b05c-d057d5fd90ee",
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",

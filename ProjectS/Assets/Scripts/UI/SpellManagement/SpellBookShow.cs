@@ -25,6 +25,7 @@ public class SpellBookShow : MonoBehaviour
         for (int i = 0; i < abPanels.Count; i++)
         {
             abPanels[i].transform.Find("SpellSlot").GetComponentInChildren<Image>().sprite = _spellBook.abilities[i].abilityImage;
+            abPanels[i].transform.Find("SpellSlot").GetComponentInChildren<Image>().type = Image.Type.Filled;
             abPanels[i].transform.Find("Description").GetComponent<Text>().text = _spellBook.abilities[i].description;
             abPanels[i].transform.Find("Cost").GetComponent<Text>().text = _spellBook.abilities[i].manaCost.ToString();
             abPanels[i].GetComponentInChildren<DragableItem>().ability = _spellBook.abilities[i];
