@@ -14,6 +14,10 @@ public class PlayerBehaviour : MonoBehaviour
     public float rollSpeed = 10f;
     public float rollDistance = 0.5f;
     public float rollCost = 5f;
+    [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
+    public float Gravity = -15.0f;
+    [Tooltip("The height the player can jump")]
+    public float JumpHeight = 1.2f;
     [SerializeField]
     private InputActionReference _movementControl;
     [SerializeField]
@@ -27,12 +31,14 @@ public class PlayerBehaviour : MonoBehaviour
     private CharacterController _controller;
     private Vector3 _playerVelocity;
     private bool _groundedPlayer;
-    private float _gravityValue = -25f;
+    private float _terminalVelocity = 53.0f;
+    private float _verticalVelocity;
     private float _currentSpeed;
     private Characteristics _characteristics;
     private GameObject _afterDeathPanel;
     private Animator _animator;
-    private Vector2 _movement; 
+    private Vector2 _movement;
+    private Rigidbody _rigidbody;
     private void OnEnable()
     {
         _jumpControl.action.Enable();
@@ -54,6 +60,7 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void Start()
     {
+        _rigidbody = GetComponent<Rigidbody>();
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics = gameObject.GetComponent<Characteristics>();
         _currentStamina = 100;
@@ -67,6 +74,7 @@ public class PlayerBehaviour : MonoBehaviour
     private void Update()
     { 
         MovePlayer();
+        JumpAndGravity();
     }
    
     private void MovePlayer()
@@ -93,14 +101,14 @@ public class PlayerBehaviour : MonoBehaviour
             StartCoroutine(Roll());
         }
         //Jump
-        if (_jumpControl.action.triggered && _groundedPlayer)
+       /* if (_jumpControl.action.triggered && _groundedPlayer)
         {
             _animator.SetBool("IsGrounded",false);
             _playerVelocity.y += Mathf.Sqrt(jumpForce * -1.0f * _gravityValue);
-        }       
+        }      */ 
         // Changes the height position of the player.. 
-        _playerVelocity.y += _gravityValue * Time.deltaTime;
-        _controller.Move(_playerVelocity * Time.deltaTime);
+       // _playerVelocity.y += _gravityValue * Time.deltaTime;
+        //_controller.Move(_playerVelocity * Time.deltaTime);
         //Movement
         if (_movementControl.action.triggered)
         {
@@ -136,7 +144,8 @@ public class PlayerBehaviour : MonoBehaviour
         move.y = 0f;
         if (!isRolling)
         {
-            _controller.Move(move * Time.deltaTime * _currentSpeed);
+            _controller.Move(move *  (_currentSpeed  * Time.deltaTime)+
+                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
         }
         if(_movement!= Vector2.zero)
         {
@@ -191,6 +200,35 @@ public class PlayerBehaviour : MonoBehaviour
         
         return false;
     }
+     private void JumpAndGravity()
+        {
+            if (_groundedPlayer)
+            {
+               
+                _animator.SetBool("IsGrounded",true);
+                // stop our velocity dropping infinitely when grounded
+                if (_verticalVelocity < 0.0f)
+                {
+                    _verticalVelocity = -2f;
+                }
+
+                // Jump
+                if (_jumpControl.action.triggered)
+                {
+                    // the square root of H * -2 * G = how much velocity needed to reach desired height
+                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                        _animator.SetBool("IsGrounded",false);
+                }
+
+               
+            }
+           
+            // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
+            if (_verticalVelocity < _terminalVelocity)
+            {
+                _verticalVelocity += Gravity * Time.deltaTime;
+            }
+        }
     //Animations Triggers
     public void TakeDamageAnim()
     {
