@@ -34,11 +34,14 @@ public class PlayerBehaviour : MonoBehaviour
     private float _terminalVelocity = 53.0f;
     private float _verticalVelocity;
     private float _currentSpeed;
+    private float _previousBlend;
+    private float _previousSpeed = 0;
+    private float smoothness = 2f;
+    private float _animBlend;
     private Characteristics _characteristics;
     private GameObject _afterDeathPanel;
     private Animator _animator;
     private Vector2 _movement;
-    private Rigidbody _rigidbody;
     private void OnEnable()
     {
         _jumpControl.action.Enable();
@@ -60,7 +63,6 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void Start()
     {
-        _rigidbody = GetComponent<Rigidbody>();
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics = gameObject.GetComponent<Characteristics>();
         _currentStamina = 100;
@@ -100,44 +102,38 @@ public class PlayerBehaviour : MonoBehaviour
             _currentStamina -= rollCost;
             StartCoroutine(Roll());
         }
-        //Jump
-       /* if (_jumpControl.action.triggered && _groundedPlayer)
-        {
-            _animator.SetBool("IsGrounded",false);
-            _playerVelocity.y += Mathf.Sqrt(jumpForce * -1.0f * _gravityValue);
-        }      */ 
-        // Changes the height position of the player.. 
-       // _playerVelocity.y += _gravityValue * Time.deltaTime;
-        //_controller.Move(_playerVelocity * Time.deltaTime);
-        //Movement
         if (_movementControl.action.triggered)
         {
             _movement = _movementControl.action.ReadValue<Vector2>();
         }
         if (_movement != Vector2.zero)
         {
-            
             if (_sprintControl.action.IsPressed()&&_currentStamina>0)
             {
-                _currentSpeed = _characteristics.charDic["maxSpeed"];
-                _animator.SetFloat("Speed", 1);
                 //stamina spending
+                _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.charDic["maxSpeed"], Time.deltaTime * smoothness);
+                _animBlend =1f;
                 _currentStamina -= Time.deltaTime*_characteristics.charDic["staminaSpendingRate"];
             }
             else
             {
-                _currentSpeed = _characteristics.charDic["movementSpeed"];
-                _animator.SetFloat("Speed", 0.5f);
+                _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.charDic["movementSpeed"], Time.deltaTime * smoothness);
+                _animBlend =0.5f;
                 //Stamina recovery
                 if (_currentStamina < _characteristics.charDic["stamina"])
                 {
                     _currentStamina += Time.deltaTime * _characteristics.charDic["staminaRecoveryRate"];
                 }       
             }
+            _animator.SetFloat("Speed", Mathf.Lerp(_previousBlend, _animBlend, Time.deltaTime * (smoothness+2)));
+            _previousBlend = _animator.GetFloat("Speed");
+            _previousSpeed = _currentSpeed;
         }
         else
         {
-            _animator.SetFloat("Speed", 0);
+            _animator.SetFloat("Speed", Mathf.Lerp(_previousBlend, 0, Time.deltaTime ));
+            _previousBlend = _animator.GetFloat("Speed");
+            _currentSpeed = 0;
         }
         Vector3 move = new Vector3(_movement.x,0,_movement.y);
         move = _cameraMain.forward * move.z + _cameraMain.right * move.x;
