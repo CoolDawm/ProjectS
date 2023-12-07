@@ -33,7 +33,7 @@ public class HealthSystem : MonoBehaviour
     {
         if (_objectTag == "Player")
         {
-            if (gameObject.GetComponent<PlayerBehaviour>().isRolling)
+            if (gameObject.GetComponent<PlayerBehaviour>().skill.isWorking)
             {
                 _floatingTextManager.ShowFloatingText(gameObject.transform,"Dodge");
             }

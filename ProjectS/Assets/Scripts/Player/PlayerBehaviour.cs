@@ -9,11 +9,7 @@ using UnityEngine.Serialization;
 public class PlayerBehaviour : MonoBehaviour
 {
     public float rotationSpeed = 4f;
-    public float jumpForce = 0.5f;
-    public bool isRolling;
-    public float rollSpeed = 10f;
-    public float rollDistance = 0.5f;
-    public float rollCost = 5f;
+    public Skill skill;
     [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
     public float Gravity = -15.0f;
     [Tooltip("The height the player can jump")]
@@ -38,6 +34,7 @@ public class PlayerBehaviour : MonoBehaviour
     private float _previousSpeed = 0;
     private float smoothness = 2f;
     private float _animBlend;
+    private CoroutineRunner _coroutineRunner;
     private Characteristics _characteristics;
     private GameObject _afterDeathPanel;
     private Animator _animator;
@@ -65,6 +62,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics = gameObject.GetComponent<Characteristics>();
+        _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
         _currentStamina = 100;
         _afterDeathPanel = Resources.Load<GameObject>("Prefabs/UI/AfterDeathUICanvas");
         healthSystem.OnDeath += Die;
@@ -91,16 +89,28 @@ public class PlayerBehaviour : MonoBehaviour
             _playerVelocity.y = 0f;
         }
 
+        if (!skill.isWorking)
+        {
+            _animator.SetFloat("DashSpeed", 0);
+        }
         if (_controller.isGrounded)
         {
             _animator.SetBool("IsGrounded",true);
         }
         //Roll
-        if ( _rollControl.action.triggered &&!isRolling&&_currentStamina>=rollCost)
+        if ( _rollControl.action.triggered &&!skill.isWorking&&_currentStamina>= skill.staminaCost)
         {
+            if (_animator.GetFloat("Speed") == 0)
+            {
+                _animator.SetFloat("DashSpeed", 0.5f);
+            }
+            else
+            {
+                _animator.SetFloat("DashSpeed", _animator.GetFloat("Speed"));
+            }
+            skill.Activate(gameObject,_coroutineRunner);
             Debug.Log("Roll");
-            _currentStamina -= rollCost;
-            StartCoroutine(Roll());
+            _currentStamina -= skill.staminaCost;
         }
         if (_movementControl.action.triggered)
         {
@@ -138,41 +148,17 @@ public class PlayerBehaviour : MonoBehaviour
         Vector3 move = new Vector3(_movement.x,0,_movement.y);
         move = _cameraMain.forward * move.z + _cameraMain.right * move.x;
         move.y = 0f;
-        if (!isRolling)
+        if (!skill.isWorking)
         {
             _controller.Move(move *  (_currentSpeed  * Time.deltaTime)+
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
         }
-        if(_movement!= Vector2.zero)
+        if(_movement!= Vector2.zero&&!skill.isWorking)
         {
             float targetAngle = Mathf.Atan2(_movement.x, _movement.y) * Mathf.Rad2Deg+_cameraMain.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
             transform.rotation = Quaternion.Lerp(transform.rotation,rotation,Time.deltaTime*rotationSpeed);
         }
-    }
-   
-    private IEnumerator Roll()
-    {
-        isRolling = true;
-        if (_animator.GetFloat("Speed") == 0)
-        {
-            _animator.SetFloat("DashSpeed", 0.5f);
-        }
-        else
-        {
-            _animator.SetFloat("DashSpeed", _animator.GetFloat("Speed"));
-        }
-        Vector3 dashDirection = transform.forward;
-        float elapsedTime = 0f;
-        while (elapsedTime < rollDistance)
-        {
-            float t = elapsedTime / rollDistance;
-            _controller.Move(dashDirection * Time.deltaTime * rollSpeed); 
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        isRolling = false;
-        _animator.SetFloat("DashSpeed", 0);
     }
     public void Die()
     {

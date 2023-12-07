@@ -519,11 +519,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 4
-  jumpForce: 5
-  isRolling: 0
-  rollSpeed: 10
-  rollDistance: 2
-  rollCost: 5
+  skill: {fileID: 11400000, guid: 3f7f3521d2f40f846b1ec399b26ee6d6, type: 2}
+  Gravity: -15
+  JumpHeight: 1.2
   _movementControl: {fileID: -3932271724807136565, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _jumpControl: {fileID: 1133799795342885305, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _sprintControl: {fileID: 8500305945049028988, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
