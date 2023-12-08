@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class Dash : Skill
 {
-    public float rollSpeed = 10f;
-    public float rollDistance = 0.5f;
+    public float dashSpeed = 10f;
+    public float dashDistance = 0.5f;
     public override void Activate(GameObject user, CoroutineRunner coroutineRunner)
     {
         coroutineRunner.StartCoroutineFunction(Dashing(user));
@@ -14,17 +14,23 @@ public class Dash : Skill
     private IEnumerator Dashing(GameObject user)
     {
         isWorking = true;
-        Vector3 dashDirection = user.transform.forward;
-        float elapsedTime = 0f;
-        while (elapsedTime < rollDistance)
+        CharacterController controller = user.GetComponent<CharacterController>();
+        Vector3 startPos = user.transform.position;
+        Vector3 dashDir = user.transform.forward; 
+        float remainingDistance = dashDistance;
+        float currentSpeed = dashSpeed;
+        while (remainingDistance > 0)
         {
-            float t = elapsedTime / rollDistance;
-            user.GetComponent<CharacterController>().Move(dashDirection * Time.deltaTime * rollSpeed); 
-            elapsedTime += Time.deltaTime;
+            float moveDistance = currentSpeed * Time.deltaTime;
+            if (moveDistance > remainingDistance)
+            {
+                moveDistance = remainingDistance;
+            }
+            controller.Move(dashDir * moveDistance);
+            remainingDistance -= moveDistance;
             yield return null;
         }
-
-        yield return new WaitForSeconds(workingTime);
+        yield return new WaitForSeconds(0.1f);
         isWorking = false;
     }
 }

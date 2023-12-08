@@ -20,8 +20,16 @@ public class HealthSystem : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        _healthBar = gameObject.GetComponentInChildren<HealthBar>();
+        
         _objectTag = gameObject.tag;
+        if (_objectTag == "Player")
+        {
+            _healthBar = GameObject.FindWithTag("PlayerHUD").GetComponent<HealthBar>();
+        }
+        else
+        {
+            _healthBar = gameObject.GetComponentInChildren<HealthBar>();
+        }
         _floatingTextManager = GameObject.FindGameObjectWithTag("FloatingTextManager").GetComponent<FloatTextManager>();
     }
     public void IncreaseCurrentHealth(float hp) {

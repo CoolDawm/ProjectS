@@ -19,5 +19,5 @@ MonoBehaviour:
   description: 
   isWorking: 0
   workingTime: 0
-  rollSpeed: 10
-  rollDistance: 0.5
+  dashSpeed: 10
+  dashDistance: 5

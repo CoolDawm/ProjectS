@@ -100,17 +100,18 @@ public class PlayerBehaviour : MonoBehaviour
         //Roll
         if ( _rollControl.action.triggered &&!skill.isWorking&&_currentStamina>= skill.staminaCost)
         {
-            if (_animator.GetFloat("Speed") == 0)
-            {
-                _animator.SetFloat("DashSpeed", 0.5f);
-            }
-            else
-            {
-                _animator.SetFloat("DashSpeed", _animator.GetFloat("Speed"));
-            }
             skill.Activate(gameObject,_coroutineRunner);
             Debug.Log("Roll");
             _currentStamina -= skill.staminaCost;
+        }
+
+        if (skill.isWorking)
+        {
+            _animator.SetFloat("DashSpeed", 1);
+        }
+        else
+        {
+            _animator.SetFloat("DashSpeed", 0);
         }
         if (_movementControl.action.triggered)
         {

@@ -16,7 +16,6 @@ public class HUDManager : MonoBehaviour
         _map = transform.Find("Map").gameObject;
         _character = transform.Find("Character").gameObject;
         _inventory = transform.Find("Inventory").gameObject;
-        gameObject.SetActive(GameObject.FindWithTag("Player"));
     }
     void Update()
     {
