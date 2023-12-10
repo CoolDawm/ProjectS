@@ -8,7 +8,7 @@ public class DragableItem : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDra
 {
     [HideInInspector]public Transform parentAfterDrag;
     public Ability ability;
-    private Transform startPosition;
+    public Transform startPosition;
     public Image image;
     private bool inSpellBook = true;
     public void OnBeginDrag(PointerEventData eventData)

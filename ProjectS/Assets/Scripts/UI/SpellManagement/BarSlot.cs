@@ -8,27 +8,25 @@ public class BarSlot : MonoBehaviour,IDropHandler
     public int slotNumber;
     private AbilitiesbBar _abilitiesbBar;
     private bool isEmpty = false;
+    private GameObject spell;
+    private bool excTriggered;
     void Start()
     {
         _abilitiesbBar = GetComponentInParent<AbilitiesbBar>();
     }
     public void OnDrop(PointerEventData eventData)
     {
-        Transform spell = gameObject.transform.Find("Spell");
+        GameObject dropped = eventData.pointerDrag;
+        DragableItem dragableItem = dropped.GetComponent<DragableItem>();
         if (spell != null)
         {
-            Destroy(spell.gameObject);
-            isEmpty = true;
+            spell.transform.SetParent(dragableItem.startPosition);
+            spell = null;
+            Debug.Log(spell);
         }
         if (spell == null)
         {
-            //probably didnt  seethe object NEED TO FIX
-            isEmpty = true;
-        }
-        if (isEmpty)
-        {
-            GameObject dropped = eventData.pointerDrag;
-            DragableItem dragableItem = dropped.GetComponent<DragableItem>();
+            spell = dropped;
             dragableItem.parentAfterDrag = transform;
             Ability ability = dragableItem.ability;
             _abilitiesbBar.abilityHolder.ChangeAbility(ability,slotNumber);
