@@ -881,6 +881,37 @@ Transform:
   - {fileID: 3718090405759886547}
   m_Father: {fileID: 8812761141084885408}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2673371133078475397
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5206320603972259287}
+  m_Layer: 0
+  m_Name: PointToLookForCamera
+  m_TagString: PointToLook
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5206320603972259287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2673371133078475397}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.282, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7134312928909823840}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2817833587748521862
 GameObject:
   m_ObjectHideFlags: 0
@@ -1507,6 +1538,7 @@ Transform:
   - {fileID: 4161403803612928369}
   - {fileID: 5760690322270927341}
   - {fileID: 6176693297179596270}
+  - {fileID: 5206320603972259287}
   m_Father: {fileID: 3167065107138033337}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2359501661588022433
@@ -1601,14 +1633,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14aef505bd3ff8d4f9139151b0faa31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 4
-  skill: {fileID: 11400000, guid: 3f7f3521d2f40f846b1ec399b26ee6d6, type: 2}
   Gravity: -15
   JumpHeight: 1.2
   _movementControl: {fileID: -3932271724807136565, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _jumpControl: {fileID: 1133799795342885305, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _sprintControl: {fileID: 8500305945049028988, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _rollControl: {fileID: -2358325575279042230, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
+  rotationSpeed: 4
+  skill: {fileID: 11400000, guid: 3f7f3521d2f40f846b1ec399b26ee6d6, type: 2}
 --- !u!114 &3654999214970853337
 MonoBehaviour:
   m_ObjectHideFlags: 0

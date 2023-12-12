@@ -10,7 +10,7 @@ using UnityEngine;
         // Start is called before the first frame update
         void Start()
         {
-            _player=GameObject.FindGameObjectWithTag("Player");
+            _player=GameObject.FindGameObjectWithTag("PointToLook");
             GetComponent<CinemachineFreeLook>().Follow = _player.transform;
             GetComponent<CinemachineFreeLook>().LookAt = _player.transform;
         }
