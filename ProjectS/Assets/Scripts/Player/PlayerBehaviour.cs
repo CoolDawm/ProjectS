@@ -73,8 +73,8 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void Update()
     {
-        MovePlayer();
         JumpAndGravity();
+        MovePlayer();
     }
 
     private void MovePlayer()
@@ -83,23 +83,10 @@ public class PlayerBehaviour : MonoBehaviour
         {
             _cameraMain = Camera.main.transform;
         }
-
-        _groundedPlayer = IsGrounded();
-        if (_groundedPlayer && _playerVelocity.y < 0)
-        {
-            _playerVelocity.y = 0f;
-        }
-
         if (!skill.isWorking)
         {
             _animator.SetFloat("DashSpeed", 0);
         }
-
-        if (_controller.isGrounded)
-        {
-            _animator.SetBool("IsGrounded", true);
-        }
-
         //Roll
         if (_rollControl.action.triggered && !skill.isWorking && _currentStamina >= skill.staminaCost)
         {
@@ -188,20 +175,22 @@ public class PlayerBehaviour : MonoBehaviour
         {
             if (hit.collider != null && hit.collider.CompareTag("Ground"))
             {
+                Debug.Log("Beb");
                 Debug.DrawRay(transform.position, Vector3.down, Color.magenta);
+                _animator.SetBool("IsGrounded", true);
                 return true;
             }
         }
-
+        _animator.SetBool("IsGrounded", false);
         return false;
     }
 
     private void JumpAndGravity()
     {
-        if (_groundedPlayer)
+        if (IsGrounded())
         {
 
-            _animator.SetBool("IsGrounded", true);
+            
             // stop  velocity dropping infinitely when grounded
             if (_verticalVelocity < 0.0f)
             {
@@ -213,7 +202,6 @@ public class PlayerBehaviour : MonoBehaviour
             {
                 // the square root of H * -2 * G = how much velocity needed to reach desired height
                 _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-                _animator.SetBool("IsGrounded", false);
             }
 
 
