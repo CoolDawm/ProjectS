@@ -115,14 +115,14 @@ public class PlayerBehaviour : MonoBehaviour
             {
                 //stamina spending
                 _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.charDic["maxSpeed"],
-                    Time.deltaTime * _smoothness);
+                    Time.deltaTime );
                 _animBlend = 1f;
                 _currentStamina -= Time.deltaTime * _characteristics.charDic["staminaSpendingRate"];
             }
             else
             {
                 _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.charDic["movementSpeed"],
-                    Time.deltaTime * _smoothness);
+                    Time.deltaTime);
                 _animBlend = 0.5f;
                 //Stamina recovery
                 if (_currentStamina < _characteristics.charDic["stamina"])
