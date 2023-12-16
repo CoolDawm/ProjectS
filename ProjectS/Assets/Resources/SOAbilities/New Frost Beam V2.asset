@@ -17,6 +17,7 @@ MonoBehaviour:
   cooldown: 3
   abilityImage: {fileID: 0}
   description: Frost Beam
+  animName: RangeA
   damagePerSecond: 0.2
   duration: 5
   beamRange: 20

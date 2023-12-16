@@ -11,7 +11,7 @@ public class PlayerBehaviour : MonoBehaviour
     [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
     public float Gravity = -15.0f;
     [Tooltip("The height the player can jump")]
-    public float JumpHeight = 1.2f;
+    public float JumpHeight = 1.8f;
     [SerializeField] private InputActionReference _movementControl;
     [SerializeField] private InputActionReference _jumpControl;
     [SerializeField] private InputActionReference _sprintControl;

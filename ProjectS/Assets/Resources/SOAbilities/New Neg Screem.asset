@@ -17,6 +17,7 @@ MonoBehaviour:
   cooldown: 3
   abilityImage: {fileID: 0}
   description: Slow Scream
+  animName: AuraA
   Range: 20
   Power: 1000
   Duration: 5
