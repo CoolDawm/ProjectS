@@ -175,7 +175,6 @@ public class PlayerBehaviour : MonoBehaviour
         {
             if (hit.collider != null && hit.collider.CompareTag("Ground"))
             {
-                Debug.Log("Beb");
                 Debug.DrawRay(transform.position, Vector3.down, Color.magenta);
                 _animator.SetBool("IsGrounded", true);
                 return true;
