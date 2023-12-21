@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ee59693ca15af4899c16f94505a542, type: 3}
   m_Name: New Simple Melee V2
   m_EditorClassIdentifier: 
-  name: 
+  name: Melee
   manaCost: 0
   cooldown: 1
   abilityImage: {fileID: 21300000, guid: 7f79a611403ab90409fe128fe72ed134, type: 3}

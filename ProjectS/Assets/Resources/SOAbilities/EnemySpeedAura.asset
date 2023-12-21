@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08af68b7fd7f34648b25346e466dec54, type: 3}
   m_Name: EnemySpeedAura
   m_EditorClassIdentifier: 
-  name: 
+  name: SpAura
   manaCost: 0
   cooldown: 3
   abilityImage: {fileID: 0}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c9f46985e04b947a64017505ac27b7, type: 3}
   m_Name: DamageUp
   m_EditorClassIdentifier: 
-  name: 
+  name: DamageUP
   manaCost: 20
   cooldown: 3
   abilityImage: {fileID: 21300000, guid: 84b658920c084b143a22592045f57a82, type: 3}

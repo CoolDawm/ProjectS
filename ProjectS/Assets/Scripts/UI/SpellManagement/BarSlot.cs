@@ -6,9 +6,8 @@ using UnityEngine.EventSystems;
 public class BarSlot : MonoBehaviour,IDropHandler
 {
     public int slotNumber;
+    public GameObject spell;
     private AbilitiesbBar _abilitiesbBar;
-    private bool isEmpty = false;
-    private GameObject spell;
     private bool excTriggered;
     void Start()
     {
@@ -18,21 +17,25 @@ public class BarSlot : MonoBehaviour,IDropHandler
     {
         GameObject dropped = eventData.pointerDrag;
         DragableItem dragableItem = dropped.GetComponent<DragableItem>();
-        if (spell != null)
+        if (dragableItem.inSpellBook)
         {
-            spell.transform.SetParent(dragableItem.startPosition);
-            spell = null;
-            Debug.Log(spell);
-        }
-        if (spell == null)
-        {
+            Destroy(spell);
             spell = dropped;
             dragableItem.parentAfterDrag = transform;
             Ability ability = dragableItem.ability;
             _abilitiesbBar.abilityHolder.ChangeAbility(ability,slotNumber);
             _abilitiesbBar.BarUpdate();
-            isEmpty = false;
-            Debug.Log(gameObject.transform.childCount);
+        }
+        else
+        {
+            spell.transform.SetParent(dragableItem.startPosition);
+            GameObject tmpSlot=spell.transform.parent.gameObject;
+            tmpSlot.GetComponent<BarSlot>()._abilitiesbBar.abilityHolder.ChangeAbility(spell.GetComponent<DragableItem>().ability,tmpSlot.GetComponent<BarSlot>().slotNumber);
+            spell = dropped;
+            dragableItem.parentAfterDrag = transform;
+            Ability ability = dragableItem.ability;
+            _abilitiesbBar.abilityHolder.ChangeAbility(ability,slotNumber);
+            _abilitiesbBar.BarUpdate();
         }
     }
 }

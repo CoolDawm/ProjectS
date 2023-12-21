@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 082c636aa7ea1364f87a3cafd6ffa18d, type: 3}
   m_Name: New Frost Beam V2
   m_EditorClassIdentifier: 
-  name: 
+  name: FBeam
   manaCost: 15
   cooldown: 3
   abilityImage: {fileID: 0}

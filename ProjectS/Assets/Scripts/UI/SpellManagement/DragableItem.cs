@@ -10,15 +10,20 @@ public class DragableItem : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDra
     public Ability ability;
     public Transform startPosition;
     public Image image;
-    private bool inSpellBook = true;
+    public bool inSpellBook = true;
     public void OnBeginDrag(PointerEventData eventData)
     {
         startPosition = transform.parent;
         parentAfterDrag = transform.parent;
-        if (inSpellBook)
+        if (gameObject.transform.parent.CompareTag("BarSlot"))
         {
-            GameObject newObject = Instantiate(gameObject, parentAfterDrag);
-            inSpellBook = !inSpellBook;
+            inSpellBook = false;
+            Debug.Log("+++++++++++++");
+        }
+        else if (gameObject.transform.parent.CompareTag("SpellSlot"))
+        {
+            GameObject newObject = Instantiate(gameObject, startPosition);
+            Debug.Log("-------------------------");
         }
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();

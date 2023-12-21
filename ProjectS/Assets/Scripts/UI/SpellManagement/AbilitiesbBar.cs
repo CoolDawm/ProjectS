@@ -8,13 +8,23 @@ using UnityEngine.UI;
 public class AbilitiesbBar : MonoBehaviour
 {
     [HideInInspector] public AbilityHolder abilityHolder;
-    private float[] _timers;
     public List<GameObject> _spells;
-
+    private float[] _timers;
+    private bool spellExist;
+    
     void Start()
     {
+        GameObject spellSlot = Resources.Load<GameObject>("Prefabs/UI/Spell");
         abilityHolder = GameObject.FindWithTag("Player").GetComponent<AbilityHolder>();
         _timers = abilityHolder.timers;
+        List<Ability> abilityList=abilityHolder.GetAbilitiesList();
+        for (int i = 0; i < abilityList.Count; i++)
+        {
+            GameObject spell = Instantiate(spellSlot, _spells[i].transform);
+            _spells[i].GetComponent<BarSlot>().spell=spell;
+            Debug.Log(_spells[i].GetComponent<BarSlot>().spell);
+            spell.GetComponent<DragableItem>().ability = abilityList[i];
+        }
         //BarUpdate();
     }
 
@@ -27,17 +37,30 @@ public class AbilitiesbBar : MonoBehaviour
 
         for (int i = 0; i < _timers.Length; i++)
         {
-            Image img = _spells[i].transform.GetChild(0).gameObject.GetComponent<Image>();
+            spellExist = true;
+            try
+            {
+                Image img = _spells[i].transform.GetChild(0).gameObject.GetComponent<Image>();
+            }
+            catch (Exception e)
+            {
+                spellExist = false;
+            }
 
-            if (_timers[i] > 0)
+            if (spellExist)
             {
-                img.color = Color.red;
+                Image img = _spells[i].transform.GetChild(0).gameObject.GetComponent<Image>();
+                if (_timers[i] > 0)
+                {
+                    img.color = Color.red;
+                }
+                else
+                {
+                    _timers[i] = 0;
+                    img.color = Color.green;
+                }
             }
-            else
-            {
-                _timers[i] = 0;
-                img.color = Color.green;
-            }
+           
         }
     }
 

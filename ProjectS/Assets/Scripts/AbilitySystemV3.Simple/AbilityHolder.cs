@@ -18,6 +18,10 @@ public class AbilityHolder : MonoBehaviour
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
         _currentMana = 100;
         _playerBehaviour = GetComponent<PlayerBehaviour>();
+        for (int i = 0; i < abilityList.Count; i++)
+        {
+            Debug.Log(abilityList[i].name);
+        }
     }
 
     private void GenerateMana(float mana)
@@ -33,6 +37,10 @@ public class AbilityHolder : MonoBehaviour
     public void ChangeAbility(Ability ability, int place)
     {
         abilityList[place] = ability;
+        for (int i = 0; i < abilityList.Count; i++)
+        {
+            Debug.Log(abilityList[i].name);
+        }
     }
 
     private void Update()

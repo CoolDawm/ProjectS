@@ -47,7 +47,6 @@ public class Turret : MonoBehaviour
         foreach (Transform child in obj)
         {
             Vector3 shootingDirection = child.position - obj.position;
-            Debug.Log(child.name);
             GameObject projectile = Instantiate(projectilePrefab, child.position, Quaternion.identity);
             Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
             projectileRigidbody.velocity = shootingDirection.normalized * projectileSpeed;
