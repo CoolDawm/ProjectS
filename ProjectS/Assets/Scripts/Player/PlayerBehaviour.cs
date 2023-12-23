@@ -35,7 +35,7 @@ public class PlayerBehaviour : MonoBehaviour
     private GameObject _afterDeathPanel;
     private Animator _animator;
     private Vector2 _movement;
-
+    private float _fallDistance=0;
     private void OnEnable()
     {
         _jumpControl.action.Enable();
@@ -177,6 +177,7 @@ public class PlayerBehaviour : MonoBehaviour
             {
                 Debug.DrawRay(transform.position, Vector3.down, Color.magenta);
                 _animator.SetBool("IsGrounded", true);
+                _fallDistance = 0f;
                 return true;
             }
         }
@@ -188,24 +189,40 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (IsGrounded())
         {
-
             
+            _animator.SetBool("IsFalling",false);
             // stop  velocity dropping infinitely when grounded
             if (_verticalVelocity < 0.0f)
             {
                 _verticalVelocity = -2f;
             }
-
             // Jump
             if (_jumpControl.action.triggered)
             {
+                //_animator.SetBool("IsJumping",true);
+                _animator.SetTrigger("Jump");
                 // the square root of H * -2 * G = how much velocity needed to reach desired height
                 _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
             }
-
-
         }
-
+        else
+        {
+            if (_fallDistance > 1.5f)
+            {
+                _animator.SetBool("IsFalling", true);
+                //_animator.SetBool("IsJumping", false);
+            }
+            else
+            {
+                _animator.SetBool("IsFalling", false);
+                //_animator.SetBool("IsJumping", false);
+            }
+        }
+        // calculate fall distance
+        if (_verticalVelocity < 0)
+        {
+            _fallDistance += Mathf.Abs(_verticalVelocity) * Time.deltaTime;
+        }
         // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
         if (_verticalVelocity < _terminalVelocity)
         {
