@@ -20,7 +20,7 @@
                     "id": "9ae4a081-b727-41af-a682-59699a968a94",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press",
+                    "interactions": "Hold",
                     "initialStateCheck": true
                 },
                 {
@@ -133,7 +133,7 @@
                     "name": "",
                     "id": "c9e0899c-ecaa-4d5e-bbd4-4c724cfd828e",
                     "path": "<Keyboard>/leftShift",
-                    "interactions": "Hold",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "Sprint",

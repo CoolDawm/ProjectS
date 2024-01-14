@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1449ceadbed33664aa102a103138dfe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectionRadius: 13
+  _detectionRadius: 15
   _aggroRadius: 15
   agent: {fileID: 0}
   range: 10

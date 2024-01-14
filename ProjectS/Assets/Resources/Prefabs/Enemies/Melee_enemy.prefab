@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d99b6cc1995e2154d87bd7dde0ffdc15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectionRadius: 10
+  _detectionRadius: 13
   _aggroRadius: 10
   agent: {fileID: 0}
   range: 10

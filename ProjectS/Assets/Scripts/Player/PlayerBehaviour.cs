@@ -37,6 +37,8 @@ public class PlayerBehaviour : MonoBehaviour
     private Animator _animator;
     private Vector2 _movement;
     private float _fallDistance=0;
+    private int dashAmount = 2;
+    private float dashTimer = 0;
     private void OnEnable()
     {
         _jumpControl.action.Enable();
@@ -77,6 +79,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         JumpAndGravity();
         MovePlayer();
+        DashRegen();
     }
 
     private void MovePlayer()
@@ -89,12 +92,13 @@ public class PlayerBehaviour : MonoBehaviour
         {
             _animator.SetFloat("DashSpeed", 0);
         }
-        //Roll
-        if (_rollControl.action.triggered && !skill.isWorking && _currentStamina >= skill.staminaCost)
+        //Skill
+        if (_sprintControl.action.triggered&& !skill.isWorking && _currentStamina >= skill.staminaCost&&dashAmount>0)
         {
             skill.Activate(gameObject, _coroutineRunner);
-            Debug.Log("Roll");
+            Debug.Log("Skill");
             _currentStamina -= skill.staminaCost;
+            dashAmount--;
         }
 
         if (skill.isWorking)
@@ -113,7 +117,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (_movement != Vector2.zero)
         {
-            if (_sprintControl.action.IsPressed() && _currentStamina > 0)
+            if (_rollControl.action.IsPressed()  && _currentStamina > 0)
             {
                 _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.secondCharDic["MovementSpeed"],
                     Time.deltaTime*_smoothness);
@@ -127,7 +131,7 @@ public class PlayerBehaviour : MonoBehaviour
             else
             {
                 //stamina spending
-                _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.secondCharDic["MovementSpeed"]+5f,
+                _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.secondCharDic["MovementSpeed"]+3f,
                     Time.deltaTime *_smoothness);
                 _animBlend = 1f;
                 _currentStamina -= Time.deltaTime * 1;
@@ -194,6 +198,15 @@ public class PlayerBehaviour : MonoBehaviour
         return false;
     }
 
+    private void DashRegen()
+    {
+        dashTimer += Time.deltaTime;
+        if (dashTimer >= 5f && dashAmount < 2)
+        {
+            dashAmount++;
+            dashTimer = 0;
+        }
+    }
     private void JumpAndGravity()
     {
         if (IsGrounded())

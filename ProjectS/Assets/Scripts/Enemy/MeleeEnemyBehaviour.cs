@@ -61,7 +61,6 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     public override void Patrool()
     {
         changePositionTimer += Time.deltaTime;
-        Debug.Log(changePositionTimer);
         if (changePositionTimer >= 6f)
         {
             if(agent.remainingDistance <= agent.stoppingDistance) //done with path
