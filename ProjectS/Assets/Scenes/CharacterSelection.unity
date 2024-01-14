@@ -579,6 +579,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1706612796965834128, guid: 0892617a014d0aa4ca0545fbe4ae816e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1735685955511321767, guid: 0892617a014d0aa4ca0545fbe4ae816e, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -624,6 +628,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2920131797154488843, guid: 0892617a014d0aa4ca0545fbe4ae816e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2963068969225420584, guid: 0892617a014d0aa4ca0545fbe4ae816e, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -719,6 +727,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4380455165953809333, guid: 0892617a014d0aa4ca0545fbe4ae816e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4427083640686944025, guid: 0892617a014d0aa4ca0545fbe4ae816e, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -751,7 +763,15 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5761590839277447821, guid: 0892617a014d0aa4ca0545fbe4ae816e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5830835257653523040, guid: 0892617a014d0aa4ca0545fbe4ae816e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274274094697434771, guid: 0892617a014d0aa4ca0545fbe4ae816e, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}

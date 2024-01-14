@@ -426,7 +426,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 1
 --- !u!114 &6517460809112856950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,19 +439,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dirKeys:
-  - maxSpeed
-  - damage
-  - stamina
-  - attackRange
-  - projectileLife
-  - movementSpeed
+  - Strength
+  - Agility
+  - Recovery
+  - Endurance
+  - Intellect
   dirValues:
-  - 10
-  - 15
-  - 100
-  - 2
+  - 7
   - 5
-  - 5
+  - 3
+  - 8
+  - 4
 --- !u!114 &4412979941537943727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,6 +584,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBarSprite: {fileID: 8962127255867457079}
   _shieldBarSprite: {fileID: 4587722184481945407}
+  _staminaBarSprite: {fileID: 0}
 --- !u!114 &1660645915993057205
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField] private InputActionReference _jumpControl;
     [SerializeField] private InputActionReference _sprintControl;
     [SerializeField] private InputActionReference _rollControl;
-    public float rotationSpeed = 4f;
+    public float rotationSpeed = 6f;
     public Skill skill;
     private float _currentStamina;
     private Transform _cameraMain;
@@ -32,6 +32,7 @@ public class PlayerBehaviour : MonoBehaviour
     private float _animBlend;
     private CoroutineRunner _coroutineRunner;
     private Characteristics _characteristics;
+    private HealthBar _healthBar;
     private GameObject _afterDeathPanel;
     private Animator _animator;
     private Vector2 _movement;
@@ -61,6 +62,7 @@ public class PlayerBehaviour : MonoBehaviour
     private void Start()
     {
         HealthSystem healthSystem = GetComponent<HealthSystem>();
+        _healthBar=GameObject.FindWithTag("PlayerHUD").GetComponent<HealthBar>();
         _characteristics = gameObject.GetComponent<Characteristics>();
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
         _currentStamina = 100;
@@ -113,35 +115,41 @@ public class PlayerBehaviour : MonoBehaviour
         {
             if (_sprintControl.action.IsPressed() && _currentStamina > 0)
             {
-                //stamina spending
-                _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.charDic["maxSpeed"],
-                    Time.deltaTime );
-                _animBlend = 1f;
-                _currentStamina -= Time.deltaTime * _characteristics.charDic["staminaSpendingRate"];
+                _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.secondCharDic["MovementSpeed"],
+                    Time.deltaTime*_smoothness);
+                _animBlend = 0.5f;
+                //Stamina recovery
+                if (_currentStamina < 100)
+                {
+                    _currentStamina += Time.deltaTime * _characteristics.secondCharDic["StaminaRegen"];
+                }
             }
             else
             {
-                _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.charDic["movementSpeed"],
-                    Time.deltaTime);
-                _animBlend = 0.5f;
-                //Stamina recovery
-                if (_currentStamina < _characteristics.charDic["stamina"])
-                {
-                    _currentStamina += Time.deltaTime * _characteristics.charDic["staminaRecoveryRate"];
-                }
+                //stamina spending
+                _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.secondCharDic["MovementSpeed"]+5f,
+                    Time.deltaTime *_smoothness);
+                _animBlend = 1f;
+                _currentStamina -= Time.deltaTime * 1;
             }
-
             _animator.SetFloat("Speed", Mathf.Lerp(_previousBlend, _animBlend, Time.deltaTime * (_smoothness + 2)));
             _previousBlend = _animator.GetFloat("Speed");
             _previousSpeed = _currentSpeed;
+
         }
         else
         {
             _animator.SetFloat("Speed", Mathf.Lerp(_previousBlend, 0, Time.deltaTime));
             _previousBlend = _animator.GetFloat("Speed");
             _currentSpeed = 0;
+            //Stamina recovery
+            if (_currentStamina < 100)
+            {
+                _currentStamina += Time.deltaTime * _characteristics.secondCharDic["StaminaRegen"];
+            }
         }
-
+        _healthBar.UpdateStaminaBar(100,_currentStamina);
+        
         Vector3 move = new Vector3(_movement.x, 0, _movement.y);
         move = _cameraMain.forward * move.z + _cameraMain.right * move.x;
         move.y = 0f;
@@ -157,6 +165,7 @@ public class PlayerBehaviour : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
         }
+       
     }
 
     public void Die()
@@ -207,7 +216,20 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-            if (_fallDistance > 1.5f)
+            float rayDistance = 0.5f;
+            bool isFalling=true;
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, rayDistance))
+            {
+                if (hit.collider != null && hit.collider.CompareTag("Ground"))
+                {
+                    Debug.DrawRay(transform.position, Vector3.down, Color.green);
+                    isFalling=false;
+                }
+               
+                    
+            }   
+            if (_fallDistance > 2f && isFalling==true)
             {
                 _animator.SetBool("IsFalling", true);
                 //_animator.SetBool("IsJumping", false);

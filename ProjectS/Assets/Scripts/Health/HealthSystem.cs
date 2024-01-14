@@ -39,6 +39,8 @@ public class HealthSystem : MonoBehaviour
     }
     public void TakeDamage(float damageAmount)
     {
+        float defense = GetComponent<Characteristics>().secondCharDic["Defense"];
+        damageAmount -= defense * 0.3f;
         if (_objectTag == "Player")
         {
             if (gameObject.GetComponent<PlayerBehaviour>().skill.isWorking)

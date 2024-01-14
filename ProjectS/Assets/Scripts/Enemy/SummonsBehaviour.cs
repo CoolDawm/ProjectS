@@ -40,7 +40,7 @@ public class SummonsBehaviour : EnemyBehaviour
         else
         {
             _isAggro = false;
-            ChasePlayer();
+            Patrool();
         }
     }
 
@@ -58,6 +58,25 @@ public class SummonsBehaviour : EnemyBehaviour
         _player.GetComponent<HealthSystem>().TakeDamage(_characteristics.charDic["damage"]);
         Die();
         Debug.Log("Boom");
+    }
+    public override void Patrool()
+    {
+        changePositionTimer += Time.deltaTime;
+        Debug.Log(changePositionTimer);
+        if (changePositionTimer >= 6f)
+        {
+            if(agent.remainingDistance <= agent.stoppingDistance) //done with path
+            {
+                Vector3 point;
+                if (RandomPoint(transform.position, range, out point)) //pass in our centre point and radius of area
+                {
+                    Debug.DrawRay(point, Vector3.up, Color.red, 5f); //gizmos
+                    agent.SetDestination(point);
+                    changePositionTimer = 0f;
+                }
+            }
+        }
+        
     }
     public override void Die()
     {

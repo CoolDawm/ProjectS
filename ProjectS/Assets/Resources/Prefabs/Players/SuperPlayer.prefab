@@ -1587,27 +1587,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dirKeys:
-  - maxSpeed
-  - damage
-  - stamina
-  - maxMana
-  - meleeRange
-  - projectileLife
-  - movementSpeed
-  - staminaRecoveryRate
-  - staminaSpendingRate
-  - aoeDamage
+  - Strength
+  - Agility
+  - Recovery
+  - Endurance
+  - Intellect
   dirValues:
   - 10
-  - 15
   - 10
-  - 100
-  - 2
-  - 5
-  - 5
-  - 1
-  - 1
-  - 30
+  - 10
+  - 10
+  - 10
 --- !u!114 &4382166578379730316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1634,12 +1624,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Gravity: -15
-  JumpHeight: 1.2
+  JumpHeight: 1.8
   _movementControl: {fileID: -3932271724807136565, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _jumpControl: {fileID: 1133799795342885305, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _sprintControl: {fileID: 8500305945049028988, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
   _rollControl: {fileID: -2358325575279042230, guid: 6f2018ee0c79a8446aeb994aa96001dd, type: 3}
-  rotationSpeed: 4
+  rotationSpeed: 6
   skill: {fileID: 11400000, guid: 3f7f3521d2f40f846b1ec399b26ee6d6, type: 2}
 --- !u!114 &3654999214970853337
 MonoBehaviour:

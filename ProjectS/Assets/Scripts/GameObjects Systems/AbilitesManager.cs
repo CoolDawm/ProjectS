@@ -11,7 +11,7 @@ public class AbilitesManager : MonoBehaviour
     public SlowAura slowAura;
     public DamageUpAura damageUpAura;
     public SpeedScream speedScream;
-    public RangeAOE rangeAoe;
+    
     public FrostBeam frostBeam;
     public SimpleMelee simpleMelee;
     public SimpleRange simpleRange;
@@ -25,7 +25,6 @@ public class AbilitesManager : MonoBehaviour
         slowAura=GetComponent<SlowAura>();
         damageUpAura=GetComponent<DamageUpAura>();
         speedScream=GetComponent<SpeedScream>();
-        rangeAoe=GetComponent<RangeAOE>();
         frostBeam=GetComponent<FrostBeam>();
     }
     public void MeleeAbility(float meleeRange,float meleeDamage,GameObject attacker,float chance)
@@ -82,14 +81,7 @@ public class AbilitesManager : MonoBehaviour
 
     }
 
-    public void AoeAbility(float aoeDamage, float chance)
-    {
-        if (!_utilities.CalculateChance(chance))
-        {
-            return;
-        }
-        rangeAoe.AoeAbility(aoeDamage);
-    }
+    
 
     public void Shield(GameObject abilityObject, float chance)
     {

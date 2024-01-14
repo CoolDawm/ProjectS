@@ -9,15 +9,14 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
 {
     [SerializeField]
     private float _attackCooldown =0;
-    private NavMeshAgent _agent;
     protected override void Start()
     {
         base.Start();
-        _agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         healthSystem.OnDeath += Die;
-        
+        _attackRange = 2f;
     }
 
     protected override void FixedUpdate()
@@ -28,12 +27,12 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
         }
         if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
         {
-
+            Debug.Log(Vector3.Distance(transform.position, _player.transform.position)+" <="+_detectionRadius);
             _isAggro = true;
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _characteristics.charDic["attackRange"])
+            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
             {
                 Idle();
-                _agent.SetDestination(transform.position);
+                agent.SetDestination(transform.position);
                 
                 _attackCooldown += Time.deltaTime;
                 if (_attackCooldown > 3f)
@@ -50,13 +49,33 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
         else
         {
             _isAggro = false;
-            ChasePlayer();
+            Patrool();
         }
     }
     public override void ChasePlayer()
     {
-        _agent.speed = _characteristics.charDic["movementSpeed"];
-        _agent.SetDestination(_player.transform.position);
+        agent.speed = _characteristics.secondCharDic["MovementSpeed"];
+        agent.SetDestination(_player.transform.position);
+    }
+
+    public override void Patrool()
+    {
+        changePositionTimer += Time.deltaTime;
+        Debug.Log(changePositionTimer);
+        if (changePositionTimer >= 6f)
+        {
+            if(agent.remainingDistance <= agent.stoppingDistance) //done with path
+            {
+                Vector3 point;
+                if (RandomPoint(transform.position, range, out point)) //pass in our centre point and radius of area
+                {
+                    Debug.DrawRay(point, Vector3.up, Color.red, 5f); //gizmos
+                    agent.SetDestination(point);
+                    changePositionTimer = 0f;
+                }
+            }
+        }
+        
     }
     public override void Idle()
     {
@@ -65,7 +84,7 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
    
     public override void Attack()
     {
-        _player.GetComponent<HealthSystem>().TakeDamage(_characteristics.charDic["damage"]);
+        _player.GetComponent<HealthSystem>().TakeDamage(_characteristics.charDic["Strength"]*2);
     }
 
     public override void Die()

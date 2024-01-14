@@ -14,6 +14,7 @@ public class PosAura : AuraV2
         else
         { 
             coroutineRunner.StartCoroutineFunction(EmittingCoroutine(user));
+            abilityIsActive = true;
         }
     }
  
@@ -40,5 +41,6 @@ public class PosAura : AuraV2
             timer+=Time.deltaTime;
             yield return null;
         }
+        abilityIsActive = false;
     }
 }

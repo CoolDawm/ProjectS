@@ -29,7 +29,6 @@ public class PlayerBattleSystem : MonoBehaviour
         //Abilities Trigger Subscription
         OnmeleeAbilityEvent += () => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _characteristics.charDic["damage"], gameObject,80);
         OnrangeAbilityEvent += () => abilitiesManager.RangeAbility(_characteristics.charDic["projectileLife"] , projectileSpeed, shootingPosition,80);
-        OnaoeAbilityEvent += () => abilitiesManager.AoeAbility(_characteristics.charDic["aoeDamage"],80);
         OnmeleeAoeAbilityEvent += () => abilitiesManager.MeleeAoe(_characteristics.charDic["aoeDamage"], gameObject,80);
         OnshieldAbilityEvent += () => abilitiesManager.Shield( gameObject,80);
         OnFrostBeamAbilityEvent += () => abilitiesManager.StartFrostBeam(shootingPosition, 1f, 10f, 25f, "Enemy",80);

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: DashPurple
   m_EditorClassIdentifier: 
   name: 
-  staminaCost: 0
+  staminaCost: 10
   cooldown: 0
   skillImage: {fileID: 0}
   description: 
   isWorking: 0
   workingTime: 0
-  dashSpeed: 10
-  dashDistance: 5
+  dashSpeed: 25
+  dashDistance: 10

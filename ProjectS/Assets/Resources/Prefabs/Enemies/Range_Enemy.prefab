@@ -100,6 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBarSprite: {fileID: 5750775435462140450}
   _shieldBarSprite: {fileID: 6813391370971370668}
+  _staminaBarSprite: {fileID: 0}
 --- !u!114 &6140245310127043871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,9 +404,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1449ceadbed33664aa102a103138dfe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectionRadius: 15
+  _detectionRadius: 13
   _aggroRadius: 15
-  _attackRange: 10
+  agent: {fileID: 0}
+  range: 10
   shootingPosition: {fileID: 2640879286792249052}
   _rotationSpeed: 6
   projectilePrefab: {fileID: 9014779570299617286, guid: 1b32035462c00844a82c3b4dd912e555, type: 3}
@@ -422,7 +424,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 1
 --- !u!195 &2587239086752343145
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -475,19 +476,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dirKeys:
-  - maxSpeed
-  - damage
-  - stamina
-  - attackRange
-  - projectileLife
-  - movementSpeed
+  - Strength
+  - Agility
+  - Recovery
+  - Endurance
+  - Intellect
   dirValues:
-  - 10
-  - 15
-  - 100
-  - 12
+  - 4
   - 5
-  - 5
+  - 2
+  - 3
+  - 3
 --- !u!114 &7549060017773499452
 MonoBehaviour:
   m_ObjectHideFlags: 0

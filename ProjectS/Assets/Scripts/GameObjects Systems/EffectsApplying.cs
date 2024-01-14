@@ -12,7 +12,7 @@ public class EffectsApplying : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        charDic = GetComponent<Characteristics>().charDic;
+        charDic = GetComponent<Characteristics>().charBuffBuffer;
     }
     IEnumerator DebuffAura(String effect, float power)
     {

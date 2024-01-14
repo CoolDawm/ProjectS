@@ -256,7 +256,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detectionRadius: 10
   _aggroRadius: 10
-  _attackRange: 2
+  agent: {fileID: 0}
+  range: 10
   _attackCooldown: 0
 --- !u!114 &5163095585128629162
 MonoBehaviour:
@@ -270,7 +271,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 1
 --- !u!195 &7681222419362172533
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -323,19 +323,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dirKeys:
-  - maxSpeed
-  - damage
-  - stamina
-  - attackRange
-  - projectileLife
-  - movementSpeed
+  - Strength
+  - Agility
+  - Recovery
+  - Endurance
+  - Intellect
   dirValues:
-  - 10
-  - 15
-  - 100
+  - 5
+  - 4
+  - 1
+  - 5
   - 2
-  - 5
-  - 5
 --- !u!114 &-1102421807338258618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,6 +545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBarSprite: {fileID: 9006966054727732034}
   _shieldBarSprite: {fileID: 9004336147067465602}
+  _staminaBarSprite: {fileID: 0}
 --- !u!114 &2212361429182255222
 MonoBehaviour:
   m_ObjectHideFlags: 0

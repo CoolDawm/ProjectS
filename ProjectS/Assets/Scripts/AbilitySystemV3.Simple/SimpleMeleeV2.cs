@@ -10,6 +10,7 @@ public class SimpleMeleeV2 : Ability
     public string aim;
     public override void Activate(GameObject user, CoroutineRunner coroutineRunner)
     {
+        abilityIsActive = true;
         Collider[] colliders = Physics.OverlapSphere(user.transform.position, meleeRange);
         foreach (Collider collider in colliders)
         {
@@ -22,7 +23,7 @@ public class SimpleMeleeV2 : Ability
                 }
             }
         }
-
+        abilityIsActive = true;
     }
 
 

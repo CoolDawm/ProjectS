@@ -12,14 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08af68b7fd7f34648b25346e466dec54, type: 3}
   m_Name: EnemySpeedAura
   m_EditorClassIdentifier: 
+  abilityIsActive: 0
   name: SpAura
   manaCost: 0
   cooldown: 3
-  abilityImage: {fileID: 0}
+  abilityImage: {fileID: 21300000, guid: c67cb5ecf78926749a4848e6546d330c, type: 3}
   description: 
   animName: AuraA
+  range: 0
+  animTime: 2.2
   Range: 0
   Power: 0
   Duration: 0
-  Effect: 
+  Effect: MovementSpeed
   aim: Player

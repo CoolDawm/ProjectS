@@ -9,8 +9,6 @@ public class RangeAOEV2 : Ability
     public GameObject cursorPrefab;
     public float areaOfEffectRadius=10f;
     public float damage = 60;
-    private bool _abilityIsActive = false;
-    
     private GameObject freeLook;
    public override void Activate(GameObject user,CoroutineRunner coroutineRunner)
    {
@@ -18,7 +16,7 @@ public class RangeAOEV2 : Ability
        {
            freeLook = GameObject.FindGameObjectWithTag("FreeLookCamera");
        }
-       _abilityIsActive = true;
+       abilityIsActive = true;
        coroutineRunner.StartCoroutineFunction(AoeAbilityCoroutine(damage));
    }
    IEnumerator AoeAbilityCoroutine(float aoeDamage)
@@ -26,7 +24,7 @@ public class RangeAOEV2 : Ability
         Cursor.lockState = CursorLockMode.None;
         freeLook.GetComponent<CinemachineInputProvider>().enabled = false;
         GameObject cursorObject=  Instantiate(cursorPrefab);
-        while (_abilityIsActive)
+        while (abilityIsActive)
         {
 
             // Ray from camera to cursor
@@ -46,13 +44,11 @@ public class RangeAOEV2 : Ability
                             
                             if (collider.CompareTag("Enemy"))
                             {
-
                                 collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
                             }
                         }
-                        
                         //Attack
-                        _abilityIsActive = false;
+                        abilityIsActive = false;
                     }
                 }
                 else
@@ -90,7 +86,7 @@ public class RangeAOEV2 : Ability
                             }
                            
                             //Attack
-                            _abilityIsActive = false;
+                            abilityIsActive = false;
                         }
                     }
                     else
@@ -108,7 +104,7 @@ public class RangeAOEV2 : Ability
                             }
                            
                             //Attack
-                            _abilityIsActive = false;
+                            abilityIsActive = false;
                         }
                     }
                 }

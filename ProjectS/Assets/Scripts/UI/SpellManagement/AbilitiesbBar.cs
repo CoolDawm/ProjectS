@@ -11,7 +11,6 @@ public class AbilitiesbBar : MonoBehaviour
     public List<GameObject> _spells;
     private float[] _timers;
     private bool spellExist;
-    
     void Start()
     {
         GameObject spellSlot = Resources.Load<GameObject>("Prefabs/UI/Spell");
@@ -52,12 +51,12 @@ public class AbilitiesbBar : MonoBehaviour
                 Image img = _spells[i].transform.GetChild(0).gameObject.GetComponent<Image>();
                 if (_timers[i] > 0)
                 {
-                    img.color = Color.red;
+                    img.fillAmount =
+                    img.fillAmount =Mathf.Lerp(-(_timers[i])+1,1,Time.deltaTime);
                 }
                 else
                 {
                     _timers[i] = 0;
-                    img.color = Color.green;
                 }
             }
            

@@ -11,7 +11,7 @@ public class AbilityHolder : MonoBehaviour
     private CoroutineRunner _coroutineRunner;
     private float _currentMana;
     private PlayerBehaviour _playerBehaviour;
-
+    private bool _canActivateAb;
     //private bool _isActive=false;// for future imporvement(to not be able to use other abilities)
     private void Start()
     {
@@ -45,44 +45,46 @@ public class AbilityHolder : MonoBehaviour
 
     private void Update()
     {
+        _canActivateAb = true;
         if (Cursor.visible)
         {
             return;
         }
 
-        //MainMelee
+        for (int i = 0; i < abilityList.Count; i++)
+        {
+            if (abilityList[i])
+            {
+                
+            }
+        }
+        
         if (Input.GetMouseButtonDown(0) && timers[0] <= 0)
         {
-            _playerBehaviour.AttackAnim(abilityList[0].animName);
-            GenerateMana(10);
-            abilityList[0].Activate(gameObject, _coroutineRunner);
+            GenerateMana(10);// нужно это убрать
+            StartCoroutine(ActivateAbility(0));
             timers[0] = abilityList[0].cooldown;
         }
-
-        //FrostBeam
+        
         if (Input.GetMouseButtonDown(1) && _currentMana >= abilityList[1].manaCost && timers[1] <= 0)
         {
             _currentMana -= abilityList[1].manaCost;
-            _playerBehaviour.AttackAnim(abilityList[1].animName);
-            abilityList[1].Activate(gameObject, _coroutineRunner);
+            StartCoroutine(ActivateAbility(1));
             timers[1] = abilityList[1].cooldown;
         }
-
-        //RangeProjectile
+        
         if (Input.GetKeyDown(KeyCode.Alpha1) && _currentMana >= abilityList[2].manaCost && timers[2] <= 0)
         {
-            _playerBehaviour.AttackAnim(abilityList[2].animName);
+            
             _currentMana -= abilityList[2].manaCost;
-            abilityList[2].Activate(gameObject, _coroutineRunner);
+            StartCoroutine(ActivateAbility(2));
             timers[2] = abilityList[2].cooldown;
         }
-
-        //RangeAoe
+        
         if (Input.GetKeyDown(KeyCode.Alpha2) && _currentMana >= abilityList[3].manaCost && timers[3] <= 0)
         {
-            _playerBehaviour.AttackAnim(abilityList[3].animName);
             _currentMana -= abilityList[3].manaCost;
-            abilityList[3].Activate(gameObject, _coroutineRunner);
+            StartCoroutine(ActivateAbility(3));
             timers[3] = abilityList[3].cooldown;
         }
 
@@ -97,5 +99,11 @@ public class AbilityHolder : MonoBehaviour
                 timers[i] = 0;
             }
         }
+    }
+    IEnumerator ActivateAbility(int index)
+    {
+        _playerBehaviour.AttackAnim(abilityList[index].animName);
+        yield return new WaitForSeconds(abilityList[index].animTime);
+        abilityList[index].Activate(gameObject, _coroutineRunner);
     }
 }

@@ -14,6 +14,7 @@ public class NegAura : AuraV2
         else
         {
            coroutineRunner.StartCoroutineFunction(EmittingCoroutine(user)); 
+           abilityIsActive = true;
         }
     }
 
@@ -37,7 +38,9 @@ public class NegAura : AuraV2
                 isEmitting = false;
             }
             timer+=Time.deltaTime;
+            
             yield return null;
         }
+        abilityIsActive = false;
     }
 }

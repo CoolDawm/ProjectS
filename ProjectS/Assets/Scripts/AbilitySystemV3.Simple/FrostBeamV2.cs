@@ -16,6 +16,7 @@ public class FrostBeamV2 : Ability
         {
             point = user.transform.Find("ShootingPosition");
         }
+        abilityIsActive = true;
         coroutineRunner.StartCoroutineFunction(FrostBeamCoroutine()); 
     }
     IEnumerator FrostBeamCoroutine()
@@ -42,7 +43,7 @@ public class FrostBeamV2 : Ability
             {
                 _abilityIsActive = false;
             }
-        
+            abilityIsActive = false;
             yield return null;
         }
     }

@@ -18,6 +18,8 @@ public class Turret : MonoBehaviour
         {
             partsArr.Add(child);
         }
+        HealthSystem healthSystem = GetComponentInChildren<HealthSystem>();
+        healthSystem.OnDeath += Die;
         rotationSpeeds = new float[partsArr.Count];
         _attackCooldown = new float[partsArr.Count];
         _timers = new float[partsArr.Count];
@@ -54,5 +56,8 @@ public class Turret : MonoBehaviour
         }
        
     }
-   
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
 }

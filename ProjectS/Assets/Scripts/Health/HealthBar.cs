@@ -8,6 +8,8 @@ public class HealthBar : MonoBehaviour
     private Image _healthBarSprite;
     [SerializeField]
     private Image _shieldBarSprite;
+    [SerializeField]
+    private Image _staminaBarSprite;
     public void UpdateHealthBar(float maxHealth,float currentHealth)
     {
         _healthBarSprite.fillAmount = currentHealth/maxHealth;
@@ -15,5 +17,9 @@ public class HealthBar : MonoBehaviour
     public void UpdateShieldBar(float maxShield, float currentShield)
     {
         _shieldBarSprite.fillAmount = currentShield / maxShield;
+    }
+    public void UpdateStaminaBar(float maxStamina, float currentStamina)
+    {
+        _staminaBarSprite.fillAmount = currentStamina / maxStamina;
     }
 }

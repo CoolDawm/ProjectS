@@ -12,14 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08af68b7fd7f34648b25346e466dec54, type: 3}
   m_Name: SlowAura
   m_EditorClassIdentifier: 
+  abilityIsActive: 0
   name: SLAura
   manaCost: 20
   cooldown: 3
-  abilityImage: {fileID: 0}
+  abilityImage: {fileID: 21300000, guid: 8963414cff11a904ba99f35936116332, type: 3}
   description: Slow Aura
   animName: AuraA
+  range: 0
+  animTime: 2.2
   Range: 15
   Power: 5
   Duration: 10
-  Effect: movementSpeed
+  Effect: MovementSpeed
   aim: Enemy
