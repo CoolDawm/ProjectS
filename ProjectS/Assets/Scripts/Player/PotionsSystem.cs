@@ -7,12 +7,10 @@ public class PotionsSystem : MonoBehaviour
     public float healthPotionHealAmount = 5;
     public float manaPotionManaAmount = 5;
     private HealthSystem _healthSystem;
-    private PlayerBattleSystem _playerBattleSystem;
     // Start is called before the first frame update
     void Start()
     {
         _healthSystem = gameObject.GetComponent<HealthSystem>();
-        _playerBattleSystem = gameObject.GetComponent<PlayerBattleSystem>();
     }
 
     // Update is called once per frame
@@ -41,7 +39,7 @@ public class PotionsSystem : MonoBehaviour
     }
     private void UseManaPotion(float mana)
     {
-        _playerBattleSystem.currentMana += mana;
+       
     }
 
 }

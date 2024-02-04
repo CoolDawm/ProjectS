@@ -21,10 +21,9 @@ public class AbilitiesbBar : MonoBehaviour
         {
             GameObject spell = Instantiate(spellSlot, _spells[i].transform);
             _spells[i].GetComponent<BarSlot>().spell=spell;
-            Debug.Log(_spells[i].GetComponent<BarSlot>().spell);
             spell.GetComponent<DragableItem>().ability = abilityList[i];
         }
-        //BarUpdate();
+        BarUpdate();
     }
 
     private void Update()
@@ -48,10 +47,10 @@ public class AbilitiesbBar : MonoBehaviour
 
             if (spellExist)
             {
+                
                 Image img = _spells[i].transform.GetChild(0).gameObject.GetComponent<Image>();
                 if (_timers[i] > 0)
                 {
-                    img.fillAmount =
                     img.fillAmount =Mathf.Lerp(-(_timers[i])+1,1,Time.deltaTime);
                 }
                 else
@@ -68,7 +67,9 @@ public class AbilitiesbBar : MonoBehaviour
         var abList = abilityHolder.GetAbilitiesList();
         for (int i = 0; i < _spells.Count; i++)
         {
-            _spells[i].GetComponent<Image>().sprite = abList[i].abilityImage;
+            _spells[i].GetComponentInChildren<Image>().sprite = abList[i].abilityImage;
+            _spells[i].transform.GetChild(0).gameObject.GetComponentInChildren<Image>().type = Image.Type.Filled;
+            _spells[i].transform.GetChild(0).gameObject.GetComponentInChildren<Image>().sprite = abList[i].abilityImage;
         }
     }
 

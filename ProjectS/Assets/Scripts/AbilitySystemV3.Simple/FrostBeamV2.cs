@@ -7,7 +7,6 @@ public class FrostBeamV2 : Ability
     public float damagePerSecond;
     public float duration;
     public float beamRange;
-    public string aim;
     private bool _abilityIsActive = false;
     private Transform point;
     public override  void Activate(GameObject user,CoroutineRunner coroutineRunner)
@@ -17,9 +16,9 @@ public class FrostBeamV2 : Ability
             point = user.transform.Find("ShootingPosition");
         }
         abilityIsActive = true;
-        coroutineRunner.StartCoroutineFunction(FrostBeamCoroutine()); 
+        coroutineRunner.StartCoroutineFunction(FrostBeamCoroutine(user)); 
     }
-    IEnumerator FrostBeamCoroutine()
+    IEnumerator FrostBeamCoroutine(GameObject user)
     {
         _abilityIsActive = true;
         float elapsedTime = 0f;
@@ -35,7 +34,7 @@ public class FrostBeamV2 : Ability
 
                 if (hit.collider.CompareTag(aim))
                 {
-                    hit.collider.GetComponent<HealthSystem>().TakeDamage(damagePerSecond);
+                    hit.collider.GetComponent<HealthSystem>().TakeDamage(damagePerSecond, Color.yellow);
                 }
             }
             elapsedTime+= Time.deltaTime;

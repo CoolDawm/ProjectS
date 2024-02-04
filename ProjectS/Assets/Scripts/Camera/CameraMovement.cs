@@ -6,8 +6,9 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     private CinemachineFreeLook _cinemachineFreeLook;
-    private float zoomSpeed = 0.25f;
+    private float zoomSpeed = 0.5f;
     private float currentZoomX;
+    private CinemachineFreeLook.Orbit _orbit;
     void Start()
     {
         _cinemachineFreeLook = GetComponent<CinemachineFreeLook>();
@@ -18,9 +19,10 @@ public class CameraMovement : MonoBehaviour
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         CinemachineFreeLook.Orbit orbit= _cinemachineFreeLook.m_Orbits[1];
+        _orbit = _cinemachineFreeLook.m_Orbits[1];
         if (scroll > 0f)
         {
-            if (currentZoomX / orbit.m_Radius <= 3)
+            if (_orbit.m_Radius > 5.5f)
             {
                 for (int i = 0; i < _cinemachineFreeLook.m_Orbits.Length; i++)
                 {
@@ -36,7 +38,7 @@ public class CameraMovement : MonoBehaviour
         }
         else if (scroll < 0f)
         {
-            if ( orbit.m_Radius/currentZoomX <= 2)
+            if ( _orbit.m_Radius <10f)
             {
                 for (int i = 0; i < _cinemachineFreeLook.m_Orbits.Length; i++)
                 {

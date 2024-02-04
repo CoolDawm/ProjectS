@@ -13,6 +13,9 @@ public class RangeEnemyBehaviour : EnemyBehaviour
     public GameObject projectilePrefab;
     private float _attackCooldown = 0f;
     public float projectileSpeed = 10f;
+    [SerializeField] 
+    private Ability _ability;
+    private CoroutineRunner _coroutineRunner;
     protected override void Start()
     {
         base.Start();
@@ -20,18 +23,28 @@ public class RangeEnemyBehaviour : EnemyBehaviour
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
         healthSystem.OnDeath += Die;
+        healthSystem.OnTakeDamage+=TakeDamageAnim;
         _attackRange = detectionRadius - 3;
     }
 
-    protected override void FixedUpdate()
+    protected override void Update()
     {
         if (_player == null)
         {
             return;
         }
-        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
+        if (agent.hasPath)
         {
+            _animator.SetBool("Walk Forward", true);
+        }
+        else
+        {
+            _animator.SetBool("Walk Forward", false);
 
+        }
+        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius||_isAggro)
+        {
+            _isAggro = true;
             if (Vector3.Distance(transform.position, _player.transform.position) <=_attackRange)
             {
                 _agent.SetDestination(transform.position);
@@ -40,7 +53,7 @@ public class RangeEnemyBehaviour : EnemyBehaviour
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation =
                     Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
-                if (_attackCooldown > 3f)
+                if (_attackCooldown > 1.5f)
                 {
                     _attackCooldown = 0;
                     Attack();
@@ -53,7 +66,6 @@ public class RangeEnemyBehaviour : EnemyBehaviour
         }
         else
         {
-            _isAggro = false;
             Patrool();
         }
     }
@@ -65,11 +77,12 @@ public class RangeEnemyBehaviour : EnemyBehaviour
 
     public override void Attack()
     {
+        _animator.SetTrigger("Projectile Attack");
         GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
         Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
         projectileRigidbody.velocity = transform.forward * projectileSpeed;
-
-        Destroy(projectile, 4);
+        projectile.GetComponent<ProjectileScript>().aim = "Player";
+        projectile.GetComponent<ProjectileScript>().range = 15;
     }
 
     public override void ChasePlayer()
@@ -80,7 +93,6 @@ public class RangeEnemyBehaviour : EnemyBehaviour
     public override void Patrool()
     {
         changePositionTimer += Time.deltaTime;
-        Debug.Log(changePositionTimer);
         if (changePositionTimer >= 6f)
         {
             if(agent.remainingDistance <= agent.stoppingDistance) //done with path
@@ -99,5 +111,10 @@ public class RangeEnemyBehaviour : EnemyBehaviour
     public override void Die()
     {
         Destroy(gameObject);
+    }
+    public override void TakeDamageAnim()
+    {
+        _isAggro = true;
+        _animator.SetTrigger("Take Damage");
     }
 }

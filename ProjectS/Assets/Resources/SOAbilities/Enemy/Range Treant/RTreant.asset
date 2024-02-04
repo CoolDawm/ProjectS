@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc78329b982b8144190a85b678da6ada, type: 3}
+  m_Name: RTreant
+  m_EditorClassIdentifier: 
+  abilityIsActive: 0
+  name: 
+  manaCost: 0
+  cooldown: 0
+  abilityImage: {fileID: 0}
+  description: 
+  animName: Projectile Attack
+  range: 20
+  animTime: 2
+  aim: Player
+  projectilePrefab: {fileID: 1508588584942918, guid: 99dfa21471681154b9f2b28a641dbe07, type: 3}
+  projectileSpeed: 20

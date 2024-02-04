@@ -11,11 +11,10 @@ public interface IEnemy
 public interface IEnemyAbilitiesUse
 {
     float abilityCooldown { get; }
-    void UseAbility();
+    void UseAbility(int index);
 }
 public interface IEnemyMovement
 {
-    bool isAggro { get; }
     void ChasePlayer();
     void Idle();
 }

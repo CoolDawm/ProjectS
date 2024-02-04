@@ -7,8 +7,11 @@ using UnityEngine.InputSystem;
 
 public class MeleeEnemyBehaviour : EnemyBehaviour
 {
-    [SerializeField]
+    [SerializeField] 
     private float _attackCooldown =0;
+    [SerializeField] 
+    private Ability _ability;
+    private CoroutineRunner _coroutineRunner;
     protected override void Start()
     {
         base.Start();
@@ -16,24 +19,40 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
         _characteristics=gameObject.GetComponent<Characteristics>(); 
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         healthSystem.OnDeath += Die;
-        _attackRange = 2f;
+        healthSystem.OnTakeDamage+=TakeDamageAnim;
+        _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
+        _attackRange = 2.5f;
     }
-
-    protected override void FixedUpdate()
+    
+    protected override void Update()
     {
         if (_player == null)
         {
             return;
         }
-        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
+
+        if (agent.hasPath)
         {
-            Debug.Log(Vector3.Distance(transform.position, _player.transform.position)+" <="+_detectionRadius);
+            _animator.SetBool("Walk Forward", true);
+        }
+        else
+        {
+            _animator.SetBool("Walk Forward", false);
+
+        }
+        
+        
+        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius||_isAggro)
+        {
             _isAggro = true;
             if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
             {
                 Idle();
                 agent.SetDestination(transform.position);
-                
+                Vector3 targetDirection = _player.transform.position - transform.position;
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                transform.rotation =
+                    Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 3);
                 _attackCooldown += Time.deltaTime;
                 if (_attackCooldown > 3f)
                 {
@@ -48,7 +67,6 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
         }
         else
         {
-            _isAggro = false;
             Patrool();
         }
     }
@@ -83,12 +101,28 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
    
     public override void Attack()
     {
-        _player.GetComponent<HealthSystem>().TakeDamage(_characteristics.charDic["Strength"]*2);
+        _ability.Activate(gameObject,_coroutineRunner,_animator);
     }
 
     public override void Die()
     {
         Destroy(gameObject);
     }
-    
+    public override void TakeDamageAnim()
+    {
+        _isAggro = true;
+        _animator.SetTrigger("Take Damage");
+    }
+    IEnumerator ActivateAbility()
+    {
+        float timer = 0;
+        _animator.SetTrigger(_ability.animName);
+        while (timer<=_ability.animTime)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        
+        _ability.Activate(gameObject,_coroutineRunner);
+    }
 }

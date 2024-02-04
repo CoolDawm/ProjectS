@@ -11,7 +11,7 @@ public class Skill : ScriptableObject
     public string description;
     public bool isWorking;
     public float workingTime;
-    public virtual void Activate(GameObject user,CoroutineRunner coroutineRunner)
+    public virtual void Activate(GameObject user,CoroutineRunner coroutineRunner,Vector2 direction)
     {
         
     }

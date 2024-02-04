@@ -20,7 +20,7 @@
                     "id": "9ae4a081-b727-41af-a682-59699a968a94",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "initialStateCheck": true
                 },
                 {
@@ -144,7 +144,7 @@
                     "name": "",
                     "id": "ac1e3fb1-c10a-480c-b05c-d057d5fd90ee",
                     "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "Roll",

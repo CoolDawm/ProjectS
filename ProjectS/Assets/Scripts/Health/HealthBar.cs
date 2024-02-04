@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,9 +11,18 @@ public class HealthBar : MonoBehaviour
     private Image _shieldBarSprite;
     [SerializeField]
     private Image _staminaBarSprite;
+    [SerializeField]
+    private Image _manaBarSprite;
+    [SerializeField]
+    private Text _healthText;
+    [SerializeField]
+    private Text _staminaText;
+    [SerializeField]
+    private Text _manaText;
     public void UpdateHealthBar(float maxHealth,float currentHealth)
     {
         _healthBarSprite.fillAmount = currentHealth/maxHealth;
+        _healthText.text = MathF.Round(currentHealth, 0) + "/" + maxHealth;
     }
     public void UpdateShieldBar(float maxShield, float currentShield)
     {
@@ -21,5 +31,12 @@ public class HealthBar : MonoBehaviour
     public void UpdateStaminaBar(float maxStamina, float currentStamina)
     {
         _staminaBarSprite.fillAmount = currentStamina / maxStamina;
+        _staminaText.text = MathF.Round(currentStamina, 0) + "/" + maxStamina;
+    }
+
+    public void UpdateManaBar(float maxMana, float currentMana)
+    {
+        _manaBarSprite.fillAmount = currentMana / maxMana;
+        _manaText.text = MathF.Round(currentMana, 0) + "/" + maxMana;
     }
 }

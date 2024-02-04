@@ -15,10 +15,11 @@ public class SpawnerScript : MonoBehaviour
     private int _childCount = 0;
     private float _timer;
     private Utilities _utils = new Utilities();
-
+    private EnemyGroup _enemyGroup;
     private void Start()
     {
         _timer = _timeSpawn;
+        _enemyGroup = GetComponent<EnemyGroup>();
     }
 
     private void Update()
@@ -30,7 +31,7 @@ public class SpawnerScript : MonoBehaviour
             if (_childCount < _maxEnemy)
             {
                 _childCount++;
-                Instantiate(_enemyPrefab,_utils.GetRandomVector(gameObject.transform.position) , Quaternion.identity);
+                _enemyGroup.enemGroup.Add(Instantiate(_enemyPrefab,_utils.GetRandomVector(gameObject.transform.position) , Quaternion.identity));
             }
         }
     }

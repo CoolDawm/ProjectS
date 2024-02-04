@@ -22,7 +22,7 @@ public class PlayerBehaviour : MonoBehaviour
     private Transform _cameraMain;
     private CharacterController _controller;
     private Vector3 _playerVelocity;
-    private bool _groundedPlayer;
+    private bool _groundedPlayer;//Need to call IsGrounder in Update only once and use this instead
     private float _terminalVelocity = 53.0f;
     private float _verticalVelocity;
     private float _currentSpeed;
@@ -37,8 +37,7 @@ public class PlayerBehaviour : MonoBehaviour
     private Animator _animator;
     private Vector2 _movement;
     private float _fallDistance=0;
-    private int dashAmount = 2;
-    private float dashTimer = 0;
+    private bool moveStateRun=true;
     private void OnEnable()
     {
         _jumpControl.action.Enable();
@@ -66,110 +65,164 @@ public class PlayerBehaviour : MonoBehaviour
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _healthBar=GameObject.FindWithTag("PlayerHUD").GetComponent<HealthBar>();
         _characteristics = gameObject.GetComponent<Characteristics>();
+        _currentStamina = _characteristics.secondCharDic["MaxStamina"];
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
-        _currentStamina = 100;
         _afterDeathPanel = Resources.Load<GameObject>("Prefabs/UI/AfterDeathUICanvas");
         healthSystem.OnDeath += Die;
         healthSystem.OnTakeDamage += TakeDamageAnim;
-        _animator = GetComponentInChildren<Animator>();
-        Debug.Log(_animator);
+        _animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
+        if (_animator == null)
+        {
+            _animator = GetComponent<Animator>();
+        }
+
         JumpAndGravity();
         MovePlayer();
-        DashRegen();
+        /*Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenter); 
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 100f))
+        { 
+            Vector3 hitPoint = hit.point;
+            Vector3 hitNormal = hit.normal;
+            GameObject hitObject = hit.collider.gameObject;
+        }*/
     }
-
     private void MovePlayer()
     {
+        
         if (_cameraMain == null)
         {
             _cameraMain = Camera.main.transform;
         }
-        if (!skill.isWorking)
-        {
-            _animator.SetFloat("DashSpeed", 0);
-        }
         //Skill
-        if (_sprintControl.action.triggered&& !skill.isWorking && _currentStamina >= skill.staminaCost&&dashAmount>0)
+        if (_sprintControl.action.triggered&& !skill.isWorking && _currentStamina >= skill.staminaCost)
         {
-            skill.Activate(gameObject, _coroutineRunner);
+            skill.Activate(gameObject, _coroutineRunner,_movement);
             Debug.Log("Skill");
             _currentStamina -= skill.staminaCost;
-            dashAmount--;
+            if (_movement.x > 0)
+            {
+                _animator.SetFloat("DashDir", 1);
+            }else if (_movement.x < 0)
+            {
+                _animator.SetFloat("DashDir", 0.75f);
+            }else if (_movement.y>0)
+            {
+                _animator.SetFloat("DashDir", 0);
+            }else if (_movement.y<0)
+            {
+                _animator.SetFloat("DashDir", 0.25f);
+            }
+            _animator.SetTrigger("Dash");
         }
-
-        if (skill.isWorking)
-        {
-            _animator.SetFloat("DashSpeed", 1);
-        }
-        else
-        {
-            _animator.SetFloat("DashSpeed", 0);
-        }
-
+        
         if (_movementControl.action.triggered)
         {
             _movement = _movementControl.action.ReadValue<Vector2>();
         }
 
+        if (_rollControl.action.triggered)
+        {
+            moveStateRun = !moveStateRun;
+        }
         if (_movement != Vector2.zero)
         {
-            if (_rollControl.action.IsPressed()  && _currentStamina > 0)
+            if (_movement.x > 0&&_movement.y!<=0)
             {
-                _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.secondCharDic["MovementSpeed"],
-                    Time.deltaTime*_smoothness);
-                _animBlend = 0.5f;
-                //Stamina recovery
-                if (_currentStamina < 100)
+                _animator.SetBool("RightWalk", true);
+                _animator.SetBool("StreightWalk",false);
+                _animator.SetBool("LeftWalk",false);
+                _animator.SetBool("BackWalk",false);
+            }else if (_movement.x < 0&&_movement.y!<=0)
+            {
+                _animator.SetBool("LeftWalk",true);
+                _animator.SetBool("StreightWalk",false);
+                _animator.SetBool("RightWalk", false);
+                _animator.SetBool("BackWalk",false);
+            }else if (_movement.y>0)
+            {
+                _animator.SetBool("RightWalk",false);
+                _animator.SetBool("LeftWalk",false);
+                _animator.SetBool("StreightWalk",true);
+                _animator.SetBool("BackWalk",false);
+            }else if (_movement.y<0)
+            {
+                _animator.SetBool("BackWalk",true);
+                _animator.SetBool("RightWalk",false);
+                _animator.SetBool("LeftWalk",false);
+                _animator.SetBool("StreightWalk",false);
+            }
+            if (!moveStateRun  && _currentStamina > 0)
+            {
+                if (_movement.y == 1||_movement.x!=0)
                 {
-                    _currentStamina += Time.deltaTime * _characteristics.secondCharDic["StaminaRegen"];
+                    _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.secondCharDic["MovementSpeed"],
+                        Time.deltaTime*_smoothness);
+                    _animBlend = 0.5f;
                 }
+                else
+                {
+                    _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.secondCharDic["MovementSpeed"]/2,
+                        Time.deltaTime*_smoothness);
+                    _animBlend = 0.5f;
+                }
+                
             }
             else
             {
-                //stamina spending
-                _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.secondCharDic["MovementSpeed"]+3f,
-                    Time.deltaTime *_smoothness);
-                _animBlend = 1f;
-                _currentStamina -= Time.deltaTime * 1;
+                if (_movement.y == 1||_movement.x!=0)
+                {
+                    _currentSpeed = Mathf.Lerp(_previousSpeed, _characteristics.secondCharDic["MovementSpeed"]+3f,
+                        Time.deltaTime *_smoothness);
+                    _animBlend = 1f;
+                }
+                else
+                {
+                    _currentSpeed = Mathf.Lerp(_previousSpeed, (_characteristics.secondCharDic["MovementSpeed"]+3f)/2,
+                        Time.deltaTime *_smoothness);
+                    _animBlend = 1f;
+                }
             }
             _animator.SetFloat("Speed", Mathf.Lerp(_previousBlend, _animBlend, Time.deltaTime * (_smoothness + 2)));
             _previousBlend = _animator.GetFloat("Speed");
             _previousSpeed = _currentSpeed;
-
+            
         }
         else
         {
-            _animator.SetFloat("Speed", Mathf.Lerp(_previousBlend, 0, Time.deltaTime));
+            _animator.SetFloat("Speed", Mathf.Lerp(_previousBlend, 0, Time.deltaTime*(_smoothness + 3)));
             _previousBlend = _animator.GetFloat("Speed");
             _currentSpeed = 0;
-            //Stamina recovery
-            if (_currentStamina < 100)
-            {
-                _currentStamina += Time.deltaTime * _characteristics.secondCharDic["StaminaRegen"];
-            }
         }
-        _healthBar.UpdateStaminaBar(100,_currentStamina);
+        //Stamina
         
-        Vector3 move = new Vector3(_movement.x, 0, _movement.y);
-        move = _cameraMain.forward * move.z + _cameraMain.right * move.x;
-        move.y = 0f;
-        if (!skill.isWorking)
+        if (_currentStamina <_characteristics.secondCharDic["MaxStamina"])
         {
-            _controller.Move(move * (_currentSpeed * Time.deltaTime) +
-                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            _currentStamina += Time.deltaTime * _characteristics.secondCharDic["StaminaRegen"];
         }
-
-        if (_movement != Vector2.zero && !skill.isWorking)
+        else if (_currentStamina >_characteristics.secondCharDic["MaxStamina"])
         {
-            float targetAngle = Mathf.Atan2(_movement.x, _movement.y) * Mathf.Rad2Deg + _cameraMain.eulerAngles.y;
-            Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+            _currentStamina = _characteristics.secondCharDic["MaxStamina"];
         }
-       
+        _healthBar.UpdateStaminaBar(_characteristics.secondCharDic["MaxStamina"],_currentStamina);
+        //
+        if (!skill.isWorking&&_movement!=Vector2.zero||!_groundedPlayer)
+        {
+            Vector3 lookDirection = _cameraMain.forward; 
+            lookDirection.y = 0f; 
+            Quaternion lookRotation = Quaternion.LookRotation(lookDirection); 
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed); 
+            Vector3 move = new Vector3(_movement.x, 0, _movement.y);
+            move = _cameraMain.forward * move.z + _cameraMain.right * move.x;
+            move.y = 0f;
+            _controller.Move(move * (_currentSpeed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+        }
     }
 
     public void Die()
@@ -186,26 +239,21 @@ public class PlayerBehaviour : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, rayDistance))
         {
+            
             if (hit.collider != null && hit.collider.CompareTag("Ground"))
             {
+               
                 Debug.DrawRay(transform.position, Vector3.down, Color.magenta);
                 _animator.SetBool("IsGrounded", true);
                 _fallDistance = 0f;
+                _groundedPlayer = true;
                 return true;
             }
         }
-        _animator.SetBool("IsGrounded", false);
-        return false;
-    }
 
-    private void DashRegen()
-    {
-        dashTimer += Time.deltaTime;
-        if (dashTimer >= 5f && dashAmount < 2)
-        {
-            dashAmount++;
-            dashTimer = 0;
-        }
+        _groundedPlayer = false;
+        _animator.SetBool("IsGrounded", false);//
+        return false;
     }
     private void JumpAndGravity()
     {

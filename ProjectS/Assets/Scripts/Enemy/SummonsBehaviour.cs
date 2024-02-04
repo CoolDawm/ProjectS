@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class SummonsBehaviour : EnemyBehaviour
 {
+    [SerializeField] 
+    private Ability _ability;
+    private CoroutineRunner _coroutineRunner;
     private NavMeshAgent _agent;
     protected override void Start()
     {
@@ -12,41 +15,51 @@ public class SummonsBehaviour : EnemyBehaviour
         _agent = GetComponent<NavMeshAgent>();
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
+        _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
         healthSystem.OnDeath += Die;
+        healthSystem.OnTakeDamage+=TakeDamageAnim;
+        _ability.abilityIsActive = false;
     }
 
-    protected override void FixedUpdate()
+    protected override void Update()
     {
         if (_player == null)
         {
             return;
         }
-        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
-        {
 
-            _isAggro = true;
-            if (Vector3.Distance(transform.position, _player.transform.position) <=_characteristics.charDic["attackRange"])
-            {
-                Idle();
-                _agent.SetDestination(transform.position);          
-                Attack();
-                Destroy(gameObject);
-            }
-            else
-            {
-                ChasePlayer();
-            }
+        if (agent.hasPath)
+        {
+            _animator.SetBool("Walk Forward", true);
         }
         else
         {
-            _isAggro = false;
-            Patrool();
+            _animator.SetBool("Walk Forward", false);
+
         }
+        _isAggro = true;
+        if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+        {
+            Idle();
+            _agent.SetDestination(transform.position);
+            if (!_ability.abilityIsActive)
+            {
+                Debug.Log("Boom");
+                Attack();
+            }
+           
+        }
+        else
+        {
+            ChasePlayer();
+        }
+
+
     }
 
     public override void ChasePlayer()
     {
-        _agent.speed = _characteristics.charDic["movementSpeed"];
+        _agent.speed = _characteristics.secondCharDic["MovementSpeed"];
         _agent.SetDestination(_player.transform.position);
     }
     public override void Idle()
@@ -55,9 +68,7 @@ public class SummonsBehaviour : EnemyBehaviour
     }
     public override void Attack()
     {
-        _player.GetComponent<HealthSystem>().TakeDamage(_characteristics.charDic["damage"]);
-        Die();
-        Debug.Log("Boom");
+        _ability.Activate(gameObject,_coroutineRunner);
     }
     public override void Patrool()
     {
@@ -81,5 +92,9 @@ public class SummonsBehaviour : EnemyBehaviour
     public override void Die()
     {
         Destroy(gameObject);
+    }
+    public override void TakeDamageAnim()
+    {
+        _animator.SetTrigger("Take Damage");
     }
 }

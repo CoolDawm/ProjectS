@@ -7,22 +7,17 @@ public class MeleeBoss : BossBehaviour
 {
     [SerializeField]
     private float _attackCooldown = 0;
-    public AbilitesManager abilitiesManager;
-    public UnityEvent meleeAbilityEvent;
-    public UnityEvent shieldAbilityEvent;
-    public UnityEvent SpeedScreamAbilityEvent;
     private NavMeshAgent _agent;
     protected override void Start()
     {
         base.Start();
         _agent = GetComponent<NavMeshAgent>();
-        abilitiesManager = GameObject.FindGameObjectWithTag("AbilitiesManager").GetComponent<AbilitesManager>();
-        meleeAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.MeleeAbility(_characteristics.charDic["meleeRange"], _characteristics.charDic["damage"], gameObject,80)));
-        shieldAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.Shield( gameObject,80)));
-        SpeedScreamAbilityEvent.AddListener(new UnityAction(() => abilitiesManager.SpeedScream(gameObject,"Enemy",70)));
+        _attackRange = 15f;
         HealthSystem healthSystem = GetComponent<HealthSystem>();
-        _characteristics=gameObject.GetComponent<Characteristics>(); 
+        _characteristics=gameObject.GetComponent<Characteristics>();
+        //_characteristics.charBuffBuffer["MovementSpeed"] = 10f;
         healthSystem.OnDeath += Die;
+        healthSystem.OnTakeDamage+=TakeDamageAnim;
     }
 
     protected override void FixedUpdate()
@@ -31,27 +26,44 @@ public class MeleeBoss : BossBehaviour
         {
             return;
         }
-        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
+        if (_agent.hasPath)
+        {
+            _animator.SetBool("Move Forward Fast", true);
+        }
+        else
+        {
+            _animator.SetBool("Move Forward Fast", false);
+
+        }
+        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius||isAggro)
         {
 
-            _isAggro = true;
-            _abilityCooldown += Time.deltaTime;
-            if (_abilityCooldown > 20f)
-            {
-                _abilityCooldown = 0;
-                UseAbility();
-            }
-            if (Vector3.Distance(transform.position, _player.transform.position) <=_characteristics.charDic["attackRange"])
+            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
             {
                 Idle();
                 _agent.SetDestination(transform.position);
-
                 _attackCooldown += Time.deltaTime;
+                _abilityCooldown += Time.deltaTime;
                 
-                if (_attackCooldown > 3f)
+                if (_attackCooldown >= 5f)
                 {
+                    Vector3 targetDirection = _player.transform.position - transform.position;
+                    Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                    transform.rotation =
+                        Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 3);
                     _attackCooldown = 0;
                     Attack();
+                }
+
+                if (_abilityCooldown >= 8f)
+                {
+                    Vector3 targetDirection = _player.transform.position - transform.position;
+                    Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                    transform.rotation =
+                        Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 3);
+                    _abilityCooldown = 0;
+                    int randomValue = UnityEngine.Random.Range(1, abilityList.Count-1);
+                    UseAbility(randomValue);
                 }
             }
             else
@@ -59,40 +71,52 @@ public class MeleeBoss : BossBehaviour
                 ChasePlayer();
             }
         }
-        else
-        {
-            _isAggro = false;
-            ChasePlayer();
-        }
     }
    
     public override void ChasePlayer()
     {
-        StartCoroutine(ChasePlayerCoroutine());
+        _agent.speed = _characteristics.secondCharDic["MovementSpeed"];
+        _agent.SetDestination(_player.transform.position);
     }
     public override void Idle()
     {
         StopAllCoroutines();
     }
-
-    private IEnumerator ChasePlayerCoroutine()
+    
+    public override void TakeDamageAnim()
     {
-        while (_isAggro)
+        isAggro = true;
+        _animator.SetTrigger("Take Damage");
+    }
+    public override void UseAbility(int index)
+    {
+        _animator.SetTrigger(abilityList[index].animName);
+        abilityList[index].Activate(gameObject,_coroutineRunner);
+    }
+    /*
+    IEnumerator ActivateAbility(int index)
+    {
+        _animator.SetTrigger(abilityList[index].animName);
+        Debug.Log("Activate");
+        yield return new WaitForSeconds(abilityList[index].animTime);
+        Debug.Log("End");
+        abilityList[index].Activate(gameObject, _coroutineRunner);
+
+        
+         float timer = 0;
+        _animator.SetTrigger(abilityList[index].animName);
+        while (timer<=abilityList[index].animTime)
         {
-            _agent.SetDestination(_player.transform.position);
+            timer += Time.deltaTime;
             yield return null;
         }
-    }
-    public override void UseAbility()
-    {
-        Debug.Log("Aility");
-        shieldAbilityEvent.Invoke();
-        SpeedScreamAbilityEvent.Invoke();
-    }
+        abilityList[index].Activate(gameObject,_coroutineRunner);
+        Debug.Log("Attack");
+    }*/
     public override void Attack()
     {
-        meleeAbilityEvent.Invoke();
-        Debug.Log("Attack");
+        _animator.SetTrigger(abilityList[0].animName);
+        abilityList[0].Activate(gameObject,_coroutineRunner);
     }
     public override void Die()
     {

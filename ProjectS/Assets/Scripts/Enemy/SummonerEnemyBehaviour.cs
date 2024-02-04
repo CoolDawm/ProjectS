@@ -8,38 +8,52 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
     
     [SerializeField]
     private float _rotationSpeed = 3f;
+    [SerializeField] 
+    private Ability _ability;
+    [SerializeField]
+    private GameObject _summonPrefab;
+    private CoroutineRunner _coroutineRunner;
     private NavMeshAgent _agent;
-    public GameObject summonPrefab;
     private float _attackCooldown = 0f;
     protected override void Start()
     {
         base.Start();
-        _attackRange = 10f;
+        _attackRange = 13f;
         _detectionRadius = 15f;
         _agent = GetComponent<NavMeshAgent>();
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
+        healthSystem.OnTakeDamage+=TakeDamageAnim;
         healthSystem.OnDeath += Die;
     }
 
-    protected override void FixedUpdate()
+    protected override void Update()
     {
         if (_player == null)
         {
             return;
         }
+        if (agent.hasPath)
+        {
+            _animator.SetBool("Walk Forward", true);
+        }
+        else
+        {
+            _animator.SetBool("Walk Forward", false);
+
+        }
         if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
         {
-
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _characteristics.charDic["attackRange"])
+            _isAggro = true;
+            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
             {
-                StopAllCoroutines();
+                
                 _agent.SetDestination(transform.position);
                 _attackCooldown += Time.deltaTime;
                 Vector3 targetDirection = _player.transform.position - transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
-                if (_attackCooldown > 8f)
+                if (_attackCooldown > 6f)
                 {
                     _attackCooldown = 0;
                     Attack();
@@ -52,8 +66,7 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
         }
         else
         {
-            _isAggro = false;
-            ChasePlayer();
+            Patrool();
         }
 
 
@@ -65,20 +78,19 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
 
     public override void Attack()
     {
-        Debug.Log("Attack");
-        Vector3 summonPosition = transform.position + Random.insideUnitSphere *_characteristics.charDic["summonRadius"]; 
-        GameObject newBeast = Instantiate(summonPrefab, summonPosition, Quaternion.identity); 
+        Debug.Log("Summon");
+        Vector3 summonPosition = transform.position + Random.insideUnitSphere *5; 
+        Instantiate(_summonPrefab, summonPosition, Quaternion.identity); 
     }
 
     public override void ChasePlayer()
     {
         _agent.SetDestination(_player.transform.position);
-        _agent.speed = _characteristics.charDic["movementSpeed"];
+        _agent.speed = _characteristics.secondCharDic["MovementSpeed"];
     }
     public override void Patrool()
     {
         changePositionTimer += Time.deltaTime;
-        Debug.Log(changePositionTimer);
         if (changePositionTimer >= 6f)
         {
             if(agent.remainingDistance <= agent.stoppingDistance) //done with path
@@ -97,6 +109,11 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
     public override void Die()
     {
         Destroy(gameObject);
+    }
+    public override void TakeDamageAnim()
+    {
+        _isAggro = true;
+        _animator.SetTrigger("Take Damage");
     }
 }
 

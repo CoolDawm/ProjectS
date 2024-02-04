@@ -5,28 +5,39 @@ using UnityEngine;
 
 public class AbilityHolder : MonoBehaviour
 {
-    [SerializeField] private List<Ability> abilityList;
+    [SerializeField] protected List<Ability> abilityList;
     [HideInInspector] public float[] timers = new float[4] { 0, 0, 0, 0 };
     private Characteristics _characteristics;
     private CoroutineRunner _coroutineRunner;
     private float _currentMana;
     private PlayerBehaviour _playerBehaviour;
     private bool _canActivateAb;
+    private HealthBar _healthBar;
     //private bool _isActive=false;// for future imporvement(to not be able to use other abilities)
+    
     private void Start()
     {
+        _characteristics = GetComponent<Characteristics>();
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
-        _currentMana = 100;
+        _currentMana = _characteristics.secondCharDic["MaxMana"];
         _playerBehaviour = GetComponent<PlayerBehaviour>();
         for (int i = 0; i < abilityList.Count; i++)
         {
             Debug.Log(abilityList[i].name);
         }
+        _healthBar=GameObject.FindWithTag("PlayerHUD").GetComponent<HealthBar>();
     }
 
-    private void GenerateMana(float mana)
+    public void GenerateMana(float mana)
     {
-        _currentMana += mana;
+        if (_currentMana+mana >= _characteristics.secondCharDic["MaxMana"])
+        {
+            _currentMana = _characteristics.secondCharDic["MaxMana"];
+        }
+        else
+        {
+            _currentMana += mana;
+        }
     }
 
     public List<Ability> GetAbilitiesList()
@@ -42,9 +53,9 @@ public class AbilityHolder : MonoBehaviour
             Debug.Log(abilityList[i].name);
         }
     }
-
     private void Update()
     {
+        
         _canActivateAb = true;
         if (Cursor.visible)
         {
@@ -61,7 +72,6 @@ public class AbilityHolder : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0) && timers[0] <= 0)
         {
-            GenerateMana(10);// нужно это убрать
             StartCoroutine(ActivateAbility(0));
             timers[0] = abilityList[0].cooldown;
         }
@@ -75,7 +85,6 @@ public class AbilityHolder : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Alpha1) && _currentMana >= abilityList[2].manaCost && timers[2] <= 0)
         {
-            
             _currentMana -= abilityList[2].manaCost;
             StartCoroutine(ActivateAbility(2));
             timers[2] = abilityList[2].cooldown;
@@ -99,6 +108,15 @@ public class AbilityHolder : MonoBehaviour
                 timers[i] = 0;
             }
         }
+        if (_currentMana > _characteristics.secondCharDic["MaxMana"])
+        {
+            _currentMana = _characteristics.secondCharDic["MaxMana"];
+        }
+        else
+        {
+            _currentMana += Time.deltaTime * _characteristics.secondCharDic["ManaRegen"];
+        }
+        _healthBar.UpdateManaBar(_characteristics.secondCharDic["MaxMana"],_currentMana);
     }
     IEnumerator ActivateAbility(int index)
     {

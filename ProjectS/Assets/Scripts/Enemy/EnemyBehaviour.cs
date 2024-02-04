@@ -19,19 +19,25 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
     protected Characteristics _characteristics; 
     protected GameObject _player;
     protected bool _isAggro = false;
+    protected Animator _animator;
     // Implementing properties from IEnemy
     public float detectionRadius { get { return _detectionRadius; } }
     public float aggroRadius { get { return _aggroRadius; } }
 
     // Implementing properties from IEnemyMovement
-    public bool isAggro { get { return _isAggro; } }
+    public bool isAggro
+    {
+        get { return _isAggro; }
+        set => _isAggro = value;
+    }
 
     protected virtual void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
         agent = GetComponent<NavMeshAgent>();
+        _animator = GetComponentInChildren<Animator>();
     }
-    protected virtual void FixedUpdate()
+    protected virtual void Update()
     {
         // Implement your physics-related logic here
     }
@@ -41,6 +47,7 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
     public abstract void Idle();
     public abstract void ChasePlayer();
     public abstract void Patrool();
+    public abstract void TakeDamageAnim();
     protected bool RandomPoint(Vector3 center, float range, out Vector3 result)// Redo it in Utils
     {
 

@@ -8,5 +8,4 @@ public class AuraV2 : Ability
     public float Power;
     public float Duration;
     public string Effect;
-    public string aim;
 }

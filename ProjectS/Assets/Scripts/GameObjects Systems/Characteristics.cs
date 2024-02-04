@@ -8,15 +8,17 @@ public class Characteristics : MonoBehaviour
     public Dictionary<string, float> charDic = new Dictionary<string, float>();
     public Dictionary<string, float> secondCharDic = new Dictionary<string, float>(){};
     public Dictionary<string, float> charBuffBuffer = new Dictionary<string, float>(){};
+    public bool isUpdating=false;
+    public Action OnUpdate;
 
-    private void Start()
+    private void Awake()
     {
         secondCharDic.Add("MovementSpeed",0);
         secondCharDic.Add("Defense",0);
         secondCharDic.Add("EvaidChance",0);
-        secondCharDic.Add("MaxMana",0);
-        secondCharDic.Add("MaxHealth",0);
-        secondCharDic.Add("MaxStamina",0);
+        secondCharDic.Add("MaxMana",100);
+        secondCharDic.Add("MaxHealth",100);
+        secondCharDic.Add("MaxStamina",100);
         secondCharDic.Add("ManaRegen",0);
         secondCharDic.Add("StaminaRegen",0);
         //
@@ -30,10 +32,16 @@ public class Characteristics : MonoBehaviour
         charBuffBuffer.Add("StaminaRegen",0);
     }
 
+    private void Start()
+    {
+        
+    }
+    //Попробовть Callback
     private void FixedUpdate()
     {
+        
         // MovementSpeed and MaxStamina 
-        secondCharDic["MovementSpeed"] = charDic["Strength"] * 0.15f+charDic["Agility"]*0.5f+charBuffBuffer["MovementSpeed"];
+        secondCharDic["MovementSpeed"] = 4.5f+charBuffBuffer["MovementSpeed"];
         secondCharDic["MaxStamina"] = charDic["Endurance"] * 7+charBuffBuffer["MaxStamina"];
 
         //  Defense and EvaidChance 
@@ -43,7 +51,19 @@ public class Characteristics : MonoBehaviour
         //  Mana , Health , Regen
         secondCharDic["MaxMana"] = charDic["Intellect"] * 5+charBuffBuffer["MaxMana"];
         secondCharDic["MaxHealth"] = charDic["Endurance"] * 10+charBuffBuffer["MaxHealth"];
-        secondCharDic["ManaRegen"] = charDic["Intellect"] * 0.05f*charDic["Recovery"]+charBuffBuffer["ManaRegen"];
+        secondCharDic["ManaRegen"] = charDic["Intellect"] * 0.0075f*charDic["Recovery"]+charBuffBuffer["ManaRegen"];
         secondCharDic["StaminaRegen"] = charDic["Endurance"] * 0.05f*charDic["Recovery"]+charBuffBuffer["StaminaRegen"];
+        if (!isUpdating)
+        {
+            StartCoroutine(CharacteristicUpdateCouroutine(OnUpdate));
+        }
+    }
+
+    public IEnumerator CharacteristicUpdateCouroutine(Action callback=null)
+    {
+        isUpdating = true;
+        if (callback != null) callback();
+        isUpdating = false;
+        yield return null;
     }
 }

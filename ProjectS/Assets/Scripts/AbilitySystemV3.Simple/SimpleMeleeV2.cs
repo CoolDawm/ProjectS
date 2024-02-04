@@ -7,7 +7,7 @@ public class SimpleMeleeV2 : Ability
 {
     public float meleeDamage;
     public float meleeRange;
-    public string aim;
+
     public override void Activate(GameObject user, CoroutineRunner coroutineRunner)
     {
         abilityIsActive = true;
@@ -17,14 +17,25 @@ public class SimpleMeleeV2 : Ability
             Vector3 directionToTarget = collider.transform.position - user.transform.position;
             if (Vector3.Dot(user.transform.forward, directionToTarget) > 0)
             {
-                if (collider.CompareTag(aim))
+                if (user.CompareTag("Enemy"))
                 {
-                    collider.gameObject.GetComponent<HealthSystem>().TakeDamage(meleeDamage);
+                    if (collider.CompareTag(aim))
+                    {
+                        collider.GetComponent<HealthSystem>().TakeDamage(meleeDamage,Color.red);
+                    }
                 }
+                else
+                {
+                    if (collider.transform.root.CompareTag(aim))
+                    {
+                        collider.transform.root.GetComponent<HealthSystem>().TakeDamage(meleeDamage,Color.white);
+                        user.GetComponent<AbilityHolder>().GenerateMana(meleeDamage / 5);
+                    }
+                }
+
             }
         }
-        abilityIsActive = true;
+
+        abilityIsActive = false;
     }
-
-
 }

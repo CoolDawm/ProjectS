@@ -13,7 +13,12 @@ public class Ability : ScriptableObject
     public string animName;
     public float range;
     public float animTime;
+    public string aim;
     public virtual void Activate(GameObject user,CoroutineRunner coroutineRunner)
+    {
+        
+    }
+    public virtual void Activate(GameObject user,CoroutineRunner coroutineRunner,Animator animator)
     {
         
     }
