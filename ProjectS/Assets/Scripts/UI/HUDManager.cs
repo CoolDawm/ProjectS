@@ -9,6 +9,7 @@ public class HUDManager : MonoBehaviour
     private GameObject _map;
     private GameObject _character;
     private GameObject _inventory;
+    private GameObject _difficulty;
     void Start()
     {
         _playerHUD = GameObject.FindGameObjectWithTag("PlayerHUD");
@@ -16,6 +17,8 @@ public class HUDManager : MonoBehaviour
         _map = transform.Find("Map").gameObject;
         _character = transform.Find("Character").gameObject;
         _inventory = transform.Find("Inventory").gameObject;
+        _difficulty = transform.Find("Difficulty").gameObject;
+
     }
     void Update()
     {
@@ -74,6 +77,37 @@ public class HUDManager : MonoBehaviour
                 Cursor.visible = true;
                 _inventory.SetActive(true);
             }
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (_difficulty.activeSelf)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                _difficulty.SetActive(false);
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                _difficulty.SetActive(true);
+            }
+        }
+    }
+    //Need to fix (reason-probably shitcode)
+    public void ShowOrCloseWindow()
+    {
+        if (_difficulty.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            _difficulty.SetActive(false);
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            _difficulty.SetActive(true);
         }
     }
 }

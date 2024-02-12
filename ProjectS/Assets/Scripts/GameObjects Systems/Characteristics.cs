@@ -16,9 +16,9 @@ public class Characteristics : MonoBehaviour
         secondCharDic.Add("MovementSpeed",0);
         secondCharDic.Add("Defense",0);
         secondCharDic.Add("EvaidChance",0);
-        secondCharDic.Add("MaxMana",100);
-        secondCharDic.Add("MaxHealth",100);
-        secondCharDic.Add("MaxStamina",100);
+        secondCharDic.Add("MaxMana",1000);
+        secondCharDic.Add("MaxHealth",1000);
+        secondCharDic.Add("MaxStamina",1000);
         secondCharDic.Add("ManaRegen",0);
         secondCharDic.Add("StaminaRegen",0);
         //
@@ -32,18 +32,14 @@ public class Characteristics : MonoBehaviour
         charBuffBuffer.Add("StaminaRegen",0);
     }
 
-    private void Start()
-    {
-        
-    }
-    //Попробовть Callback
     private void FixedUpdate()
     {
         
         // MovementSpeed and MaxStamina 
         secondCharDic["MovementSpeed"] = 4.5f+charBuffBuffer["MovementSpeed"];
         secondCharDic["MaxStamina"] = charDic["Endurance"] * 7+charBuffBuffer["MaxStamina"];
-
+        
+        
         //  Defense and EvaidChance 
         secondCharDic["Defense"] = charDic["Endurance"] * 0.4f+charBuffBuffer["Defense"];
         secondCharDic["EvaidChance"] = charDic["Agility"] * 0.4f+charDic["Intellect"] * 0.05f+charBuffBuffer["EvaidChance"];

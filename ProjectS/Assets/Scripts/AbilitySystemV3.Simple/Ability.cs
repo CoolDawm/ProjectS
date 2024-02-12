@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ability : ScriptableObject
 {
-    [HideInInspector] public bool abilityIsActive = false; 
+    public bool abilityIsActive = false; 
     public new string name;
     public float manaCost;
     public float cooldown;

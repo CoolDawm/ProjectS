@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BossBehaviour : MonoBehaviour, IEnemy, IEnemyMovement,IEnemyAbilitiesUse
+public abstract class BossBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
 {
     [SerializeField]
     protected List<Ability> abilityList;
@@ -10,8 +10,7 @@ public abstract class BossBehaviour : MonoBehaviour, IEnemy, IEnemyMovement,IEne
     protected float _detectionRadius = 5f;
     [SerializeField]
     private float _aggroRadius = 10f;
-    [SerializeField]
-    protected float _abilityCooldown = 0f;
+
     protected GameObject _player;
     protected Characteristics _characteristics; 
     protected Animator _animator;
@@ -21,7 +20,6 @@ public abstract class BossBehaviour : MonoBehaviour, IEnemy, IEnemyMovement,IEne
     // Implementing properties from IEnemy
     public float detectionRadius { get { return _detectionRadius; } }
     public float aggroRadius { get { return _aggroRadius; } }
-    public float abilityCooldown { get { return _abilityCooldown; } }
     // Implementing properties from IEnemyMovement
     
 

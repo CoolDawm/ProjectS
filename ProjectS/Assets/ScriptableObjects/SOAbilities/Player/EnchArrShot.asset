@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc78329b982b8144190a85b678da6ada, type: 3}
+  m_Name: EnchArrShot
+  m_EditorClassIdentifier: 
+  abilityIsActive: 0
+  name: 
+  manaCost: 7.5
+  cooldown: 3
+  abilityImage: {fileID: 0}
+  description: 
+  animName: BowShot
+  range: 25
+  animTime: 0.5
+  aim: Enemy
+  projectilePrefab: {fileID: 3108555739249145170, guid: 1c881997480e6254d976ffd58b0f6f07, type: 3}
+  projectileSpeed: 25

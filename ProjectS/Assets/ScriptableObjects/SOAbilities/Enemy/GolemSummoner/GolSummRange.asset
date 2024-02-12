@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e86b235c71a31b4eb49fd59a65eab3b, type: 3}
+  m_Name: GolSummRange
+  m_EditorClassIdentifier: 
+  abilityIsActive: 0
+  name: 
+  manaCost: 0
+  cooldown: 0
+  abilityImage: {fileID: 0}
+  description: 
+  animName: Cast Spell
+  range: 0
+  animTime: 1
+  aim: Player
+  projectilePrefab: {fileID: 1570859793364038, guid: f77360d9303e5364e8810872e72352cc, type: 3}
+  projectileSpeed: 15

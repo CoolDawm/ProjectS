@@ -12,44 +12,66 @@ public class HealthSystem : MonoBehaviour
     public float currentHealth;
     public float maxShield= 50;
     public float currentShield;
-    public FloatTextManager _floatingTextManager;
+    public FloatTextManager floatingTextManager;
     public Action OnDeath;
     public Action OnTakeDamage;
-    private HealthBar _healthBar;
+    public HealthBar healthBar { get; private set; }
     private string _objectTag;
+    private Characteristics _characteristics;
+    private Utilities _utilities=new Utilities();
     void Start()
     {
+        _characteristics = GetComponent<Characteristics>();
+        maxHealth = _characteristics.secondCharDic["MaxHealth"];
         currentHealth = maxHealth;
         
         _objectTag = gameObject.tag;
         if (_objectTag == "Player")
         {
-            _healthBar = GameObject.FindWithTag("PlayerHUD").GetComponent<HealthBar>();
+            healthBar = GameObject.FindWithTag("PlayerHUD").GetComponent<HealthBar>();
         }
         else
         {
-            _healthBar = gameObject.GetComponentInChildren<HealthBar>();
+            healthBar = gameObject.GetComponentInChildren<HealthBar>();
         }
-        _floatingTextManager = GameObject.FindGameObjectWithTag("FloatingTextManager").GetComponent<FloatTextManager>();
-        _healthBar.UpdateHealthBar(maxHealth, currentHealth);
+        floatingTextManager = GameObject.FindGameObjectWithTag("FloatingTextManager").GetComponent<FloatTextManager>();
+        InvokeRepeating("UpdateHealth",2,1);
     }
-    public void IncreaseCurrentHealth(float hp) {
-        if (currentHealth + hp > maxHealth)
+    public void IncreaseCurrentHealth(float hp)
+    {
+
+        if (currentHealth+hp> maxHealth)
         {
             currentHealth = maxHealth;
-            _healthBar.UpdateHealthBar(maxHealth, currentHealth);
-            WorNotification(Color.red, "+"+hp+"HP");
+            healthBar.UpdateHealthBar(maxHealth, currentHealth,gameObject.tag);
         }
         else
         {
             currentHealth += hp;
-            _healthBar.UpdateHealthBar(maxHealth, currentHealth);
-             WorNotification(Color.red, "+"+hp+"HP");
+            healthBar.UpdateHealthBar(maxHealth, currentHealth,gameObject.tag);
+
+        }
+        WorNotification(Color.red, "+" + hp + "HP");
+
+    }
+
+    public void UpdateHealth()
+    {
+        maxHealth = _characteristics.secondCharDic["MaxHealth"];
+        if (currentHealth> maxHealth)
+        {
+            currentHealth = maxHealth;
         }
     }
+
     public void TakeDamage(float damageAmount,Color color)
     {
-        float defense = GetComponent<Characteristics>().secondCharDic["Defense"];
+        if (_utilities.CalculateChance(_characteristics.secondCharDic["EvaidChance"]))
+        {
+            WorNotification(Color.blue, "Dodge");
+            return;
+        }
+        float defense = _characteristics.secondCharDic["Defense"];
         damageAmount -= defense * 0.3f;
         if (_objectTag == "Player")
         {
@@ -79,8 +101,8 @@ public class HealthSystem : MonoBehaviour
                         OnTakeDamage?.Invoke();
                 }
                 NumNotification(color,damageAmount);
-                _healthBar.UpdateHealthBar(maxHealth, currentHealth);
-                _healthBar.UpdateShieldBar(maxShield, currentShield);
+                healthBar.UpdateShieldBar(maxShield, currentShield);
+                healthBar.UpdateHealthBar(maxHealth, currentHealth,gameObject.tag);
                 if (currentHealth <= 0)
                 {
                     Die();
@@ -109,8 +131,8 @@ public class HealthSystem : MonoBehaviour
                 currentHealth -= damageAmount;
             }
             NumNotification(color,damageAmount);
-            _healthBar.UpdateHealthBar(maxHealth, currentHealth);
-            _healthBar.UpdateShieldBar(maxShield, currentShield);
+            healthBar.UpdateShieldBar(maxShield, currentShield);
+            healthBar.UpdateHealthBar(maxHealth, currentHealth,gameObject.tag);
             if (currentHealth <= 0)
             {
                 Die();
@@ -121,12 +143,12 @@ public class HealthSystem : MonoBehaviour
 
     public void NumNotification(Color color,float number)
     {
-        _floatingTextManager.ShowFloatingNumbers(gameObject.transform,number,color);
+        floatingTextManager.ShowFloatingNumbers(gameObject.transform,number,color);
     }
 
     public void WorNotification(Color color,string word)
     {
-        _floatingTextManager.ShowFloatingText(gameObject.transform,word,color);
+        floatingTextManager.ShowFloatingText(gameObject.transform,word,color);
     }
     public void ShieldCharge(float shield)
     {
@@ -135,13 +157,13 @@ public class HealthSystem : MonoBehaviour
         {
             currentShield= maxShield;
         }
-        _floatingTextManager.ShowFloatingText(gameObject.transform,"Shield Charged",Color.blue);
-        _healthBar.UpdateShieldBar(maxShield, currentShield);
+        floatingTextManager.ShowFloatingText(gameObject.transform,"Shield Charged",Color.blue);
+        healthBar.UpdateShieldBar(maxShield, currentShield);
     }
     private void Die()
     {
         OnDeath?.Invoke();
-        _floatingTextManager.ShowFloatingText(gameObject.transform,"Died",Color.black);
+        floatingTextManager.ShowFloatingText(gameObject.transform,"Died",Color.black);
     }
 }
 

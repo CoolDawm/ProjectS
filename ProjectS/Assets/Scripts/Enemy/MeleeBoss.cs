@@ -5,19 +5,24 @@ using UnityEngine.Events;
 
 public class MeleeBoss : BossBehaviour
 {
-    [SerializeField]
+    private float _mana;
+    private HealthSystem _healthSystem;
+    private float _abilityCooldown =0;
     private float _attackCooldown = 0;
     private NavMeshAgent _agent;
+    private bool _isUsingAb=false;
+    private float _distance;
+
     protected override void Start()
     {
         base.Start();
         _agent = GetComponent<NavMeshAgent>();
         _attackRange = 15f;
-        HealthSystem healthSystem = GetComponent<HealthSystem>();
+        _healthSystem = GetComponent<HealthSystem>();
         _characteristics=gameObject.GetComponent<Characteristics>();
         //_characteristics.charBuffBuffer["MovementSpeed"] = 10f;
-        healthSystem.OnDeath += Die;
-        healthSystem.OnTakeDamage+=TakeDamageAnim;
+        _healthSystem.OnDeath += Die;
+        _healthSystem.OnTakeDamage+=TakeDamageAnim;
     }
 
     protected override void FixedUpdate()
@@ -35,42 +40,67 @@ public class MeleeBoss : BossBehaviour
             _animator.SetBool("Move Forward Fast", false);
 
         }
-        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius||isAggro)
+        _distance = Vector3.Distance(transform.position, _player.transform.position);
+        if (_distance <= _detectionRadius||isAggro)
         {
 
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+            if (_distance <= _attackRange)
             {
                 Idle();
                 _agent.SetDestination(transform.position);
                 _attackCooldown += Time.deltaTime;
                 _abilityCooldown += Time.deltaTime;
-                
-                if (_attackCooldown >= 5f)
+                _isUsingAb = CheckForUsing();
+
+                if (_attackCooldown >= 5f && !_isUsingAb)
                 {
                     Vector3 targetDirection = _player.transform.position - transform.position;
                     Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                     transform.rotation =
-                        Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 3);
+                        Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 1.5f);
                     _attackCooldown = 0;
                     Attack();
                 }
 
-                if (_abilityCooldown >= 8f)
+                if (_abilityCooldown >= 8f && !_isUsingAb && _mana >= abilityList[2].manaCost)
                 {
                     Vector3 targetDirection = _player.transform.position - transform.position;
                     Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                     transform.rotation =
                         Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 3);
                     _abilityCooldown = 0;
-                    int randomValue = UnityEngine.Random.Range(1, abilityList.Count-1);
-                    UseAbility(randomValue);
+                    _attackCooldown = 0;
+                    _mana -= abilityList[2].manaCost;
+                    UseAbility(2);
                 }
+                else if (_abilityCooldown >= 8f && !_isUsingAb && _mana >= abilityList[1].manaCost)
+                {
+                    Vector3 targetDirection = _player.transform.position - transform.position;
+                    Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                    transform.rotation =
+                        Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 3);
+                    _abilityCooldown = 0;
+                    _attackCooldown = 0;
+                    _mana -= abilityList[1].manaCost;
+                    UseAbility(1);
+                }
+
             }
             else
             {
                 ChasePlayer();
             }
         }
+        if (_mana > _characteristics.secondCharDic["MaxMana"])
+        {
+            _mana = _characteristics.secondCharDic["MaxMana"];
+        }
+        else
+        {
+            _mana += Time.deltaTime * _characteristics.secondCharDic["ManaRegen"]*25;
+        }
+        _healthSystem.healthBar.UpdateManaBar(_characteristics.secondCharDic["MaxMana"],_mana);
+        _isUsingAb = false;
     }
    
     public override void ChasePlayer()
@@ -82,7 +112,18 @@ public class MeleeBoss : BossBehaviour
     {
         StopAllCoroutines();
     }
-    
+    private bool CheckForUsing()
+    {
+        foreach (Ability ab in abilityList)
+        {
+            if (ab.abilityIsActive)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
     public override void TakeDamageAnim()
     {
         isAggro = true;
@@ -90,33 +131,13 @@ public class MeleeBoss : BossBehaviour
     }
     public override void UseAbility(int index)
     {
-        _animator.SetTrigger(abilityList[index].animName);
-        abilityList[index].Activate(gameObject,_coroutineRunner);
+        Debug.Log("Using");
+        abilityList[index].Activate(gameObject,_coroutineRunner,_animator);
     }
-    /*
-    IEnumerator ActivateAbility(int index)
-    {
-        _animator.SetTrigger(abilityList[index].animName);
-        Debug.Log("Activate");
-        yield return new WaitForSeconds(abilityList[index].animTime);
-        Debug.Log("End");
-        abilityList[index].Activate(gameObject, _coroutineRunner);
-
-        
-         float timer = 0;
-        _animator.SetTrigger(abilityList[index].animName);
-        while (timer<=abilityList[index].animTime)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        abilityList[index].Activate(gameObject,_coroutineRunner);
-        Debug.Log("Attack");
-    }*/
+    
     public override void Attack()
     {
-        _animator.SetTrigger(abilityList[0].animName);
-        abilityList[0].Activate(gameObject,_coroutineRunner);
+        abilityList[0].Activate(gameObject,_coroutineRunner,_animator);
     }
     public override void Die()
     {

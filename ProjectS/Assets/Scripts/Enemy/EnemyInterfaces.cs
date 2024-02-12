@@ -8,11 +8,7 @@ public interface IEnemy
     void Attack();
     void Die();
 }
-public interface IEnemyAbilitiesUse
-{
-    float abilityCooldown { get; }
-    void UseAbility(int index);
-}
+
 public interface IEnemyMovement
 {
     void ChasePlayer();

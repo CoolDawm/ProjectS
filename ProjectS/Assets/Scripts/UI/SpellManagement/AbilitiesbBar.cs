@@ -13,7 +13,7 @@ public class AbilitiesbBar : MonoBehaviour
     private bool spellExist;
     void Start()
     {
-        GameObject spellSlot = Resources.Load<GameObject>("Prefabs/UI/Spell");
+        GameObject spellSlot = Resources.Load<GameObject>("UI/Spell");
         abilityHolder = GameObject.FindWithTag("Player").GetComponent<AbilityHolder>();
         _timers = abilityHolder.timers;
         List<Ability> abilityList=abilityHolder.GetAbilitiesList();

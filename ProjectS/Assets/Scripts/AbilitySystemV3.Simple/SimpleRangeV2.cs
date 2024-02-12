@@ -1,78 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
 [CreateAssetMenu]
 public class SimpleRangeV2 : Ability
 {
-    public GameObject projectilePrefab;
-    public float projectileSpeed = 100f;
-    private Transform shootingPosition;
-    public override void Activate(GameObject user,CoroutineRunner coroutineRunner)
-   {
-       if (shootingPosition == null)
-       {
-           shootingPosition = user.transform.Find("ShootingPosition");
-       }
-       Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-       Ray ray = Camera.main.ScreenPointToRay(screenCenter);
-       RaycastHit hit;
-       if (Physics.Raycast(ray, out hit))
-       {
-           Vector3 targetPosition = hit.point;
-           GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
-           projectile.GetComponent<ProjectileScript>().aim = aim;
-           projectile.GetComponent<ProjectileScript>().range = range;
-           Vector3 direction = (targetPosition - shootingPosition.position).normalized;
-           projectile.GetComponent<Rigidbody>().velocity = direction * projectileSpeed;
-       }
-        /*abilityIsActive = true;
-        if (shootingPosition == null)
+    [SerializeField] 
+    private GameObject projectilePrefab;
+    [SerializeField] 
+    private float projectileSpeed = 100f;
+    private GameObject _shootingPosition;
+
+    public override void Activate(GameObject user, CoroutineRunner coroutineRunner)
+    {
+        if (_shootingPosition == null)
         {
-            shootingPosition = user.transform.Find("ShootingPosition");
+            _shootingPosition = user.GetComponentsInChildren<Transform>()
+                .FirstOrDefault(c => c.gameObject.name == "ShootingPosition")?.gameObject;
         }
-        Collider[] hitColliders = Physics.OverlapSphere(user.transform.position, range);
-        GameObject closestEnemy = null;
+        Collider[] colliders = Physics.OverlapSphere(user.transform.position, range);
+        Collider closestCollider = null;
         float closestDistance = Mathf.Infinity;
-        foreach (var hitCollider in hitColliders)
+        
+        foreach (Collider collider in colliders)
         {
-            if (hitCollider.CompareTag("Enemy"))
+            Vector3 directionToTarget = collider.transform.position - user.transform.position;
+            float distanceToTarget = directionToTarget.magnitude;
+            
+            if (distanceToTarget < closestDistance && Vector3.Dot(user.transform.forward, directionToTarget) > 0)
             {
-                Vector3 directionToEnemy = (hitCollider.transform.position - user.transform.position).normalized;
-                Debug.Log(hitCollider.gameObject.name);
-                if (Vector3.Angle(user.transform.forward, directionToEnemy) <= visibilityAngle * 0.5f)
+                if (collider.transform.root.CompareTag(aim) && collider is BoxCollider)
                 {
-                    float distanceToEnemy = Vector3.Distance(user.transform.position, hitCollider.transform.position);
-                    if (distanceToEnemy < closestDistance)
-                    {
-                        closestDistance = distanceToEnemy;
-                        closestEnemy = hitCollider.gameObject;
-                    }
+                    closestCollider = collider;
+                    closestDistance = distanceToTarget;
                 }
             }
         }
-
-        if (closestEnemy != null)
+        GameObject projectile = Instantiate(projectilePrefab, _shootingPosition.transform.position, Quaternion.identity);
+        ProjectileScript prScr = projectile.GetComponentInChildren<ProjectileScript>();
+        if (closestCollider != null)
         {
-            // Activator rotation
-            Debug.Log("We in");
-            closestEnemy.GetComponent<HealthSystem>().TakeDamage(15f);
-            /*
-            Vector3 direction = closestEnemy.transform.position - user.transform.position;
-            user.transform.rotation = Quaternion.LookRotation(direction);
-            GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
-            Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
-            projectileRigidbody.velocity = shootingPosition.transform.forward * projectileSpeed;
-            Destroy(projectile, projectileLifeTime);* /
+            
+            prScr.aim = aim;
+            prScr.range = range;
+            Vector3 direction = (closestCollider.transform.position - _shootingPosition.transform.position).normalized;
+            projectile.transform.rotation = Quaternion.LookRotation(direction);
+            projectile.transform.Rotate(90, 0, 0);
+            projectile.GetComponentInChildren<Rigidbody>().velocity = direction * projectileSpeed;
         }
         else
         {
-            Debug.Log("We not in");
-            /*
-            GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
-            Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
-            projectileRigidbody.velocity = shootingPosition.transform.forward * projectileSpeed;
-            Destroy(projectile, projectileLifeTime);* /
+            prScr.aim = aim;
+            prScr.range = range;
+            Vector3 direction = user.transform.forward;
+            projectile.transform.rotation = Quaternion.LookRotation(direction);
+            projectile.transform.Rotate(90, 0, 0);
+            projectile.GetComponentInChildren<Rigidbody>().velocity = direction * projectileSpeed;
         }
-        abilityIsActive = false;*/
     }
+    
 }

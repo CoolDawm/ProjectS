@@ -6,16 +6,31 @@ using UnityEngine;
 public class CharacteristicsLoader : MonoBehaviour
 {
     private Characteristics _characteristics;
-
     [SerializeField] private List<String> dirKeys;
     [SerializeField] private List<float> dirValues;
+
+    public float modifier = 1;
     // Start is called before the first frame update
     void Start()
     {
         _characteristics = gameObject.GetComponent<Characteristics>();
-        for (int i = 0; i <dirKeys.Count; i++)
+        modifier = GameObject.FindGameObjectWithTag("DifficultyManager").GetComponent<DifficultyManager>().modifier;
+        Debug.Log(modifier);
+        if (gameObject.CompareTag("Enemy"))
         {
-            _characteristics.charDic.Add(dirKeys[i],dirValues[i]);
+            for (int i = 0; i <dirKeys.Count; i++)
+            {
+                _characteristics.charDic.Add(dirKeys[i],dirValues[i]*modifier);
+            }
         }
+        else
+        {
+            Debug.Log("Player");
+            for (int i = 0; i <dirKeys.Count; i++)
+            {
+                _characteristics.charDic.Add(dirKeys[i],dirValues[i]);
+            }
+        }
+        
     }
 }

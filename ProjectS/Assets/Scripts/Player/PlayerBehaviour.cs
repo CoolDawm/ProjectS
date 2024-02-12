@@ -38,6 +38,19 @@ public class PlayerBehaviour : MonoBehaviour
     private Vector2 _movement;
     private float _fallDistance=0;
     private bool moveStateRun=true;
+    //Parameters for animator
+    private static readonly int RightWalk = Animator.StringToHash("RightWalk");
+    private static readonly int StreightWalk = Animator.StringToHash("StreightWalk");
+    private static readonly int LeftWalk = Animator.StringToHash("LeftWalk");
+    private static readonly int BackWalk = Animator.StringToHash("BackWalk");
+    private static readonly int DashDir = Animator.StringToHash("DashDir");
+    private static readonly int Dash1 = Animator.StringToHash("Dash");
+    private static readonly int Speed = Animator.StringToHash("Speed");
+    private static readonly int Grounded = Animator.StringToHash("IsGrounded");
+    private static readonly int IsFalling = Animator.StringToHash("IsFalling");
+    private static readonly int Jump = Animator.StringToHash("Jump");
+    private static readonly int IsGetHurt = Animator.StringToHash("IsGetHurt");
+
     private void OnEnable()
     {
         _jumpControl.action.Enable();
@@ -67,7 +80,7 @@ public class PlayerBehaviour : MonoBehaviour
         _characteristics = gameObject.GetComponent<Characteristics>();
         _currentStamina = _characteristics.secondCharDic["MaxStamina"];
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
-        _afterDeathPanel = Resources.Load<GameObject>("Prefabs/UI/AfterDeathUICanvas");
+        _afterDeathPanel = Resources.Load<GameObject>("UI/AfterDeathUICanvas");
         healthSystem.OnDeath += Die;
         healthSystem.OnTakeDamage += TakeDamageAnim;
         _animator = GetComponent<Animator>();
@@ -108,18 +121,18 @@ public class PlayerBehaviour : MonoBehaviour
             _currentStamina -= skill.staminaCost;
             if (_movement.x > 0)
             {
-                _animator.SetFloat("DashDir", 1);
+                _animator.SetFloat(DashDir, 1);
             }else if (_movement.x < 0)
             {
-                _animator.SetFloat("DashDir", 0.75f);
+                _animator.SetFloat(DashDir, 0.75f);
             }else if (_movement.y>0)
             {
-                _animator.SetFloat("DashDir", 0);
+                _animator.SetFloat(DashDir, 0);
             }else if (_movement.y<0)
             {
-                _animator.SetFloat("DashDir", 0.25f);
+                _animator.SetFloat(DashDir, 0.25f);
             }
-            _animator.SetTrigger("Dash");
+            _animator.SetTrigger(Dash1);
         }
         
         if (_movementControl.action.triggered)
@@ -135,28 +148,28 @@ public class PlayerBehaviour : MonoBehaviour
         {
             if (_movement.x > 0&&_movement.y!<=0)
             {
-                _animator.SetBool("RightWalk", true);
-                _animator.SetBool("StreightWalk",false);
-                _animator.SetBool("LeftWalk",false);
-                _animator.SetBool("BackWalk",false);
+                _animator.SetBool(RightWalk, true);
+                _animator.SetBool(StreightWalk,false);
+                _animator.SetBool(LeftWalk,false);
+                _animator.SetBool(BackWalk,false);
             }else if (_movement.x < 0&&_movement.y!<=0)
             {
-                _animator.SetBool("LeftWalk",true);
-                _animator.SetBool("StreightWalk",false);
-                _animator.SetBool("RightWalk", false);
-                _animator.SetBool("BackWalk",false);
+                _animator.SetBool(LeftWalk,true);
+                _animator.SetBool(StreightWalk,false);
+                _animator.SetBool(RightWalk, false);
+                _animator.SetBool(BackWalk,false);
             }else if (_movement.y>0)
             {
-                _animator.SetBool("RightWalk",false);
-                _animator.SetBool("LeftWalk",false);
-                _animator.SetBool("StreightWalk",true);
-                _animator.SetBool("BackWalk",false);
+                _animator.SetBool(RightWalk,false);
+                _animator.SetBool(LeftWalk,false);
+                _animator.SetBool(StreightWalk,true);
+                _animator.SetBool(BackWalk,false);
             }else if (_movement.y<0)
             {
-                _animator.SetBool("BackWalk",true);
-                _animator.SetBool("RightWalk",false);
-                _animator.SetBool("LeftWalk",false);
-                _animator.SetBool("StreightWalk",false);
+                _animator.SetBool(BackWalk,true);
+                _animator.SetBool(RightWalk,false);
+                _animator.SetBool(LeftWalk,false);
+                _animator.SetBool(StreightWalk,false);
             }
             if (!moveStateRun  && _currentStamina > 0)
             {
@@ -189,15 +202,15 @@ public class PlayerBehaviour : MonoBehaviour
                     _animBlend = 1f;
                 }
             }
-            _animator.SetFloat("Speed", Mathf.Lerp(_previousBlend, _animBlend, Time.deltaTime * (_smoothness + 2)));
-            _previousBlend = _animator.GetFloat("Speed");
+            _animator.SetFloat(Speed, Mathf.Lerp(_previousBlend, _animBlend, Time.deltaTime * (_smoothness + 2)));
+            _previousBlend = _animator.GetFloat(Speed);
             _previousSpeed = _currentSpeed;
             
         }
         else
         {
-            _animator.SetFloat("Speed", Mathf.Lerp(_previousBlend, 0, Time.deltaTime*(_smoothness + 3)));
-            _previousBlend = _animator.GetFloat("Speed");
+            _animator.SetFloat(Speed, Mathf.Lerp(_previousBlend, 0, Time.deltaTime*(_smoothness + 3)));
+            _previousBlend = _animator.GetFloat(Speed);
             _currentSpeed = 0;
         }
         //Stamina
@@ -244,7 +257,7 @@ public class PlayerBehaviour : MonoBehaviour
             {
                
                 Debug.DrawRay(transform.position, Vector3.down, Color.magenta);
-                _animator.SetBool("IsGrounded", true);
+                _animator.SetBool(Grounded, true);
                 _fallDistance = 0f;
                 _groundedPlayer = true;
                 return true;
@@ -252,7 +265,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         _groundedPlayer = false;
-        _animator.SetBool("IsGrounded", false);//
+        _animator.SetBool(Grounded, false);//
         return false;
     }
     private void JumpAndGravity()
@@ -260,7 +273,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (IsGrounded())
         {
             
-            _animator.SetBool("IsFalling",false);
+            _animator.SetBool(IsFalling,false);
             // stop  velocity dropping infinitely when grounded
             if (_verticalVelocity < 0.0f)
             {
@@ -270,7 +283,7 @@ public class PlayerBehaviour : MonoBehaviour
             if (_jumpControl.action.triggered)
             {
                 //_animator.SetBool("IsJumping",true);
-                _animator.SetTrigger("Jump");
+                _animator.SetTrigger(Jump);
                 // the square root of H * -2 * G = how much velocity needed to reach desired height
                 _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
             }
@@ -292,12 +305,12 @@ public class PlayerBehaviour : MonoBehaviour
             }   
             if (_fallDistance > 2f && isFalling==true)
             {
-                _animator.SetBool("IsFalling", true);
+                _animator.SetBool(IsFalling, true);
                 //_animator.SetBool("IsJumping", false);
             }
             else
             {
-                _animator.SetBool("IsFalling", false);
+                _animator.SetBool(IsFalling, false);
                 //_animator.SetBool("IsJumping", false);
             }
         }
@@ -316,7 +329,7 @@ public class PlayerBehaviour : MonoBehaviour
     //Animations Triggers
     public void TakeDamageAnim()
     {
-        _animator.SetTrigger("IsGetHurt");
+        _animator.SetTrigger(IsGetHurt);
     }
 
     public void AttackAnim(String attackTrigger)

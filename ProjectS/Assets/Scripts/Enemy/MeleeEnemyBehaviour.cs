@@ -8,20 +8,24 @@ using UnityEngine.InputSystem;
 public class MeleeEnemyBehaviour : EnemyBehaviour
 {
     [SerializeField] 
-    private float _attackCooldown =0;
-    [SerializeField] 
-    private Ability _ability;
+    private List<Ability> abilityList;
     private CoroutineRunner _coroutineRunner;
+    private float _mana;
+    private HealthSystem _healthSystem;
+    private bool _isUsingAb=false;
+    private float _attackCooldown =0;
+    private float _abilityCooldown =0;
+    private float _distance;
     protected override void Start()
     {
         base.Start();
         agent = GetComponent<NavMeshAgent>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
-        HealthSystem healthSystem = GetComponent<HealthSystem>();
-        healthSystem.OnDeath += Die;
-        healthSystem.OnTakeDamage+=TakeDamageAnim;
+        _healthSystem = GetComponent<HealthSystem>();
+        _healthSystem.OnDeath += Die;
+        _healthSystem.OnTakeDamage+=TakeDamageAnim;
+        _mana = _characteristics.secondCharDic["MaxMana"];
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
-        _attackRange = 2.5f;
     }
     
     protected override void Update()
@@ -30,7 +34,7 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
         {
             return;
         }
-
+        
         if (agent.hasPath)
         {
             _animator.SetBool("Walk Forward", true);
@@ -40,28 +44,44 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
             _animator.SetBool("Walk Forward", false);
 
         }
-        
-        
-        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius||_isAggro)
+        _distance = Vector3.Distance(transform.position, _player.transform.position);
+        if (_distance <= _detectionRadius||_isAggro)
         {
+            _abilityCooldown += Time.deltaTime;
+            _attackCooldown += Time.deltaTime;
             _isAggro = true;
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+            _isUsingAb = CheckForUsing();
+            if (_distance<=abilityList[0].range)
             {
                 Idle();
                 agent.SetDestination(transform.position);
                 Vector3 targetDirection = _player.transform.position - transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation =
-                    Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 3);
-                _attackCooldown += Time.deltaTime;
-                if (_attackCooldown > 3f)
+                    Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 6);
+                if ( _attackCooldown > 2f && !_isUsingAb)
                 {
                     _attackCooldown = 0;
                     Attack();
                 }
+                
+            }
+            else if (_distance<=abilityList[1].range   && !_isUsingAb && _mana>=abilityList[1].manaCost && _abilityCooldown>5f)
+            {
+                Idle();
+                agent.SetDestination(transform.position);
+                Vector3 targetDirection = _player.transform.position - transform.position;
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                transform.rotation =
+                    Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 6);
+                _mana -= abilityList[1].manaCost;
+                _attackCooldown = 0;
+                _abilityCooldown = 0;
+                UseAbility(1);
             }
             else
             {
+                
                 ChasePlayer();
             }
         }
@@ -69,6 +89,16 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
         {
             Patrool();
         }
+        if (_mana > _characteristics.secondCharDic["MaxMana"])
+        {
+            _mana = _characteristics.secondCharDic["MaxMana"];
+        }
+        else
+        {
+            _mana += Time.deltaTime * _characteristics.secondCharDic["ManaRegen"]*25;
+        }
+        _healthSystem.healthBar.UpdateManaBar(_characteristics.secondCharDic["MaxMana"],_mana);
+        _isUsingAb = false;
     }
     public override void ChasePlayer()
     {
@@ -98,10 +128,22 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     {
         StopAllCoroutines();
     }
-   
+
+    private bool CheckForUsing()
+    {
+        foreach (Ability ab in abilityList)
+        {
+            if (ab.abilityIsActive)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
     public override void Attack()
     {
-        _ability.Activate(gameObject,_coroutineRunner,_animator);
+        abilityList[0].Activate(gameObject,_coroutineRunner,_animator);
     }
 
     public override void Die()
@@ -113,16 +155,8 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
         _isAggro = true;
         _animator.SetTrigger("Take Damage");
     }
-    IEnumerator ActivateAbility()
+    public void UseAbility(int index)
     {
-        float timer = 0;
-        _animator.SetTrigger(_ability.animName);
-        while (timer<=_ability.animTime)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        
-        _ability.Activate(gameObject,_coroutineRunner);
+        abilityList[index].Activate(gameObject,_coroutineRunner,_animator);
     }
 }

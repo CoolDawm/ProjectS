@@ -7,24 +7,31 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
 {
     
     [SerializeField]
-    private float _rotationSpeed = 3f;
+    private float _rotationSpeed = 6f;
     [SerializeField] 
-    private Ability _ability;
+    private List<Ability> _abilityList;
     [SerializeField]
     private GameObject _summonPrefab;
     private CoroutineRunner _coroutineRunner;
     private NavMeshAgent _agent;
     private float _attackCooldown = 0f;
+    private float _abilityCooldown =0;
+    private float _distance;
+    private float _mana;
+    private bool _isUsingAb=false;
+    private HealthSystem _healthSystem;
     protected override void Start()
     {
         base.Start();
         _attackRange = 13f;
         _detectionRadius = 15f;
         _agent = GetComponent<NavMeshAgent>();
-        HealthSystem healthSystem = GetComponent<HealthSystem>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
-        healthSystem.OnTakeDamage+=TakeDamageAnim;
-        healthSystem.OnDeath += Die;
+        _healthSystem = GetComponent<HealthSystem>();
+        _healthSystem.OnTakeDamage+=TakeDamageAnim;
+        _healthSystem.OnDeath += Die;
+        _mana = _characteristics.secondCharDic["MaxMana"];
+        _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
     }
 
     protected override void Update()
@@ -42,21 +49,34 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
             _animator.SetBool("Walk Forward", false);
 
         }
-        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius)
+        _distance = Vector3.Distance(transform.position, _player.transform.position);
+        if (_distance <= _detectionRadius)
         {
             _isAggro = true;
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+            if (_distance <= _attackRange)
             {
                 
                 _agent.SetDestination(transform.position);
                 _attackCooldown += Time.deltaTime;
+                _abilityCooldown+= Time.deltaTime;
                 Vector3 targetDirection = _player.transform.position - transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
-                if (_attackCooldown > 6f)
+                transform.rotation =
+                    Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
+                _isUsingAb = CheckForUsing();
+                if (_abilityCooldown > 6f&& _abilityList[1].manaCost<=_mana&& !_isUsingAb)
+                {
+                    _mana -= _abilityList[1].manaCost;
+                    _attackCooldown = 0;
+                    _abilityCooldown = 0;
+                    UseAbility(1);
+
+                    //Attack();
+                }
+                else if (_attackCooldown >= 2 && !_isUsingAb)
                 {
                     _attackCooldown = 0;
-                    Attack();
+                    UseAbility(0);
                 }
             }
             else
@@ -68,8 +88,16 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
         {
             Patrool();
         }
-
-
+        if (_mana > _characteristics.secondCharDic["MaxMana"])
+        {
+            _mana = _characteristics.secondCharDic["MaxMana"];
+        }
+        else
+        {
+            _mana += Time.deltaTime * _characteristics.secondCharDic["ManaRegen"]*25;
+        }
+        _healthSystem.healthBar.UpdateManaBar(_characteristics.secondCharDic["MaxMana"],_mana);
+        _isUsingAb = false;
     }
     public override void Idle()
     {
@@ -78,7 +106,6 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
 
     public override void Attack()
     {
-        Debug.Log("Summon");
         Vector3 summonPosition = transform.position + Random.insideUnitSphere *5; 
         Instantiate(_summonPrefab, summonPosition, Quaternion.identity); 
     }
@@ -114,6 +141,22 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
     {
         _isAggro = true;
         _animator.SetTrigger("Take Damage");
+    }
+    private bool CheckForUsing()
+    {
+        foreach (Ability ab in _abilityList)
+        {
+            if (ab.abilityIsActive)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public void UseAbility(int index)
+    {
+        _abilityList[index].Activate(gameObject,_coroutineRunner,_animator);
     }
 }
 

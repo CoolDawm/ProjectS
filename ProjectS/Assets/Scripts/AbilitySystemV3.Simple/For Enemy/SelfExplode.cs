@@ -15,14 +15,14 @@ public class SelfExplode : Ability
     {
         abilityIsActive = true;
         _zonePosition = user.transform.position;
-        _cursorObject = Instantiate(cursorPrefab, _zonePosition, Quaternion.identity);
         coroutineRunner.StartCoroutineFunction(EnemExplodeAbilityCoroutine(user, damage));
     }
 
     IEnumerator EnemExplodeAbilityCoroutine(GameObject user, float aoeDamage)
     {
-        yield return new WaitForSeconds(1.1f);
-
+        yield return new WaitForSeconds(1f);
+        _cursorObject = Instantiate(cursorPrefab, _zonePosition, Quaternion.identity);
+        yield return new WaitForSeconds(0.2f);
         Debug.DrawRay(_zonePosition, Vector3.up, Color.red, 5f);
         Collider[] colliders = Physics.OverlapSphere(_cursorObject.transform.position, areaOfEffectRadius);
         foreach (Collider collider in colliders)

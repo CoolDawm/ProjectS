@@ -7,7 +7,9 @@ public class ProjectileScript : MonoBehaviour
 
     [SerializeField] 
     private float _damage = 15;
-    public string aim;
+    [SerializeField]
+    private bool isEnchPr = false;
+    public string aim { private get; set; }
     public float range;
     private Vector3 _initialPosition;
     
@@ -22,8 +24,24 @@ public class ProjectileScript : MonoBehaviour
         {
             if (collision.collider.transform.root.CompareTag(aim))
             {
-                    collision.collider.transform.root.gameObject.GetComponent<HealthSystem>().TakeDamage(_damage,Color.yellow);
-                    Destroy(gameObject);
+                if (isEnchPr)
+                {
+                    Collider[] colliders = Physics.OverlapSphere(collision.transform.position, 3);
+                    foreach (Collider collider in colliders)
+                    {
+                        if (collider.transform.root.gameObject.CompareTag(aim))
+                        {
+                            //collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
+                            collider.transform.root.gameObject.GetComponent<HealthSystem>().TakeDamage(_damage,Color.yellow);
+                        }
+                    }
+                }
+                else
+                {
+                    collision.collider.transform.root.gameObject.GetComponent<HealthSystem>()
+                        .TakeDamage(_damage, Color.yellow);
+                }
+                Destroy(gameObject);
             }
             else
             {
@@ -32,9 +50,7 @@ public class ProjectileScript : MonoBehaviour
         }
         else
         {
-            Debug.Log(collision.collider.name);
-            Debug.Log(collision.collider.tag);
-            if (collision.collider.CompareTag(aim))
+            if (collision.collider.CompareTag(aim)&& collision.collider is BoxCollider)
             {
                 collision.collider.gameObject.GetComponent<HealthSystem>().TakeDamage(_damage,Color.red);
                 Destroy(gameObject);

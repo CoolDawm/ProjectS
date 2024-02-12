@@ -19,9 +19,19 @@ public class HealthBar : MonoBehaviour
     private Text _staminaText;
     [SerializeField]
     private Text _manaText;
-    public void UpdateHealthBar(float maxHealth,float currentHealth)
+    private bool isUpdating=false;
+    public void UpdateHealthBar(float maxHealth,float currentHealth,string tag)
     {
-        _healthBarSprite.fillAmount = currentHealth/maxHealth;
+        if (!isUpdating)
+        {
+            StartCoroutine(UpdateBar(_healthBarSprite, currentHealth, maxHealth,tag));
+
+        }
+        else
+        {
+            //image.fillAmount = currentAm / maxAm;
+        }
+        //_healthBarSprite.fillAmount = currentHealth/maxHealth;
         _healthText.text = MathF.Round(currentHealth, 0) + "/" + maxHealth;
     }
     public void UpdateShieldBar(float maxShield, float currentShield)
@@ -38,5 +48,23 @@ public class HealthBar : MonoBehaviour
     {
         _manaBarSprite.fillAmount = currentMana / maxMana;
         _manaText.text = MathF.Round(currentMana, 0) + "/" + maxMana;
+    }
+
+    IEnumerator UpdateBar(Image image, float currentAm, float maxAm,string objTag)
+    {
+        isUpdating = true;
+        if (objTag == "Player")
+        {
+            image.fillAmount = currentAm / maxAm;
+        }
+        else
+        {
+            image.gameObject.SetActive(true);
+            image.fillAmount = currentAm / maxAm;
+            yield return new WaitForSeconds(1f);
+            Debug.Log("Update");
+            image.gameObject.SetActive(false);
+        }
+        isUpdating = false;
     }
 }

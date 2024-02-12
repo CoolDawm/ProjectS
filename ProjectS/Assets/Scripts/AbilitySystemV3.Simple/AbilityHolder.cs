@@ -11,9 +11,12 @@ public class AbilityHolder : MonoBehaviour
     private CoroutineRunner _coroutineRunner;
     private float _currentMana;
     private PlayerBehaviour _playerBehaviour;
-    private bool _canActivateAb;
     private HealthBar _healthBar;
-    //private bool _isActive=false;// for future imporvement(to not be able to use other abilities)
+    private Animator _animator;
+    [SerializeField]
+    private GameObject aim;
+    private static readonly int IsGetHurt = Animator.StringToHash("IsGetHurt");
+    //private bool _isActive=false;// for future improvement(to not be able to use other abilities)
     
     private void Start()
     {
@@ -21,6 +24,7 @@ public class AbilityHolder : MonoBehaviour
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
         _currentMana = _characteristics.secondCharDic["MaxMana"];
         _playerBehaviour = GetComponent<PlayerBehaviour>();
+        _animator = GetComponent<Animator>();
         for (int i = 0; i < abilityList.Count; i++)
         {
             Debug.Log(abilityList[i].name);
@@ -56,7 +60,6 @@ public class AbilityHolder : MonoBehaviour
     private void Update()
     {
         
-        _canActivateAb = true;
         if (Cursor.visible)
         {
             return;
@@ -69,11 +72,26 @@ public class AbilityHolder : MonoBehaviour
                 
             }
         }
+
+        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            Vector3 targetPosition = hit.point;
+            aim.transform.position = targetPosition;
+            Debug.DrawRay(targetPosition,Vector3.up, Color.red);
+        }
         
         if (Input.GetMouseButtonDown(0) && timers[0] <= 0)
         {
-            StartCoroutine(ActivateAbility(0));
-            timers[0] = abilityList[0].cooldown;
+            if (!abilityList[0].abilityIsActive)
+            {
+                StartCoroutine(ActivateAbility(0));
+                timers[0] = abilityList[0].cooldown;
+                _animator.ResetTrigger(IsGetHurt);
+            }
+            
         }
         
         if (Input.GetMouseButtonDown(1) && _currentMana >= abilityList[1].manaCost && timers[1] <= 0)
@@ -81,6 +99,8 @@ public class AbilityHolder : MonoBehaviour
             _currentMana -= abilityList[1].manaCost;
             StartCoroutine(ActivateAbility(1));
             timers[1] = abilityList[1].cooldown;
+            _animator.ResetTrigger(IsGetHurt);
+
         }
         
         if (Input.GetKeyDown(KeyCode.Alpha1) && _currentMana >= abilityList[2].manaCost && timers[2] <= 0)
@@ -88,6 +108,8 @@ public class AbilityHolder : MonoBehaviour
             _currentMana -= abilityList[2].manaCost;
             StartCoroutine(ActivateAbility(2));
             timers[2] = abilityList[2].cooldown;
+            _animator.ResetTrigger(IsGetHurt);
+
         }
         
         if (Input.GetKeyDown(KeyCode.Alpha2) && _currentMana >= abilityList[3].manaCost && timers[3] <= 0)
@@ -95,6 +117,8 @@ public class AbilityHolder : MonoBehaviour
             _currentMana -= abilityList[3].manaCost;
             StartCoroutine(ActivateAbility(3));
             timers[3] = abilityList[3].cooldown;
+            _animator.ResetTrigger(IsGetHurt);
+
         }
 
         for (int i = 0; i < timers.Length; i++)
@@ -118,9 +142,20 @@ public class AbilityHolder : MonoBehaviour
         }
         _healthBar.UpdateManaBar(_characteristics.secondCharDic["MaxMana"],_currentMana);
     }
+
+    private void RotateToAttack()
+    {
+        Transform _cameraMain = Camera.main.transform;
+        Vector3 lookDirection = _cameraMain.forward;
+        lookDirection.y = 0f;
+        Quaternion lookRotation = Quaternion.LookRotation(lookDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation,5); 
+    }
+    
     IEnumerator ActivateAbility(int index)
     {
         _playerBehaviour.AttackAnim(abilityList[index].animName);
+        RotateToAttack();
         yield return new WaitForSeconds(abilityList[index].animTime);
         abilityList[index].Activate(gameObject, _coroutineRunner);
     }

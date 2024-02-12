@@ -8,23 +8,32 @@ public class RangeEnemyBehaviour : EnemyBehaviour
     [SerializeField]
     private Transform shootingPosition;
     [SerializeField]
-    private float _rotationSpeed = 3f;
+    private float _rotationSpeed = 6f;
+    [SerializeField] 
+    private List<Ability> abilityList;
     private NavMeshAgent _agent;
     public GameObject projectilePrefab;
     private float _attackCooldown = 0f;
+    private float _abilityCooldown =0;
+    private float _distance;
     public float projectileSpeed = 10f;
-    [SerializeField] 
-    private Ability _ability;
+    private float _mana;
+    private bool _isUsingAb=false;
     private CoroutineRunner _coroutineRunner;
+    private HealthSystem _healthSystem;
+
     protected override void Start()
     {
         base.Start();
         _agent = GetComponent<NavMeshAgent>();
-        HealthSystem healthSystem = GetComponent<HealthSystem>();
+        _healthSystem = GetComponent<HealthSystem>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
-        healthSystem.OnDeath += Die;
-        healthSystem.OnTakeDamage+=TakeDamageAnim;
+        _healthSystem.OnDeath += Die;
+        _healthSystem.OnTakeDamage+=TakeDamageAnim;
         _attackRange = detectionRadius - 3;
+        _mana = _characteristics.secondCharDic["MaxMana"];
+        _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
+
     }
 
     protected override void Update()
@@ -42,22 +51,34 @@ public class RangeEnemyBehaviour : EnemyBehaviour
             _animator.SetBool("Walk Forward", false);
 
         }
-        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectionRadius||_isAggro)
+        _distance = Vector3.Distance(transform.position, _player.transform.position);
+
+        if (_distance <= _detectionRadius||_isAggro)
         {
             _isAggro = true;
-            if (Vector3.Distance(transform.position, _player.transform.position) <=_attackRange)
+            if (_distance <=_attackRange)
             {
                 _agent.SetDestination(transform.position);
                 _attackCooldown += Time.deltaTime;
+                _abilityCooldown += Time.deltaTime;
                 Vector3 targetDirection = _player.transform.position - transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation =
                     Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
-                if (_attackCooldown > 1.5f)
+                _isUsingAb = CheckForUsing();
+                if (_attackCooldown > 1.5f && !_isUsingAb)
                 {
                     _attackCooldown = 0;
                     Attack();
                 }
+                else if (_abilityCooldown>=3&&!_isUsingAb&&abilityList[0].manaCost<=_mana)
+                {
+                    _attackCooldown = 0;
+                    _abilityCooldown = 0;
+                    _mana -= abilityList[0].manaCost;
+                    UseAbility(1);
+                }
+               
             }
             else
             {
@@ -68,6 +89,16 @@ public class RangeEnemyBehaviour : EnemyBehaviour
         {
             Patrool();
         }
+        if (_mana > _characteristics.secondCharDic["MaxMana"])
+        {
+            _mana = _characteristics.secondCharDic["MaxMana"];
+        }
+        else
+        {
+            _mana += Time.deltaTime * _characteristics.secondCharDic["ManaRegen"]*25;
+        }
+        _healthSystem.healthBar.UpdateManaBar(_characteristics.secondCharDic["MaxMana"],_mana);
+        _isUsingAb = false;
     }
 
     public override void Idle()
@@ -77,14 +108,12 @@ public class RangeEnemyBehaviour : EnemyBehaviour
 
     public override void Attack()
     {
-        _animator.SetTrigger("Projectile Attack");
-        GameObject projectile = Instantiate(projectilePrefab, shootingPosition.position, Quaternion.identity);
-        Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
-        projectileRigidbody.velocity = transform.forward * projectileSpeed;
-        projectile.GetComponent<ProjectileScript>().aim = "Player";
-        projectile.GetComponent<ProjectileScript>().range = 15;
+        UseAbility(0);
     }
-
+    public void UseAbility(int index)
+    {
+        abilityList[index].Activate(gameObject,_coroutineRunner,_animator);
+    }
     public override void ChasePlayer()
     {
         _agent.speed = _characteristics.secondCharDic["MovementSpeed"];
@@ -107,6 +136,18 @@ public class RangeEnemyBehaviour : EnemyBehaviour
             }
         }
         
+    }
+    private bool CheckForUsing()
+    {
+        foreach (Ability ab in abilityList)
+        {
+            if (ab.abilityIsActive)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
     public override void Die()
     {

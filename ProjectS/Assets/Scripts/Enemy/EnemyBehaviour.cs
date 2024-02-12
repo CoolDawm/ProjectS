@@ -12,10 +12,12 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
     [SerializeField]
     private float _aggroRadius = 6f;
     [SerializeField]
-    public NavMeshAgent agent;
+    protected NavMeshAgent agent;
+    [SerializeField]
+    protected float _attackRange = 4f;
     public float range=10f; //radius of sphere
     protected float changePositionTimer = 0;
-    protected float _attackRange = 4f;
+   
     protected Characteristics _characteristics; 
     protected GameObject _player;
     protected bool _isAggro = false;

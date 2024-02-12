@@ -17,7 +17,10 @@ public class EnemyMelee : Ability
     {
         animator.SetTrigger(animName);
         yield return new WaitForSeconds(animTime);
-        Debug.Log("Success");
+        if (user == null)
+        {
+            yield break;
+        }
         Collider[] colliders = Physics.OverlapSphere(user.transform.position, meleeRange);
         foreach (Collider collider in colliders)
         {
@@ -25,7 +28,7 @@ public class EnemyMelee : Ability
             if (Vector3.Dot(user.transform.forward, directionToTarget) > 0)
             {
 
-                if (collider.CompareTag(aim))
+                if (collider.CompareTag(aim)&&collider is BoxCollider)
                 {
                     collider.GetComponent<HealthSystem>().TakeDamage(meleeDamage,Color.red);
                 }

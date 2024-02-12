@@ -54,7 +54,7 @@ using UnityEngine.SceneManagement;
         public void StartScene()
         {
             PlayerPrefs.SetInt("CharacterSelected", _index);
-            SceneManager.LoadScene("Level01");
+            SceneManager.LoadScene("Level00");
         }
     }
 
