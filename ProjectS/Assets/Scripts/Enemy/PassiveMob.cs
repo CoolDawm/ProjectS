@@ -23,9 +23,14 @@ public class PassiveMob : EnemyBehaviour
 
     protected override void Update()
     {
-        if (_player == null)
+        if (_target == null)
         {
-            return;
+            ChangeTarget();
+            if (_target == null)
+            {
+                return;
+            }
+            
         }
 
         if (agent.hasPath)
@@ -41,11 +46,11 @@ public class PassiveMob : EnemyBehaviour
 
         if (_isAggro)
         {
-            if (Vector3.Distance(transform.position, _player.transform.position) <= _attackRange)
+            if (Vector3.Distance(transform.position, _target.transform.position) <= _attackRange)
             {
                 Idle();
                 agent.SetDestination(transform.position);
-                Vector3 targetDirection = _player.transform.position - transform.position;
+                Vector3 targetDirection = _target.transform.position - transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation =
                     Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 3);
@@ -70,7 +75,7 @@ public class PassiveMob : EnemyBehaviour
     public override void ChasePlayer()
     {
         agent.speed = _characteristics.secondCharDic["MovementSpeed"];
-        agent.SetDestination(_player.transform.position);
+        agent.SetDestination(_target.transform.position);
     }
 
     public override void Patrool()
@@ -108,7 +113,23 @@ public class PassiveMob : EnemyBehaviour
     {
         Destroy(gameObject);
     }
+    public override void Agroed()
+    {
+        _isAggro = true; 
+        ChangeTarget();
+    }
 
+    public override void ChangeTarget()
+    {
+        if (GameObject.FindGameObjectWithTag("Summon") != null)
+        {
+            _target = GameObject.FindGameObjectWithTag("Summon");
+        }
+        else
+        {
+            _target = GameObject.FindGameObjectWithTag("Player");
+        }
+    }
     public override void TakeDamageAnim()
     {
         _isAggro = true;

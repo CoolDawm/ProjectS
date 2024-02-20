@@ -62,7 +62,6 @@ public class HealthBar : MonoBehaviour
             image.gameObject.SetActive(true);
             image.fillAmount = currentAm / maxAm;
             yield return new WaitForSeconds(1f);
-            Debug.Log("Update");
             image.gameObject.SetActive(false);
         }
         isUpdating = false;

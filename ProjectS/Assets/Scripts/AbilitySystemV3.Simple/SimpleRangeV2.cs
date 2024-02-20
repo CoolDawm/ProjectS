@@ -10,7 +10,10 @@ public class SimpleRangeV2 : Ability
     private GameObject projectilePrefab;
     [SerializeField] 
     private float projectileSpeed = 100f;
+    [SerializeField]
+    private float fieldOfViewAngle = 10f; 
     private GameObject _shootingPosition;
+    
 
     public override void Activate(GameObject user, CoroutineRunner coroutineRunner)
     {
@@ -21,14 +24,13 @@ public class SimpleRangeV2 : Ability
         }
         Collider[] colliders = Physics.OverlapSphere(user.transform.position, range);
         Collider closestCollider = null;
-        float closestDistance = Mathf.Infinity;
-        
+        float closestDistance = range;
         foreach (Collider collider in colliders)
         {
             Vector3 directionToTarget = collider.transform.position - user.transform.position;
             float distanceToTarget = directionToTarget.magnitude;
             
-            if (distanceToTarget < closestDistance && Vector3.Dot(user.transform.forward, directionToTarget) > 0)
+            if (distanceToTarget < closestDistance && Vector3.Angle(user.transform.forward, directionToTarget) < fieldOfViewAngle)
             {
                 if (collider.transform.root.CompareTag(aim) && collider is BoxCollider)
                 {
@@ -39,9 +41,24 @@ public class SimpleRangeV2 : Ability
         }
         GameObject projectile = Instantiate(projectilePrefab, _shootingPosition.transform.position, Quaternion.identity);
         ProjectileScript prScr = projectile.GetComponentInChildren<ProjectileScript>();
+        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            Vector3 targetPosition = hit.point;
+            prScr.aim = aim;
+            prScr.range = range;
+            Vector3 direction = (targetPosition - _shootingPosition.transform.position).normalized;
+            projectile.transform.rotation = Quaternion.LookRotation(direction);
+            projectile.transform.Rotate(90, 0, 0);
+            projectile.GetComponentInChildren<Rigidbody>().velocity = direction * projectileSpeed;
+
+        }
+        /*
         if (closestCollider != null)
         {
-            
+            user.GetComponent<AbilityHolder>().GenerateMana(3);
             prScr.aim = aim;
             prScr.range = range;
             Vector3 direction = (closestCollider.transform.position - _shootingPosition.transform.position).normalized;
@@ -57,7 +74,7 @@ public class SimpleRangeV2 : Ability
             projectile.transform.rotation = Quaternion.LookRotation(direction);
             projectile.transform.Rotate(90, 0, 0);
             projectile.GetComponentInChildren<Rigidbody>().velocity = direction * projectileSpeed;
-        }
+        }*/
     }
     
 }

@@ -36,9 +36,14 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
 
     protected override void Update()
     {
-        if (_player == null)
+        if (_target == null)
         {
-            return;
+            ChangeTarget();
+            if (_target == null)
+            {
+                return;
+            }
+            
         }
         if (agent.hasPath)
         {
@@ -49,17 +54,17 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
             _animator.SetBool("Walk Forward", false);
 
         }
-        _distance = Vector3.Distance(transform.position, _player.transform.position);
+        _distance = Vector3.Distance(transform.position, _target.transform.position);
         if (_distance <= _detectionRadius)
         {
-            _isAggro = true;
+            Agroed();
             if (_distance <= _attackRange)
             {
                 
                 _agent.SetDestination(transform.position);
                 _attackCooldown += Time.deltaTime;
                 _abilityCooldown+= Time.deltaTime;
-                Vector3 targetDirection = _player.transform.position - transform.position;
+                Vector3 targetDirection = _target.transform.position - transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation =
                     Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
@@ -112,7 +117,7 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
 
     public override void ChasePlayer()
     {
-        _agent.SetDestination(_player.transform.position);
+        _agent.SetDestination(_target.transform.position);
         _agent.speed = _characteristics.secondCharDic["MovementSpeed"];
     }
     public override void Patrool()
@@ -153,6 +158,23 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
         }
 
         return false;
+    }
+    public override void Agroed()
+    {
+        _isAggro = true; 
+        ChangeTarget();
+    }
+
+    public override void ChangeTarget()
+    {
+        if (GameObject.FindGameObjectWithTag("Summon") != null)
+        {
+            _target = GameObject.FindGameObjectWithTag("Summon");
+        }
+        else
+        {
+            _target = GameObject.FindGameObjectWithTag("Player");
+        }
     }
     public void UseAbility(int index)
     {

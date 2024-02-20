@@ -13,8 +13,6 @@ public class AbilityHolder : MonoBehaviour
     private PlayerBehaviour _playerBehaviour;
     private HealthBar _healthBar;
     private Animator _animator;
-    [SerializeField]
-    private GameObject aim;
     private static readonly int IsGetHurt = Animator.StringToHash("IsGetHurt");
     //private bool _isActive=false;// for future improvement(to not be able to use other abilities)
     
@@ -72,17 +70,6 @@ public class AbilityHolder : MonoBehaviour
                 
             }
         }
-
-        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
-            Vector3 targetPosition = hit.point;
-            aim.transform.position = targetPosition;
-            Debug.DrawRay(targetPosition,Vector3.up, Color.red);
-        }
-        
         if (Input.GetMouseButtonDown(0) && timers[0] <= 0)
         {
             if (!abilityList[0].abilityIsActive)

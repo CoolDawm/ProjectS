@@ -24,9 +24,14 @@ public class SimpleSummonsMeleeBehaviour : EnemyBehaviour
 
     protected override void Update()
     {
-        if (_player == null)
+        if (_target == null)
         {
-            return;
+            ChangeTarget();
+            if (_target == null)
+            {
+                return;
+            }
+            
         }
 
         if (_agent.hasPath)
@@ -38,8 +43,8 @@ public class SimpleSummonsMeleeBehaviour : EnemyBehaviour
             _animator.SetBool("Move Forward Fast", false);
 
         }
-        _isAggro = true;
-        if (Vector3.Distance(transform.position, _player.transform.position) <= _ability.range)
+        Agroed();
+        if (Vector3.Distance(transform.position, _target.transform.position) <= _ability.range)
         {
             Idle();
             _agent.SetDestination(transform.position);
@@ -62,7 +67,7 @@ public class SimpleSummonsMeleeBehaviour : EnemyBehaviour
     public override void ChasePlayer()
     {
         _agent.speed = _characteristics.secondCharDic["MovementSpeed"];
-        _agent.SetDestination(_player.transform.position);
+        _agent.SetDestination(_target.transform.position);
     }
     public override void Idle()
     {
@@ -94,6 +99,23 @@ public class SimpleSummonsMeleeBehaviour : EnemyBehaviour
     public override void Die()
     {
         Destroy(gameObject);
+    }
+    public override void Agroed()
+    {
+        _isAggro = true; 
+        ChangeTarget();
+    }
+
+    public override void ChangeTarget()
+    {
+        if (GameObject.FindGameObjectWithTag("Summon") != null)
+        {
+            _target = GameObject.FindGameObjectWithTag("Summon");
+        }
+        else
+        {
+            _target = GameObject.FindGameObjectWithTag("Player");
+        }
     }
     public override void TakeDamageAnim()
     {

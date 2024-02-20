@@ -30,9 +30,14 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     
     protected override void Update()
     {
-        if (_player == null)
+        if (_target == null)
         {
-            return;
+            ChangeTarget();
+            if (_target == null)
+            {
+                return;
+            }
+            
         }
         
         if (agent.hasPath)
@@ -44,18 +49,18 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
             _animator.SetBool("Walk Forward", false);
 
         }
-        _distance = Vector3.Distance(transform.position, _player.transform.position);
+        _distance = Vector3.Distance(transform.position, _target.transform.position);
         if (_distance <= _detectionRadius||_isAggro)
         {
             _abilityCooldown += Time.deltaTime;
             _attackCooldown += Time.deltaTime;
-            _isAggro = true;
+            Agroed();
             _isUsingAb = CheckForUsing();
             if (_distance<=abilityList[0].range)
             {
                 Idle();
                 agent.SetDestination(transform.position);
-                Vector3 targetDirection = _player.transform.position - transform.position;
+                Vector3 targetDirection = _target.transform.position - transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation =
                     Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 6);
@@ -70,7 +75,7 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
             {
                 Idle();
                 agent.SetDestination(transform.position);
-                Vector3 targetDirection = _player.transform.position - transform.position;
+                Vector3 targetDirection = _target.transform.position - transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation =
                     Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 6);
@@ -103,7 +108,7 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     public override void ChasePlayer()
     {
         agent.speed = _characteristics.secondCharDic["MovementSpeed"];
-        agent.SetDestination(_player.transform.position);
+        agent.SetDestination(_target.transform.position);
     }
 
     public override void Patrool()
@@ -146,6 +151,24 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
         abilityList[0].Activate(gameObject,_coroutineRunner,_animator);
     }
 
+    public override void Agroed()
+    {
+        _isAggro = true; 
+        ChangeTarget();
+    }
+
+    public override void ChangeTarget()
+    {
+        if (GameObject.FindGameObjectWithTag("Summon") != null)
+        {
+            _target = GameObject.FindGameObjectWithTag("Summon");
+        }
+        else
+        {
+            _target = GameObject.FindGameObjectWithTag("Player");
+        }
+    }
+    
     public override void Die()
     {
         Destroy(gameObject);

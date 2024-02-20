@@ -15,7 +15,6 @@ public class CharacteristicsLoader : MonoBehaviour
     {
         _characteristics = gameObject.GetComponent<Characteristics>();
         modifier = GameObject.FindGameObjectWithTag("DifficultyManager").GetComponent<DifficultyManager>().modifier;
-        Debug.Log(modifier);
         if (gameObject.CompareTag("Enemy"))
         {
             for (int i = 0; i <dirKeys.Count; i++)
@@ -25,7 +24,6 @@ public class CharacteristicsLoader : MonoBehaviour
         }
         else
         {
-            Debug.Log("Player");
             for (int i = 0; i <dirKeys.Count; i++)
             {
                 _characteristics.charDic.Add(dirKeys[i],dirValues[i]);

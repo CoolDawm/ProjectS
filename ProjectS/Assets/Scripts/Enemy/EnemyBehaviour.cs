@@ -19,7 +19,7 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
     protected float changePositionTimer = 0;
    
     protected Characteristics _characteristics; 
-    protected GameObject _player;
+    protected GameObject _target;
     protected bool _isAggro = false;
     protected Animator _animator;
     // Implementing properties from IEnemy
@@ -35,7 +35,7 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
 
     protected virtual void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player");
+        _target = GameObject.FindGameObjectWithTag("Player");
         agent = GetComponent<NavMeshAgent>();
         _animator = GetComponentInChildren<Animator>();
     }
@@ -49,6 +49,8 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
     public abstract void Idle();
     public abstract void ChasePlayer();
     public abstract void Patrool();
+    public abstract void Agroed();
+    public abstract void ChangeTarget();
     public abstract void TakeDamageAnim();
     protected bool RandomPoint(Vector3 center, float range, out Vector3 result)// Redo it in Utils
     {
@@ -61,7 +63,6 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
             result = hit.position;
             return true;
         }
-
         result = Vector3.zero;
         return false;
     }

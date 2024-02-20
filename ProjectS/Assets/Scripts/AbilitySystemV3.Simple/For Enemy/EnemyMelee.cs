@@ -30,8 +30,16 @@ public class EnemyMelee : Ability
 
                 if (collider.CompareTag(aim)&&collider is BoxCollider)
                 {
+                    Debug.Log("Punch");
+                    Debug.Log(user);
                     collider.GetComponent<HealthSystem>().TakeDamage(meleeDamage,Color.red);
                 }
+                else if (collider.CompareTag("Summon")&&collider is BoxCollider)
+                {
+                    collider.GetComponent<HealthSystem>().TakeDamage(meleeDamage,Color.red);
+
+                }
+                
             }
         }
 

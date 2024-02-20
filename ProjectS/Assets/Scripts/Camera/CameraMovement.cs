@@ -22,7 +22,7 @@ public class CameraMovement : MonoBehaviour
         _orbit = _cinemachineFreeLook.m_Orbits[1];
         if (scroll > 0f)
         {
-            if (_orbit.m_Radius > 5.5f)
+            if (_orbit.m_Radius > 2.5f)
             {
                 for (int i = 0; i < _cinemachineFreeLook.m_Orbits.Length; i++)
                 {

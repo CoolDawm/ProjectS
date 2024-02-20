@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityIsActive: 0
   name: 
-  manaCost: 3
+  manaCost: 0
   cooldown: 1
-  abilityImage: {fileID: 0}
+  abilityImage: {fileID: 21300000, guid: dbe75cab91104c4468585f4fea9d57fe, type: 3}
   description: 
   animName: BowShot
-  range: 25
+  range: 30
   animTime: 0.5
   aim: Enemy
   projectilePrefab: {fileID: 3283414974690162128, guid: 21e265b1e661e9b47b0b2e1338917d5d, type: 3}
-  projectileSpeed: 25
+  projectileSpeed: 60

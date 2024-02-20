@@ -117,7 +117,6 @@ public class PlayerBehaviour : MonoBehaviour
         if (_sprintControl.action.triggered&& !skill.isWorking && _currentStamina >= skill.staminaCost)
         {
             skill.Activate(gameObject, _coroutineRunner,_movement);
-            Debug.Log("Skill");
             _currentStamina -= skill.staminaCost;
             if (_movement.x > 0)
             {
