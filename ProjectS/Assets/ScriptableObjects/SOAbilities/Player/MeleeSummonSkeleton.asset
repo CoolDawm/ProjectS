@@ -18,7 +18,7 @@ MonoBehaviour:
   cooldown: 15
   abilityImage: {fileID: 21300000, guid: 109bacc3a598fc949b5f41dd31e7eba2, type: 3}
   description: Summon the skeleton
-  animName: 
+  animName: AuraA
   range: 0
   animTime: 1
   aim: 

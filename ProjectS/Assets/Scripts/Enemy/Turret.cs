@@ -18,8 +18,6 @@ public class Turret : MonoBehaviour
         {
             partsArr.Add(child);
         }
-        HealthSystem healthSystem = GetComponentInChildren<HealthSystem>();
-        healthSystem.OnDeath += Die;
         rotationSpeeds = new float[partsArr.Count];
         _attackCooldown = new float[partsArr.Count];
         _timers = new float[partsArr.Count];
@@ -50,6 +48,9 @@ public class Turret : MonoBehaviour
         {
             Vector3 shootingDirection = child.position - obj.position;
             GameObject projectile = Instantiate(projectilePrefab, child.position, Quaternion.identity);
+            projectile.GetComponent<ProjectileScript>().range = 15;
+            projectile.GetComponent<ProjectileScript>().aim ="Enemy" ;
+
             Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
             projectileRigidbody.velocity = shootingDirection.normalized * projectileSpeed;
             Destroy(projectile, 3);
