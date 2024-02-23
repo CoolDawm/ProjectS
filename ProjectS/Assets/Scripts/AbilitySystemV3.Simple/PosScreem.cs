@@ -8,7 +8,7 @@ public class PosScreem : AuraV2
     {
         abilityIsActive = true;
         user.GetComponent<EffectsApplying>().ApplyBuff(Effect, Power,Duration);
-        Collider[] colliders = Physics.OverlapSphere(user.transform.position, Range, LayerMask.GetMask(aim));
+        Collider[] colliders = Physics.OverlapSphere(user.transform.position, range, LayerMask.GetMask(aim));
         foreach (Collider collider in colliders)
         {
             collider.gameObject.GetComponent<EffectsApplying>().ApplyBuff(Effect, Power,Duration);

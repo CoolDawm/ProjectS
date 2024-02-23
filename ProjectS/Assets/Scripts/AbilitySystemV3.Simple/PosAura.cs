@@ -25,7 +25,7 @@ public class PosAura : AuraV2
         float timer = 0f;
         while (isEmitting)
         {
-            Collider[] colliders = Physics.OverlapSphere(emitter.transform.position, Range, LayerMask.GetMask(aim));
+            Collider[] colliders = Physics.OverlapSphere(emitter.transform.position, range, LayerMask.GetMask(aim));
             if (timer <= Duration)
             {
                 emitter.GetComponent<EffectsApplying>().ApplyBuffAura(Effect,Power);

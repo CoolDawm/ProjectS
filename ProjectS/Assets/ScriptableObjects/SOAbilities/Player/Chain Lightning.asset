@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c71e20d7bf27f04d8d7eb9cce4e7927, type: 3}
+  m_Name: Chain Lightning
+  m_EditorClassIdentifier: 
+  abilityIsActive: 0
+  name: Chain Lightning
+  manaCost: 10
+  cooldown: 4
+  abilityImage: {fileID: 0}
+  description: 
+  animName: RangeA
+  range: 20
+  animTime: 1
+  aim: Enemy
+  projectilePrefab: {fileID: 8420846222532773625, guid: c7c087984fb758543a7113b05a10d5c1, type: 3}
+  projectileSpeed: 15
+  fieldOfViewAngle: 10

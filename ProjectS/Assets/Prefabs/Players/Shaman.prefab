@@ -26263,7 +26263,7 @@ MonoBehaviour:
   abilityList:
   - {fileID: 11400000, guid: 99fdc35741df70845a5927b6963bf1de, type: 2}
   - {fileID: 11400000, guid: 90f2b613b0bc3e840b6a2411305e5667, type: 2}
-  - {fileID: 11400000, guid: 1da7cb3f8c973904b97cfbef93c436d3, type: 2}
+  - {fileID: 11400000, guid: c903e4f62a3bf0247b564b91f4248b19, type: 2}
   - {fileID: 11400000, guid: e3786cec721e1b347a054303f0b95b7a, type: 2}
   timers:
   - 0
@@ -52458,7 +52458,7 @@ GameObject:
   m_Component:
   - component: {fileID: 446660425108197340}
   m_Layer: 0
-  m_Name: Smart_Player
+  m_Name: Shaman
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

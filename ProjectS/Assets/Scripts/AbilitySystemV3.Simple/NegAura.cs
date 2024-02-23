@@ -25,7 +25,7 @@ public class NegAura : AuraV2
         float timer = 0;
         while (isEmitting)
         {
-            Collider[] colliders = Physics.OverlapSphere(emitter.transform.position, Range, LayerMask.GetMask(aim));
+            Collider[] colliders = Physics.OverlapSphere(emitter.transform.position, range, LayerMask.GetMask(aim));
             if (timer <= Duration)
             {
                 foreach (Collider collider in colliders)
