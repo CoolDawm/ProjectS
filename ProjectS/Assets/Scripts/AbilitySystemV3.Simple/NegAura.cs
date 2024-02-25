@@ -20,11 +20,14 @@ public class NegAura : AuraV2
 
     IEnumerator EmittingCoroutine(GameObject emitter)
     {
-        Debug.Log("Down");
         isEmitting = true;
         float timer = 0;
         while (isEmitting)
         {
+            if (emitter == null)
+            {
+                yield break;
+            }
             Collider[] colliders = Physics.OverlapSphere(emitter.transform.position, range, LayerMask.GetMask(aim));
             if (timer <= Duration)
             {

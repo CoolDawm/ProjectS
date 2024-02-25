@@ -22,4 +22,10 @@ public class Ability : ScriptableObject
     {
         
     }
+
+    public virtual void Activate(GameObject user, CoroutineRunner coroutineRunner, GameObject target)
+    {
+        
+    }
+
 }

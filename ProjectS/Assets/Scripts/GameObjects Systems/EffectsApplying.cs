@@ -16,6 +16,7 @@ public class EffectsApplying : MonoBehaviour
     }
     IEnumerator DebuffAura(String effect, float power)
     {
+        timer = 3;
         _debuffAply = true;
         float tmpChar = charDic[effect];
         charDic[effect] = tmpChar - power;
@@ -33,6 +34,7 @@ public class EffectsApplying : MonoBehaviour
     }
     IEnumerator BuffAura(String effect, float power)
     {
+        timer = 3;
         _buffAply = true;
         float tmpChar = charDic[effect];
         charDic[effect] = tmpChar + power;

@@ -16,7 +16,7 @@ MonoBehaviour:
   name: Chain Lightning
   manaCost: 10
   cooldown: 4
-  abilityImage: {fileID: 0}
+  abilityImage: {fileID: 21300000, guid: e1a91c592705b8d458b7bc8a5b789f0c, type: 3}
   description: 
   animName: RangeA
   range: 20
