@@ -20,7 +20,7 @@ MonoBehaviour:
   description: 
   animName: RangeA
   range: 20
-  animTime: 1
+  animTime: 0.5
   aim: Enemy
   projectilePrefab: {fileID: 8420846222532773625, guid: c7c087984fb758543a7113b05a10d5c1, type: 3}
   projectileSpeed: 15

@@ -65,6 +65,7 @@ public class ProjectileScript : MonoBehaviour
 
     void Update()
     {
+        //proj doesnt delete himself for some reason
         float distanceTraveled = Vector3.Distance(_initialPosition, transform.position);
         if (distanceTraveled > range)
         {

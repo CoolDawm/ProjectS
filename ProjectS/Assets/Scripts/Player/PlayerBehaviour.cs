@@ -40,7 +40,7 @@ public class PlayerBehaviour : MonoBehaviour
     private bool moveStateRun=true;
     //Parameters for animator
     private static readonly int RightWalk = Animator.StringToHash("RightWalk");
-    private static readonly int StreightWalk = Animator.StringToHash("StreightWalk");
+    private static readonly int StreightWalk = Animator.StringToHash("StraightWalk");
     private static readonly int LeftWalk = Animator.StringToHash("LeftWalk");
     private static readonly int BackWalk = Animator.StringToHash("BackWalk");
     private static readonly int DashDir = Animator.StringToHash("DashDir");
@@ -138,7 +138,6 @@ public class PlayerBehaviour : MonoBehaviour
         {
             _movement = _movementControl.action.ReadValue<Vector2>();
         }
-
         if (_rollControl.action.triggered)
         {
             moveStateRun = !moveStateRun;

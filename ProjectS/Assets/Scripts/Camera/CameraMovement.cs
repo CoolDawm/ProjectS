@@ -6,7 +6,7 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     private CinemachineFreeLook _cinemachineFreeLook;
-    private float zoomSpeed = 0.5f;
+    private float zoomSpeed = 1.2f;
     private float currentZoomX;
     private CinemachineFreeLook.Orbit _orbit;
     void Start()

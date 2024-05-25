@@ -29,6 +29,7 @@ public class SimpleRangeV2 : Ability
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
+            Debug.DrawRay(_shootingPosition.transform.position,hit.transform.position,Color.red);
             Vector3 targetPosition = hit.point;
             prScr.aim = aim;
             prScr.range = range;
