@@ -22,8 +22,10 @@ MonoBehaviour:
   range: 20
   animTime: 0.2
   aim: Enemy
-  projectilePrefab: {fileID: 2416214550007718432, guid: f9852ad8712bd3540bbad50a9cf5e932, type: 3}
-  projectileLifeTime: 5
-  projectileSpeed: 20
-  projectileDitance: 15
-  visibilityAngle: 180
+  strongAttackStaminaCost: 0
+  strongAttackName: 
+  strongAttackTime: 0
+  _projectilePrefab: {fileID: 2416214550007718432, guid: f9852ad8712bd3540bbad50a9cf5e932, type: 3}
+  _projectileSpeed: 60
+  _rangeRadius: 25
+  _fieldOfViewAngle: 45

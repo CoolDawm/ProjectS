@@ -1,18 +1,24 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting.AssemblyQualifiedNameParser;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class TransitionToNewLevel : MonoBehaviour
 {
     private string _sceneName;
-    private string _a;
-    private string _b;
     private GameObject _difMenu;
+
     void Start()
     {
-        _sceneName=SceneManager.GetActiveScene().name;
-        Debug.Log(_sceneName);
+        _sceneName = SceneManager.GetActiveScene().name;
+        InitializeSceneName();
+
+        _difMenu = GameObject.FindGameObjectWithTag("PlayerHUD");
+        GameObject.FindGameObjectWithTag("DifficultyManager").GetComponent<DifficultyManager>().OnDifChange += TransToLevel;
+    }
+
+    private void InitializeSceneName()
+    {
+        // Логика для инициализации названия следующего уровня
         double number = char.GetNumericValue(_sceneName[5]);
         double number2 = char.GetNumericValue(_sceneName[6]);
         number2++;
@@ -21,31 +27,34 @@ public class TransitionToNewLevel : MonoBehaviour
             number++;
             number2 = 0;
         }
-        string _a = number.ToString();
-        string _b = number2.ToString();
-        _sceneName = "Level" + _a + _b;
-       
-        _difMenu=GameObject.FindGameObjectWithTag("PlayerHUD");
-        GameObject.FindGameObjectWithTag("DifficultyManager").GetComponent<DifficultyManager>().OnDifChange+=TransToLEvel;
+        _sceneName = "Level" + number.ToString() + number2.ToString();
     }
+
     public void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
-        {
-            _difMenu.GetComponent<HUDManager>().ShowOrCloseWindow();
-        }
-    }
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             _difMenu.GetComponent<HUDManager>().ShowOrCloseWindow();
         }
     }
 
-    private void TransToLEvel()
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            _difMenu.GetComponent<HUDManager>().ShowOrCloseWindow();
+        }
+    }
+
+    private void TransToLevel()
     {
         _difMenu.GetComponent<HUDManager>().ShowOrCloseWindow();
-        SceneManager.LoadScene(_sceneName);
+        StartCoroutine(LoadSceneAsync(_sceneName));
+    }
+
+    IEnumerator LoadSceneAsync(string levelName)
+    {
+        AsyncOperation loadSceneOperation = SceneManager.LoadSceneAsync(levelName);
+        yield return null;
     }
 }

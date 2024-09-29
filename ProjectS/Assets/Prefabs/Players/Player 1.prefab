@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &382937152014735612
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1060983397480187245}
+  m_Layer: 0
+  m_Name: PointToLookForCamera
+  m_TagString: PointToLook
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1060983397480187245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382937152014735612}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0049994024, y: 1.358, z: 0.011}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8080344433418459061}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1139098762168229287
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8861272822325234659, guid: c5d3d804176582d448060f509ba30ba0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -210,7 +241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5211045298977360935, guid: 6e906e54f1b2b714ea5a4f8835d605eb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6485270344909684797, guid: 6e906e54f1b2b714ea5a4f8835d605eb, type: 3}
       propertyPath: m_LocalScale.x
@@ -268,14 +299,23 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 291840936483375184, guid: 6e906e54f1b2b714ea5a4f8835d605eb, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8906673608366510417, guid: 6e906e54f1b2b714ea5a4f8835d605eb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1060983397480187245}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e906e54f1b2b714ea5a4f8835d605eb, type: 3}
 --- !u!4 &5888937011196823257 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6485270344909684797, guid: 6e906e54f1b2b714ea5a4f8835d605eb, type: 3}
+  m_PrefabInstance: {fileID: 844981310626596580}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8080344433418459061 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8906673608366510417, guid: 6e906e54f1b2b714ea5a4f8835d605eb, type: 3}
   m_PrefabInstance: {fileID: 844981310626596580}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4496485665326895597
@@ -296,7 +336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8170727818798247065, guid: b3155d85eccbf9f4d9131f3929344eb4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9083105600476113921, guid: b3155d85eccbf9f4d9131f3929344eb4, type: 3}
       propertyPath: m_LocalScale.x
@@ -430,7 +470,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6765348477108020771, guid: 2698629a003f3b840915d5ceaf7ac3a7, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8326493963995363807, guid: 2698629a003f3b840915d5ceaf7ac3a7, type: 3}
       propertyPath: _maxStamina
@@ -508,7 +548,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8188485631803646710, guid: 16e146369beb098468133b12b699a0fe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -6,14 +6,15 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SimpleRangeV2 : Ability
 {
-    [SerializeField] 
-    private GameObject projectilePrefab;
-    [SerializeField] 
-    private float projectileSpeed = 100f;
     [SerializeField]
-    private float fieldOfViewAngle = 10f; 
+    private GameObject _projectilePrefab;
+    [SerializeField]
+    private float _projectileSpeed = 100f;
+    [SerializeField]
+    private float _rangeRadius = 25f; // Радиус зоны перед игроком
+    [SerializeField]
+    private float _fieldOfViewAngle = 45f; // Угол обзора перед игроком
     private GameObject _shootingPosition;
-    
 
     public override void Activate(GameObject user, CoroutineRunner coroutineRunner)
     {
@@ -22,60 +23,50 @@ public class SimpleRangeV2 : Ability
             _shootingPosition = user.GetComponentsInChildren<Transform>()
                 .FirstOrDefault(c => c.gameObject.name == "ShootingPosition")?.gameObject;
         }
-        GameObject projectile = Instantiate(projectilePrefab, _shootingPosition.transform.position, Quaternion.identity);
-        ProjectileScript prScr = projectile.GetComponentInChildren<ProjectileScript>();
-        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
-            Debug.DrawRay(_shootingPosition.transform.position,hit.transform.position,Color.red);
-            Vector3 targetPosition = hit.point;
-            prScr.aim = aim;
-            prScr.range = range;
-            Vector3 direction = (targetPosition - _shootingPosition.transform.position).normalized;
-            projectile.transform.rotation = Quaternion.LookRotation(direction);
-            projectile.transform.Rotate(90, 0, 0);
-            projectile.GetComponentInChildren<Rigidbody>().velocity = direction * projectileSpeed;
 
-        }
-        /*
-         Collider[] colliders = Physics.OverlapSphere(user.transform.position, range);
+        // Ищем ближайшего врага в зоне перед игроком
+        Collider[] colliders = Physics.OverlapSphere(user.transform.position, _rangeRadius);
         Collider closestCollider = null;
-        float closestDistance = range;
+        float closestDistance = _rangeRadius;
         foreach (Collider collider in colliders)
         {
             Vector3 directionToTarget = collider.transform.position - user.transform.position;
             float distanceToTarget = directionToTarget.magnitude;
-            
-            if (distanceToTarget < closestDistance && Vector3.Angle(user.transform.forward, directionToTarget) < fieldOfViewAngle)
+
+            if (distanceToTarget < closestDistance && Vector3.Angle(user.transform.forward, directionToTarget) < _fieldOfViewAngle / 2)
             {
-                if (collider.transform.root.CompareTag(aim) && collider is BoxCollider)
+                if (collider.transform.root.CompareTag("Enemy")) // Предположим, что враги имеют тег "Enemy"
                 {
                     closestCollider = collider;
                     closestDistance = distanceToTarget;
                 }
             }
         }
+
+        // Создаем снаряд
+        GameObject projectile = Instantiate(_projectilePrefab, _shootingPosition.transform.position, Quaternion.identity);
+        ProjectileScript prScr = projectile.GetComponentInChildren<ProjectileScript>();
+
         if (closestCollider != null)
         {
-            user.GetComponent<AbilityHolder>().GenerateMana(3);
-            prScr.aim = aim;
-            prScr.range = range;
+            // Цель найдена
+            user.GetComponent<AbilityHolder>().GenerateMana(3); // Генерация маны при нахождении цели, если это нужно
+            prScr.aim = "Enemy"; // Устанавливаем тип цели
+            prScr.range = _rangeRadius;
             Vector3 direction = (closestCollider.transform.position - _shootingPosition.transform.position).normalized;
             projectile.transform.rotation = Quaternion.LookRotation(direction);
             projectile.transform.Rotate(90, 0, 0);
-            projectile.GetComponentInChildren<Rigidbody>().velocity = direction * projectileSpeed;
+            projectile.GetComponentInChildren<Rigidbody>().velocity = direction * _projectileSpeed;
         }
         else
         {
-            prScr.aim = aim;
-            prScr.range = range;
+            // Цель не найдена, стреляем прямо перед собой
+            prScr.aim = "Enemy"; // Устанавливаем тип цели
+            prScr.range = _rangeRadius;
             Vector3 direction = user.transform.forward;
             projectile.transform.rotation = Quaternion.LookRotation(direction);
             projectile.transform.Rotate(90, 0, 0);
-            projectile.GetComponentInChildren<Rigidbody>().velocity = direction * projectileSpeed;
-        }*/
+            projectile.GetComponentInChildren<Rigidbody>().velocity = direction * _projectileSpeed;
+        }
     }
-    
 }

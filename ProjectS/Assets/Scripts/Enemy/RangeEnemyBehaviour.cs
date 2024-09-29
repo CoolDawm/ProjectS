@@ -156,6 +156,7 @@ public class RangeEnemyBehaviour : EnemyBehaviour
     }
     public override void Die()
     {
+        base.Die();
         Destroy(gameObject);
     }
     public override void Agroed()

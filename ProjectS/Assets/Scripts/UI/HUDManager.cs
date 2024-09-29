@@ -16,7 +16,7 @@ public class HUDManager : MonoBehaviour
         _spellBook = transform.Find("SpellBook").gameObject;
         _map = transform.Find("Map").gameObject;
         _character = transform.Find("Character").gameObject;
-        _inventory = transform.Find("Inventory").gameObject;
+        _inventory = transform.Find("InventoryPanel").gameObject;
         _difficulty = transform.Find("Difficulty").gameObject;
 
     }
@@ -70,6 +70,7 @@ public class HUDManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 _inventory.SetActive(false);
+                
             }
             else
             {

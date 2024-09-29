@@ -22,6 +22,9 @@ MonoBehaviour:
   range: 0
   animTime: 1
   aim: Player
+  strongAttackStaminaCost: 0
+  strongAttackName: 
+  strongAttackTime: 0
   cursorPrefab: {fileID: 1624368403487492, guid: 9cb5a6f6c9a97f24da2012a45f8f9908, type: 3}
   areaOfEffectRadius: 2
   damage: 30

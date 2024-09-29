@@ -22,5 +22,9 @@ MonoBehaviour:
   range: 0
   animTime: 1
   aim: Player
+  strongAttackStaminaCost: 0
+  strongAttackName: 
+  strongAttackTime: 0
+  _fxEffect: {fileID: 0}
   projectilePrefab: {fileID: 1508588584942918, guid: 99dfa21471681154b9f2b28a641dbe07, type: 3}
   projectileSpeed: 15

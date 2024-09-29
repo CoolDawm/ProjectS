@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
@@ -14,11 +15,11 @@ public class HealthBar : MonoBehaviour
     [SerializeField]
     private Image _manaBarSprite;
     [SerializeField]
-    private Text _healthText;
+    private TextMeshProUGUI _healthText;
     [SerializeField]
-    private Text _staminaText;
+    private TextMeshProUGUI _staminaText;
     [SerializeField]
-    private Text _manaText;
+    private TextMeshProUGUI _manaText;
     private bool isUpdating=false;
     public void UpdateHealthBar(float maxHealth,float currentHealth,string tag)
     {
@@ -32,6 +33,7 @@ public class HealthBar : MonoBehaviour
             //image.fillAmount = currentAm / maxAm;
         }
         //_healthBarSprite.fillAmount = currentHealth/maxHealth;
+        
         _healthText.text = MathF.Round(currentHealth, 0) + "/" + maxHealth;
     }
     public void UpdateShieldBar(float maxShield, float currentShield)

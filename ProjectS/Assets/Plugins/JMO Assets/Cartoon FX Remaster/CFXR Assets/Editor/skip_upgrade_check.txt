@@ -1,0 +1,1 @@
+This file indicates that Cartoon FX Remaster shouldn't perform any check to delete files for the shader file format upgrade.

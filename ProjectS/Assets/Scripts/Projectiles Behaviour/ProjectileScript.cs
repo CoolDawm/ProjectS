@@ -50,7 +50,7 @@ public class ProjectileScript : MonoBehaviour
         }
         else
         {
-            if (collision.collider.CompareTag(aim)&& collision.collider is BoxCollider|| collision.collider.CompareTag("Summon")&& collision.collider is BoxCollider)
+            if (collision.collider&&collision.collider.CompareTag(aim)&& collision.collider is BoxCollider|| collision.collider.CompareTag("Summon")&& collision.collider is BoxCollider)
             {
                 collision.collider.gameObject.GetComponent<HealthSystem>().TakeDamage(_damage,Color.red);
                 Destroy(gameObject);

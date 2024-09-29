@@ -1,30 +1,39 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using Object = UnityEngine.Object;
-
 
 public class HealthSystem : MonoBehaviour
-    {
-    public float maxHealth = 100;    
+{
+    [SerializeField]
+    private bool _isManequin = false;
+    [SerializeField]
+    private bool _isSpawner = false;
+    [SerializeField]
+    private bool _hasShield = true;
+
+    public float maxHealth = 100;
     public float currentHealth;
-    public float maxShield= 50;
+    public float maxShield = 50;
     public float currentShield;
     public FloatTextManager floatingTextManager;
     public Action OnDeath;
     public Action OnTakeDamage;
     public HealthBar healthBar { get; private set; }
+
     private string _objectTag;
     private Characteristics _characteristics;
-    private Utilities _utilities=new Utilities();
+    private Utilities _utilities = new Utilities();
+    private Coroutine _shieldRegenCoroutine;
+
     void Start()
     {
         _characteristics = GetComponent<Characteristics>();
-        maxHealth = _characteristics.secondCharDic["MaxHealth"];
+        if (!_isManequin &&!_isSpawner)
+        {
+            maxHealth = _characteristics.secondCharDic["MaxHealth"];
+        }
         currentHealth = maxHealth;
-        
+
         _objectTag = gameObject.tag;
         if (_objectTag == "Player")
         {
@@ -35,135 +44,138 @@ public class HealthSystem : MonoBehaviour
             healthBar = gameObject.GetComponentInChildren<HealthBar>();
         }
         floatingTextManager = GameObject.FindGameObjectWithTag("FloatingTextManager").GetComponent<FloatTextManager>();
-        InvokeRepeating("UpdateHealth",2,1);
+        InvokeRepeating("UpdateHealth", 2, 1);
     }
+
     public void IncreaseCurrentHealth(float hp)
     {
-
-        if (currentHealth+hp> maxHealth)
+        if (currentHealth + hp > maxHealth)
         {
             currentHealth = maxHealth;
-            healthBar.UpdateHealthBar(maxHealth, currentHealth,gameObject.tag);
         }
         else
         {
             currentHealth += hp;
-            healthBar.UpdateHealthBar(maxHealth, currentHealth,gameObject.tag);
-
         }
+        healthBar.UpdateHealthBar(maxHealth, currentHealth, gameObject.tag);
         WorNotification(Color.red, "+" + hp + "HP");
-
     }
 
     public void UpdateHealth()
     {
+        if (_isManequin || _isSpawner) return;
         maxHealth = _characteristics.secondCharDic["MaxHealth"];
-        if (currentHealth> maxHealth)
+        if (currentHealth > maxHealth)
         {
             currentHealth = maxHealth;
         }
     }
 
-    public void TakeDamage(float damageAmount,Color color)
+    public void TakeDamage(float damageAmount, Color color)
     {
-        if (_utilities.CalculateChance(_characteristics.secondCharDic["EvaidChance"]))
+        if (_isSpawner)
         {
-            WorNotification(Color.blue, "Dodge");
-            return;
-        }
-        float defense = _characteristics.secondCharDic["Defense"];
-        damageAmount -= defense * 0.3f;
-        if (_objectTag == "Player")
-        {
-            if (gameObject.GetComponent<PlayerBehaviour>().skill.isWorking)
-            {
-                WorNotification(Color.blue, "Dodge");
-            }
-            else
-            {
-                if (currentShield != 0)
-                {
-                    if (currentShield >= damageAmount)
-                    {
-                        currentShield -= damageAmount;
-                    }
-                    else
-                    {
+            ApplyDamage(damageAmount, color);
 
-                        currentHealth -= (damageAmount - currentShield);
-                        OnTakeDamage?.Invoke();
-                        currentShield = 0;
-                    }
-                }
-                else
-                {
-                    currentHealth -= damageAmount;
-                        OnTakeDamage?.Invoke();
-                }
-                NumNotification(color,damageAmount);
-                healthBar.UpdateShieldBar(maxShield, currentShield);
-                healthBar.UpdateHealthBar(maxHealth, currentHealth,gameObject.tag);
-                if (currentHealth <= 0)
-                {
-                    Die();
-                }
-            }
-            
         }
         else
         {
-            if (currentShield != 0)
+            if (_utilities.CalculateChance(_characteristics.secondCharDic["EvaidChance"]))
             {
-                if (currentShield >= damageAmount)
+                WorNotification(Color.blue, "Dodge");
+                return;
+            }
+            float defense = _characteristics.secondCharDic["Defense"];
+            damageAmount -= defense * 0.3f;
+            if (_objectTag == "Player")
+            {
+                if (gameObject.GetComponent<PlayerBehaviour>().skill.isWorking)
                 {
-                    currentShield -= damageAmount;
+                    WorNotification(Color.blue, "Dodge");
                 }
                 else
                 {
-                    OnTakeDamage?.Invoke();
-                    currentHealth -= (damageAmount - currentShield);
-                    currentShield = 0;
+                    ApplyDamage(damageAmount, color);
                 }
             }
             else
             {
-                OnTakeDamage?.Invoke();
-                currentHealth -= damageAmount;
+                ApplyDamage(damageAmount, color);
             }
-            NumNotification(color,damageAmount);
-            healthBar.UpdateShieldBar(maxShield, currentShield);
-            healthBar.UpdateHealthBar(maxHealth, currentHealth,gameObject.tag);
-            if (currentHealth <= 0)
+            if (_shieldRegenCoroutine != null)
             {
-                Die();
+                StopCoroutine(_shieldRegenCoroutine);
             }
+            _shieldRegenCoroutine = StartCoroutine(ShieldRegenCoroutine());
         }
         
     }
 
-    public void NumNotification(Color color,float number)
+    private void ApplyDamage(float damageAmount, Color color)
     {
-        floatingTextManager.ShowFloatingNumbers(gameObject.transform,number,color);
+        if (_hasShield && currentShield > 0)
+        {
+            if (currentShield >= damageAmount)
+            {
+                currentShield -= damageAmount;
+            }
+            else
+            {
+                currentHealth -= (damageAmount - currentShield);
+                OnTakeDamage?.Invoke();
+                currentShield = 0;
+            }
+        }
+        else
+        {
+            currentHealth -= damageAmount;
+            OnTakeDamage?.Invoke();
+        }
+
+        NumNotification(color, damageAmount);
+        healthBar.UpdateShieldBar(maxShield, currentShield);
+        healthBar.UpdateHealthBar(maxHealth, currentHealth, gameObject.tag);
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
-    public void WorNotification(Color color,string word)
+    public void NumNotification(Color color, float number)
     {
-        floatingTextManager.ShowFloatingText(gameObject.transform,word,color);
+        floatingTextManager.ShowFloatingNumbers(gameObject.transform, number, color);
     }
+
+    public void WorNotification(Color color, string word)
+    {
+        floatingTextManager.ShowFloatingText(gameObject.transform, word, color);
+    }
+
     public void ShieldCharge(float shield)
     {
         currentShield += shield;
         if (currentShield > maxShield)
         {
-            currentShield= maxShield;
+            currentShield = maxShield;
         }
-        floatingTextManager.ShowFloatingText(gameObject.transform,"Shield Charged",Color.blue);
+        floatingTextManager.ShowFloatingText(gameObject.transform, "Shield Charged", Color.blue);
         healthBar.UpdateShieldBar(maxShield, currentShield);
     }
+
     private void Die()
     {
         OnDeath?.Invoke();
-        floatingTextManager.ShowFloatingText(gameObject.transform,"Died",Color.black);
+        floatingTextManager.ShowFloatingText(gameObject.transform, "Died", Color.black);
+    }
+
+    private IEnumerator ShieldRegenCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+        while (_hasShield && currentShield < maxShield)
+        {
+            currentShield += 5f; 
+            healthBar.UpdateShieldBar(maxShield, currentShield);
+            yield return new WaitForSeconds(1f);
+        }
     }
 }
-

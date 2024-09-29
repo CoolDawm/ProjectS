@@ -6,14 +6,14 @@ public class CharacterPanel : MonoBehaviour
 {
     [SerializeField] private GameObject _charPanel;
     [SerializeField] private GameObject _talentsPanel;
-    [SerializeField] private GameObject _Panel;
+    [SerializeField] private GameObject _charIncreasePanel;
     public void ToCharacteristics()
     {
         if (!_charPanel.activeSelf)
         {
             _charPanel.SetActive(true);
             _talentsPanel.SetActive(false);
-            _Panel.SetActive(false);
+            _charIncreasePanel.SetActive(false);
         }
     }
     public void ToTalents()
@@ -22,16 +22,16 @@ public class CharacterPanel : MonoBehaviour
         {
             _charPanel.SetActive(false);
             _talentsPanel.SetActive(true);
-            _Panel.SetActive(false);
+            _charIncreasePanel.SetActive(false);
         }
     }
-    public void To()
+    public void ToCharIncreasePanel()
     {
-        if (!_Panel.activeSelf)
+        if (!_charIncreasePanel.activeSelf)
         {
             _charPanel.SetActive(false);
             _talentsPanel.SetActive(false);
-            _Panel.SetActive(true);
+            _charIncreasePanel.SetActive(true);
         }
     }
     // Update is called once per frame

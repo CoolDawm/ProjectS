@@ -10,7 +10,6 @@ public class PlayerSave : MonoBehaviour
     {
         _gameStateTransition = GameObject.FindGameObjectWithTag("GameStateManager").GetComponent<GameStateTransition>();
         _gameStateTransition.destroyList.Add(this.gameObject);
-        Debug.Log(_gameStateTransition.destroyList.Count);
         DontDestroyOnLoad(this.gameObject);
     }
 }

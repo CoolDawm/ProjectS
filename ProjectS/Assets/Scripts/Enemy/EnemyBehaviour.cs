@@ -15,13 +15,18 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
     protected NavMeshAgent agent;
     [SerializeField]
     protected float _attackRange = 4f;
+    [SerializeField]
+    protected float _expOnDeath=1;
+    [SerializeField]
+    protected GameObject _expItemPrefab;
     public float range=10f; //radius of sphere
     protected float changePositionTimer = 0;
-   
+    protected PlayerLevelSystem _playerLevelSystem;
     protected Characteristics _characteristics; 
     protected GameObject _target;
     protected bool _isAggro = false;
     protected Animator _animator;
+    protected StageStateManager _stageStateManager;
     // Implementing properties from IEnemy
     public float detectionRadius { get { return _detectionRadius; } }
     public float aggroRadius { get { return _aggroRadius; } }
@@ -36,15 +41,32 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
     protected virtual void Start()
     {
         _target = GameObject.FindGameObjectWithTag("Player");
+        _playerLevelSystem = _target.GetComponent<PlayerLevelSystem>();
         agent = GetComponent<NavMeshAgent>();
         _animator = GetComponentInChildren<Animator>();
+        _stageStateManager=FindObjectOfType<StageStateManager>();
     }
     protected virtual void Update()
     {
         // Implement your physics-related logic here
     }
+    protected void SpawnExpItem()
+    {
+        Item newItem = new Item();
+        newItem.itemName = $"ExpScroll ({_expOnDeath})";
+        newItem.isStackable = true;
+        newItem.SetExpAmount(_expOnDeath);
+        Vector3 randomOffset = Random.insideUnitSphere * 4;
+        randomOffset.y = 0;
 
-    public abstract void Die();
+        Vector3 spawnPosition = transform.position + randomOffset;
+        GameObject itemObject = Instantiate(_expItemPrefab, spawnPosition, Quaternion.identity);
+        itemObject.GetComponent<ItemComponent>().SetItem(newItem);
+    }
+    public virtual void Die()
+    {
+        _stageStateManager.IncreaseExp(_expOnDeath);
+    }
     public abstract void Attack();
     public abstract void Idle();
     public abstract void ChasePlayer();

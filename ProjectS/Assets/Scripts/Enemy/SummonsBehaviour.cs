@@ -95,6 +95,7 @@ public class SummonsBehaviour : EnemyBehaviour
     }
     public override void Die()
     {
+        base.Die();
         Destroy(gameObject);
     }
     public override void Agroed()

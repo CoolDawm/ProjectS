@@ -26053,6 +26053,7 @@ GameObject:
   - component: {fileID: 5475702513276676855}
   - component: {fileID: 4642572528296195781}
   - component: {fileID: 6817672967762977287}
+  - component: {fileID: 6876108926222654171}
   m_Layer: 0
   m_Name: Chr_FantasyHero_Preset_71
   m_TagString: Player
@@ -26230,6 +26231,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32166dae24f6cb24cb0fa27f8f7c0f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isManequin: 0
+  _hasShield: 1
   maxHealth: 100
   currentHealth: 0
   maxShield: 50
@@ -26284,6 +26287,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPotionHealAmount: 5
   manaPotionManaAmount: 5
+--- !u!114 &6876108926222654171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3328847828164728316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2014137808a6f5e40b78ce134addfca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3349371157629135807
 GameObject:
   m_ObjectHideFlags: 0

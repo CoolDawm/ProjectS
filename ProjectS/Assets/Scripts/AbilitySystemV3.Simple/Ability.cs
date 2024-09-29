@@ -14,6 +14,9 @@ public class Ability : ScriptableObject
     public float range;
     public float animTime;
     public string aim;
+    public float strongAttackStaminaCost;
+    public string strongAttackName;
+    public float strongAttackTime;
     public virtual void Activate(GameObject user,CoroutineRunner coroutineRunner)
     {
         
@@ -26,6 +29,10 @@ public class Ability : ScriptableObject
     public virtual void Activate(GameObject user, CoroutineRunner coroutineRunner, GameObject target)
     {
         
+    }
+    public virtual IEnumerator ActivateStrongAttack(GameObject user, CoroutineRunner coroutineRunner)
+    {
+        yield break;
     }
 
 }

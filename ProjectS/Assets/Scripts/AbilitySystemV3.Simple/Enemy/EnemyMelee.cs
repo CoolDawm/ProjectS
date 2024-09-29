@@ -19,6 +19,8 @@ public class EnemyMelee : Ability
         yield return new WaitForSeconds(animTime);
         if (user == null)
         {
+            abilityIsActive = false;
+
             yield break;
         }
         Collider[] colliders = Physics.OverlapSphere(user.transform.position, meleeRange);

@@ -148,6 +148,7 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     }
     public override void Attack()
     {
+        Debug.Log("ShpuldAttack");
         abilityList[0].Activate(gameObject,_coroutineRunner,_animator);
     }
 
@@ -171,6 +172,9 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     
     public override void Die()
     {
+        //_playerLevelSystem.AddExp(_expOnDeath);
+        //SpawnExpItem();
+        base.Die();
         Destroy(gameObject);
     }
     public override void TakeDamageAnim()

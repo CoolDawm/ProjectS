@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotNumber: 0
+  spell: {fileID: 0}
 --- !u!114 &7601335175294206579
 MonoBehaviour:
   m_ObjectHideFlags: 0

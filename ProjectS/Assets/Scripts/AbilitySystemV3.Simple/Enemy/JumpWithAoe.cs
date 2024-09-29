@@ -21,6 +21,11 @@ public class JumpWithAoe : Ability
         while (timer<=animTime)
         {
             timer += Time.deltaTime;
+            if (user == null) {
+                abilityIsActive = false;
+
+                yield break;
+            }
             user.transform.position+=user.transform.forward * (speed * Time.deltaTime);
             yield return null;
         }
