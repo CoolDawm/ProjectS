@@ -10,7 +10,6 @@ public class HealthSystem : MonoBehaviour
     private bool _isSpawner = false;
     [SerializeField]
     private bool _hasShield = true;
-
     public float maxHealth = 100;
     public float currentHealth;
     public float maxShield = 50;
@@ -18,6 +17,7 @@ public class HealthSystem : MonoBehaviour
     public FloatTextManager floatingTextManager;
     public Action OnDeath;
     public Action OnTakeDamage;
+    public Action<string, GameObject> OnTakeDamageWithElement;
     public HealthBar healthBar { get; private set; }
 
     private string _objectTag;
@@ -28,8 +28,11 @@ public class HealthSystem : MonoBehaviour
     void Start()
     {
         _characteristics = GetComponent<Characteristics>();
+        Debug.Log(gameObject.name);
         if (!_isManequin &&!_isSpawner)
         {
+            Debug.Log(_characteristics.secondCharDic["MaxHealth"]);
+
             maxHealth = _characteristics.secondCharDic["MaxHealth"];
         }
         currentHealth = maxHealth;
@@ -73,6 +76,8 @@ public class HealthSystem : MonoBehaviour
 
     public void TakeDamage(float damageAmount, Color color)
     {
+        if (this == null) return;
+
         if (_isSpawner)
         {
             ApplyDamage(damageAmount, color);
@@ -110,9 +115,58 @@ public class HealthSystem : MonoBehaviour
         }
         
     }
+    public void TakeDamage(float damageAmount, Color color,string elementName)
+    {
+        if (_isSpawner)
+        {
+            ApplyDamage(damageAmount, color);
 
+        }
+        else
+        {
+            if (_utilities.CalculateChance(_characteristics.secondCharDic["EvaidChance"]))
+            {
+                WorNotification(Color.blue, "Dodge");
+                return;
+            }
+            float defense = _characteristics.secondCharDic["Defense"];
+            damageAmount -= defense * 0.3f;
+            if (_objectTag == "Player")
+            {
+                if (gameObject.GetComponent<PlayerBehaviour>().skill.isWorking)
+                {
+                    WorNotification(Color.blue, "Dodge");
+                }
+                else
+                {
+                    if (_characteristics.resistsDic[elementName] < UnityEngine.Random.Range(0, 100))
+                    {
+                        OnTakeDamageWithElement?.Invoke(elementName, gameObject);
+
+                    }
+                    ApplyDamage(damageAmount, color);
+                }
+            }
+            else
+            {
+                
+                if (_characteristics.resistsDic[elementName]< UnityEngine.Random.Range(0, 100))
+                {
+                    OnTakeDamageWithElement?.Invoke(elementName, gameObject);
+                }
+                ApplyDamage(damageAmount, color);
+            }
+            if (_shieldRegenCoroutine != null)
+            {
+                StopCoroutine(_shieldRegenCoroutine);
+            }
+            _shieldRegenCoroutine = StartCoroutine(ShieldRegenCoroutine());
+        }
+
+    }
     private void ApplyDamage(float damageAmount, Color color)
     {
+        if (this == null) return;
         if (_hasShield && currentShield > 0)
         {
             if (currentShield >= damageAmount)
@@ -143,11 +197,14 @@ public class HealthSystem : MonoBehaviour
 
     public void NumNotification(Color color, float number)
     {
+        if (this == null) return;
+
         floatingTextManager.ShowFloatingNumbers(gameObject.transform, number, color);
     }
 
     public void WorNotification(Color color, string word)
     {
+        if (this == null) return;
         floatingTextManager.ShowFloatingText(gameObject.transform, word, color);
     }
 

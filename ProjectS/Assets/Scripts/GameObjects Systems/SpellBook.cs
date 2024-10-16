@@ -4,6 +4,6 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SpellBook : ScriptableObject
 {
-   private AbilityHolder _abilityHolder;
+   private AbilitiesHolder _abilityHolder;
    public List<Ability> abilities;
 }

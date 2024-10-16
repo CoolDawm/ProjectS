@@ -18,18 +18,18 @@ public class CharacteristicsLoader : MonoBehaviour
         if (gameObject.CompareTag("Enemy"))
         {
             modifier = 1;
-            for (int i = 0; i <dirKeys.Count; i++)
+            for (int i = 0; i < dirKeys.Count; i++)
             {
-                _characteristics.charDic.Add(dirKeys[i],dirValues[i]*modifier);
+                _characteristics.charDic.Add(dirKeys[i], dirValues[i] * modifier);
             }
         }
         else
         {
-            for (int i = 0; i <dirKeys.Count; i++)
+            for (int i = 0; i < dirKeys.Count; i++)
             {
-                _characteristics.charDic.Add(dirKeys[i],dirValues[i]);
+                _characteristics.charDic.Add(dirKeys[i], dirValues[i]);
             }
         }
-        
+
     }
 }

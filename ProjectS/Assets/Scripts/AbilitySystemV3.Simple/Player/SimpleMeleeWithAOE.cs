@@ -53,10 +53,10 @@ public class SimpleMeleeWithAOE : Ability
             Vector3 directionToTarget = collider.transform.position - user.transform.position;
             if (Vector3.Dot(user.transform.forward, directionToTarget) > 0)
             {
-                if (collider.transform.root.CompareTag(aim) && collider is BoxCollider)
+                if (collider.transform.root.CompareTag(aim) && collider is BoxCollider && !collider.isTrigger)
                 {
                     collider.transform.root.GetComponent<HealthSystem>().TakeDamage(damage, Color.white);
-                    user.GetComponent<AbilityHolder>().GenerateMana(damage / 5);
+                    user.GetComponent<AbilitiesHolder>().GenerateMana(damage / 5);
                 }
             }
         }
@@ -81,10 +81,10 @@ public class SimpleMeleeWithAOE : Ability
             colliders = Physics.OverlapSphere(user.transform.position, areaOfEffectRadius);
             foreach (Collider collider in colliders)
             {
-                if (collider.CompareTag(aim))
+                if (collider.CompareTag(aim) && !collider.isTrigger)
                 {
-                    collider.transform.root.GetComponent<HealthSystem>().TakeDamage(damage, Color.white);
-                    user.GetComponent<AbilityHolder>().GenerateMana(damage / 5);
+                    collider.transform.root.GetComponent<HealthSystem>().TakeDamage(damage, Color.white, _elementName);
+                    user.GetComponent<AbilitiesHolder>().GenerateMana(damage / 5);
                 }
             }
             yield return new WaitForSeconds(_timeBetweenTicks);

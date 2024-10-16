@@ -40,6 +40,8 @@ public class PlayerBehaviour : MonoBehaviour
     private bool _lockPlayerRotation = false;
     private float _fallDistance = 0;
     private bool moveStateRun = true;
+    private bool _canMove=true;
+    private bool _isStunned=false;
     //Parameters for animator
     private static readonly int RightWalk = Animator.StringToHash("RightWalk");
     private static readonly int StreightWalk = Animator.StringToHash("StraightWalk");
@@ -72,7 +74,9 @@ public class PlayerBehaviour : MonoBehaviour
     {
         Scene currentScene = SceneManager.GetActiveScene();
         if (currentScene.name == "Level00") return;
-        transform.position = new Vector3(0,26,0);
+        _controller.enabled = false;
+        transform.position = new Vector3(0, 26, 0);
+        _controller.enabled = true;
     }
     private void Awake()
     {
@@ -85,6 +89,7 @@ public class PlayerBehaviour : MonoBehaviour
         HealthSystem healthSystem = GetComponent<HealthSystem>();
         _healthBar = GameObject.FindWithTag("PlayerHUD").GetComponent<HealthBar>();
         _characteristics = gameObject.GetComponent<Characteristics>();
+        Debug.Log(_characteristics);
         _currentStamina = _characteristics.secondCharDic["MaxStamina"];
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
         _afterDeathPanel = Resources.Load<GameObject>("UI/AfterDeathUICanvas");
@@ -99,7 +104,7 @@ public class PlayerBehaviour : MonoBehaviour
         {
             _animator = GetComponent<Animator>();
         }
-
+        if (_isStunned) return;
         JumpAndGravity();
         MovePlayer();
         if (Input.GetKeyDown(KeyCode.G))
@@ -119,13 +124,13 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void MovePlayer()
     {
-
+        if (!_canMove) return;
         if (_cameraMain == null)
         {
             _cameraMain = Camera.main.transform;
         }
         //Skill
-        if (_sprintControl.action.triggered && !skill.isWorking && _currentStamina >= skill.staminaCost && _movement!= Vector2.zero)
+        if (_sprintControl.action.triggered && !skill.isWorking && _currentStamina >= skill.staminaCost && _movement != Vector2.zero)
         {
             skill.Activate(gameObject, _coroutineRunner, _movement);
             _currentStamina -= skill.staminaCost;
@@ -228,6 +233,8 @@ public class PlayerBehaviour : MonoBehaviour
             _previousBlend = _animator.GetFloat(Speed);
             _currentSpeed = 0;
         }
+       // Debug.Log(GetComponent<Characteristics>().charBuffBuffer["MovementSpeed"]);
+
         //Stamina
 
         if (_currentStamina < _characteristics.secondCharDic["MaxStamina"])
@@ -240,7 +247,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         _healthBar.UpdateStaminaBar(_characteristics.secondCharDic["MaxStamina"], _currentStamina);
         //
-        if (!skill.isWorking && (_movement != Vector2.zero || (_movement == Vector2.zero &&_lockPlayerRotation)) || !_groundedPlayer)
+        if (!skill.isWorking && (_movement != Vector2.zero || (_movement == Vector2.zero && _lockPlayerRotation)) || !_groundedPlayer)
         {
             Vector3 lookDirection = _cameraMain.forward;
             lookDirection.y = 0f;
@@ -263,7 +270,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool IsGrounded()
     {
-        float rayDistance = 0.1f;
+        float rayDistance = 0.15f;
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, rayDistance))
         {
@@ -281,6 +288,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         _groundedPlayer = false;
         _animator.SetBool(Grounded, false);//
+
         return false;
     }
     private void JumpAndGravity()
@@ -305,7 +313,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-            float rayDistance = 0.5f;
+            float rayDistance = 1f;
             bool isFalling = true;
             RaycastHit hit;
             if (Physics.Raycast(transform.position, Vector3.down, out hit, rayDistance))
@@ -358,5 +366,24 @@ public class PlayerBehaviour : MonoBehaviour
     public void DecreaseCurentStamina(float amount)
     {
         _currentStamina -= amount;
+    }
+    public void ProhibitMoving()
+    {
+        _canMove = false;
+    }
+    public void AllowMoving()
+    {
+        _canMove = true;
+    }
+    public void Stun()
+    {
+        _isStunned = true;
+        _animator.SetTrigger("Stun");
+    }
+    public void UnStun()
+    {
+        _isStunned = false;
+        _animator.SetTrigger("UnStun");
+
     }
 }

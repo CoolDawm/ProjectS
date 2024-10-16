@@ -17,6 +17,7 @@ public class Ability : ScriptableObject
     public float strongAttackStaminaCost;
     public string strongAttackName;
     public float strongAttackTime;
+    public string _elementName;
     public virtual void Activate(GameObject user,CoroutineRunner coroutineRunner)
     {
         

@@ -11,7 +11,6 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     private List<Ability> abilityList;
     private CoroutineRunner _coroutineRunner;
     private float _mana;
-    private HealthSystem _healthSystem;
     private bool _isUsingAb=false;
     private float _attackCooldown =0;
     private float _abilityCooldown =0;
@@ -21,15 +20,21 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
         base.Start();
         agent = GetComponent<NavMeshAgent>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
-        _healthSystem = GetComponent<HealthSystem>();
         _healthSystem.OnDeath += Die;
         _healthSystem.OnTakeDamage+=TakeDamageAnim;
         _mana = _characteristics.secondCharDic["MaxMana"];
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
+        for (int i = 0; i < abilityList.Count; i++)
+        {
+            Ability abClone = Instantiate(abilityList[i]);
+            abilityList[i] = abClone;
+        }
     }
     
     protected override void Update()
     {
+        if (_isStunned) return;
+
         if (_target == null)
         {
             ChangeTarget();
@@ -56,6 +61,7 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
             _attackCooldown += Time.deltaTime;
             Agroed();
             _isUsingAb = CheckForUsing();
+
             if (_distance<=abilityList[0].range)
             {
                 Idle();
@@ -148,7 +154,6 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     }
     public override void Attack()
     {
-        Debug.Log("ShpuldAttack");
         abilityList[0].Activate(gameObject,_coroutineRunner,_animator);
     }
 
@@ -179,6 +184,7 @@ public class MeleeEnemyBehaviour : EnemyBehaviour
     }
     public override void TakeDamageAnim()
     {
+        if (_animator == null) return;
         _isAggro = true;
         _animator.SetTrigger("Take Damage");
     }

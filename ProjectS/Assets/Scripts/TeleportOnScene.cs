@@ -13,6 +13,7 @@ public class TeleportOnScene : MonoBehaviour
         {
             TransitionToLevel(other.gameObject);
         }
+        
     }
     public void OnTriggerExit(Collider other)
     {
@@ -27,6 +28,9 @@ public class TeleportOnScene : MonoBehaviour
         Debug.Log("Teleport to training" + teleportObject);
 
         Debug.Log(teleportPoint);
-        teleportObject.transform.position = teleportPoint;
+        CharacterController plCont = teleportObject.GetComponent<CharacterController>();
+        plCont.enabled=false;
+        teleportObject.transform.transform.position = teleportPoint;
+        plCont.enabled=true;
     }
 }

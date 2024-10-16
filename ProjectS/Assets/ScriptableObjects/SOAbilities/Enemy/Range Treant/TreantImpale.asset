@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ed162abf681c67419638e8e28a1f16a, type: 3}
+  m_Name: TreantImpale
+  m_EditorClassIdentifier: 
+  abilityIsActive: 0
+  name: 
+  manaCost: 10
+  cooldown: 5
+  abilityImage: {fileID: 0}
+  description: 
+  animName: Root Attack
+  range: 10
+  animTime: 1
+  aim: Player
+  strongAttackStaminaCost: 0
+  strongAttackName: 
+  strongAttackTime: 0
+  _elementName: Earth
+  cursorPrefab: {fileID: 1624368403487492, guid: 9cb5a6f6c9a97f24da2012a45f8f9908, type: 3}
+  areaOfEffectRadius: 3
+  damage: 30

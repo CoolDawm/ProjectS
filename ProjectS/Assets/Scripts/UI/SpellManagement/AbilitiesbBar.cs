@@ -7,14 +7,14 @@ using UnityEngine.UI;
 
 public class AbilitiesbBar : MonoBehaviour
 {
-    [HideInInspector] public AbilityHolder abilityHolder;
+    [HideInInspector] public AbilitiesHolder abilityHolder;
     public List<GameObject> _spells;
     private float[] _timers;
     private bool spellExist;
     void Start()
     {
         GameObject spellSlot = Resources.Load<GameObject>("UI/Spell");
-        abilityHolder = GameObject.FindWithTag("Player").GetComponent<AbilityHolder>();
+        abilityHolder = GameObject.FindWithTag("Player").GetComponent<AbilitiesHolder>();
         _timers = abilityHolder.timers;
         List<Ability> abilityList=abilityHolder.GetAbilitiesList();
         for (int i = 0; i < abilityList.Count; i++)

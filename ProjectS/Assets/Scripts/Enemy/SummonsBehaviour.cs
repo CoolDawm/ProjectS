@@ -19,10 +19,16 @@ public class SummonsBehaviour : EnemyBehaviour
         healthSystem.OnDeath += Die;
         healthSystem.OnTakeDamage+=TakeDamageAnim;
         _ability.abilityIsActive = false;
+        
+            Ability abClone = Instantiate(_ability);
+            _ability = abClone;
+        
     }
 
     protected override void Update()
     {
+        if (_isStunned) return;
+
         if (_target == null)
         {
             ChangeTarget();

@@ -6,14 +6,14 @@ public class WeaponSlot : CharacterSlot
     public Transform weaponHolder;
     public bool isPrimarySlot; 
     private GameObject currentWeaponInstance;
-    private AbilityHolder _playerAbilityHolder;
+    private AbilitiesHolder _playerAbilityHolder;
     private GameObject _player;
     private Weapon _currentWeapon;
 
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
-        _playerAbilityHolder = _player.GetComponent<AbilityHolder>();
+        _playerAbilityHolder = _player.GetComponent<AbilitiesHolder>();
     }
 
     public override bool CanAcceptItem(Item item)

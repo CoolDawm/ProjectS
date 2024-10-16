@@ -5,23 +5,23 @@ using UnityEngine;
 
 public class EnemySRange : Ability
 {
-    [SerializeField] 
+    [SerializeField]
     private GameObject _fxEffect;
-    [SerializeField] 
+    [SerializeField]
     private GameObject projectilePrefab;
-    [SerializeField] 
+    [SerializeField]
     private float projectileSpeed = 100f;
     private Transform shootingPosition;
-    public override void Activate(GameObject user, CoroutineRunner coroutineRunner,Animator animator)
+    public override void Activate(GameObject user, CoroutineRunner coroutineRunner, Animator animator)
     {
         if (shootingPosition == null)
         {
             shootingPosition = user.transform.Find("ShootingPosition");
         }
         abilityIsActive = true;
-        coroutineRunner.StartCoroutineFunction(RangeCoroutitine(user,animator));
+        coroutineRunner.StartCoroutineFunction(RangeCoroutitine(user, animator));
     }
-    IEnumerator RangeCoroutitine(GameObject user,Animator animator)
+    IEnumerator RangeCoroutitine(GameObject user, Animator animator)
     {
         animator.SetTrigger(animName);
         yield return new WaitForSeconds(animTime);

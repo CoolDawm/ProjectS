@@ -19,6 +19,7 @@ public class Weapon : Item
     public Ability GetAbility()
     {
         _weaponAbility.range = range;
+        _weaponAbility._elementName = _weaponElement;
         return _weaponAbility;
     }
     public List<float> CharacteristicsBonuses()

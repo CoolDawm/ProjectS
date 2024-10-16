@@ -23,6 +23,7 @@ public class InventorySlot : MonoBehaviour, ISlot, IDropHandler, IPointerClickHa
     {
         Debug.Log(newItem.icon);
         item = newItem;
+        Debug.Log(icon);
         icon.sprite = item.icon;
         if (item.isStackable)
         {

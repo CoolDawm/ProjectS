@@ -31,7 +31,7 @@ public class MeleeAoeOvertimeDamage : Ability
             colliders = Physics.OverlapSphere(user.transform.position, areaOfEffectRadius);
             foreach (Collider collider in colliders)
             {
-                if (collider.CompareTag(aim))
+                if (collider.CompareTag(aim) && !collider.isTrigger)
                 {
                     collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage, Color.red);
                 }

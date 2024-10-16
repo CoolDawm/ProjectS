@@ -24,6 +24,8 @@ public class SimpleSummonsMeleeBehaviour : EnemyBehaviour
 
     protected override void Update()
     {
+        if (_isStunned) return;
+
         if (_target == null)
         {
             ChangeTarget();

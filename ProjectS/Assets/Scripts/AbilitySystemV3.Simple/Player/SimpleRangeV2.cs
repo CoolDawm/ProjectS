@@ -50,7 +50,7 @@ public class SimpleRangeV2 : Ability
         if (closestCollider != null)
         {
             // Цель найдена
-            user.GetComponent<AbilityHolder>().GenerateMana(3); // Генерация маны при нахождении цели, если это нужно
+            user.GetComponent<AbilitiesHolder>().GenerateMana(3); // Генерация маны при нахождении цели, если это нужно
             prScr.aim = "Enemy"; // Устанавливаем тип цели
             prScr.range = _rangeRadius;
             Vector3 direction = (closestCollider.transform.position - _shootingPosition.transform.position).normalized;

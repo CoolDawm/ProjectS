@@ -9,6 +9,8 @@ public class Characteristics : MonoBehaviour
     public Dictionary<string, float> charDic = new Dictionary<string, float>();
     public Dictionary<string, float> secondCharDic = new Dictionary<string, float>() { };
     public Dictionary<string, float> charBuffBuffer = new Dictionary<string, float>() { };
+    public Dictionary<string, float> resistsDic = new Dictionary<string, float>();
+
     public bool isUpdating = false;
     public Action OnUpdate;
     private float _weaponDamage = 1;// maybe not player only
@@ -34,6 +36,13 @@ public class Characteristics : MonoBehaviour
         charBuffBuffer.Add("MaxStamina", 0);
         charBuffBuffer.Add("ManaRegen", 0);
         charBuffBuffer.Add("StaminaRegen", 0);
+        Debug.Log($"Char here {gameObject.name}");
+        resistsDic.Add("Fire",10);
+        resistsDic.Add("Ice",10);
+        resistsDic.Add("Earth",10);
+        resistsDic.Add("Air",10);
+        resistsDic.Add("Thunder", 10);
+
     }
 
 

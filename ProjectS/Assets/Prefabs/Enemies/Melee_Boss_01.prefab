@@ -289,8 +289,6 @@ GameObject:
   - component: {fileID: -7004220508776204095}
   - component: {fileID: 9209640436709587989}
   - component: {fileID: 925323567026633364}
-  - component: {fileID: 4455849979981840896}
-  - component: {fileID: 6517460809112856950}
   - component: {fileID: 4412979941537943727}
   - component: {fileID: 7833186932951432224}
   - component: {fileID: 355723701591202926}
@@ -301,6 +299,8 @@ GameObject:
   - component: {fileID: 3567908151707039145}
   - component: {fileID: 462809577546805320}
   - component: {fileID: 7044701655823736465}
+  - component: {fileID: -1048476097853053229}
+  - component: {fileID: -435877812050333825}
   m_Layer: 3
   m_Name: Melee_Boss_01
   m_TagString: Enemy
@@ -428,50 +428,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isManequin: 0
+  _isSpawner: 0
   _hasShield: 1
   maxHealth: 250
   currentHealth: 0
   maxShield: 100
   currentShield: 0
   floatingTextManager: {fileID: 0}
---- !u!114 &4455849979981840896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3869819920990903474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0fb0148186b98d4b80ebd1b2d6d0ca4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUpdating: 0
---- !u!114 &6517460809112856950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3869819920990903474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b17dde0f3c8d3e4e9fac118910b2bbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dirKeys:
-  - Strength
-  - Agility
-  - Recovery
-  - Endurance
-  - Intellect
-  dirValues:
-  - 7
-  - 5
-  - 3
-  - 15
-  - 10
-  modifier: 1
 --- !u!114 &4412979941537943727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,6 +637,44 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2616476, y: 5.0643244, z: 1.1998203}
   m_Center: {x: -7.61, y: 2.467854, z: 1.34}
+--- !u!114 &-1048476097853053229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3869819920990903474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41d01315dfdfb643b2f41936cde5765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dirKeys:
+  - Strength
+  - Agility
+  - Endurance
+  - Intellect
+  - Recovery
+  dirValues:
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  modifier: 1
+--- !u!114 &-435877812050333825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3869819920990903474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b281a8515b522347911a730138ffa94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUpdating: 0
 --- !u!1 &6519388888166581705
 GameObject:
   m_ObjectHideFlags: 0

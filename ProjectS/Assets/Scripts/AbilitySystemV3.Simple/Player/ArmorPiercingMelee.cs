@@ -44,12 +44,12 @@ public class ArmorPiercingMelee : Ability
             Vector3 directionToTarget = collider.transform.position - user.transform.position;
             if (Vector3.Dot(user.transform.forward, directionToTarget) > 0)
             {
-                if (collider.transform.root.CompareTag(aim) && collider is BoxCollider)
+                if (collider.transform.root.CompareTag(aim) && collider is BoxCollider&&!collider.isTrigger)
                 {
                     HealthSystem health = collider.transform.root.GetComponent<HealthSystem>();
                     float effectiveDamage = damage + (1 + health.currentShield * _armorPiercingFactor);
-                    health.TakeDamage(effectiveDamage, Color.red);
-                    user.GetComponent<AbilityHolder>().GenerateMana(damage / 5);
+                    health.TakeDamage(effectiveDamage, Color.red, _elementName);
+                    user.GetComponent<AbilitiesHolder>().GenerateMana(damage / 5);
                 }
             }
         }
@@ -69,12 +69,12 @@ public class ArmorPiercingMelee : Ability
         foreach (Collider collider in colliders)
         {
             
-            if (collider.transform.root.CompareTag(aim) && collider is BoxCollider)
+            if (collider.transform.root.CompareTag(aim) && collider is BoxCollider && !collider.isTrigger)
             {
                 HealthSystem health = collider.transform.root.GetComponent<HealthSystem>();
                 float effectiveDamage = damage+(1 + health.currentShield * 1);
-                health.TakeDamage(effectiveDamage, Color.red);
-                user.GetComponent<AbilityHolder>().GenerateMana(damage / 5);
+                health.TakeDamage(effectiveDamage, Color.red, _elementName);
+                user.GetComponent<AbilitiesHolder>().GenerateMana(damage / 5);
             }
         }
 

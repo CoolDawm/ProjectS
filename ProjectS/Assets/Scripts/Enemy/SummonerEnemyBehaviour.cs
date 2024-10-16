@@ -19,7 +19,6 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
     private float _distance;
     private float _mana;
     private bool _isUsingAb=false;
-    private HealthSystem _healthSystem;
     protected override void Start()
     {
         base.Start();
@@ -27,15 +26,21 @@ public class SummonerEnemyBehaviour : EnemyBehaviour
         _detectionRadius = 15f;
         _agent = GetComponent<NavMeshAgent>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
-        _healthSystem = GetComponent<HealthSystem>();
         _healthSystem.OnTakeDamage+=TakeDamageAnim;
         _healthSystem.OnDeath += Die;
         _mana = _characteristics.secondCharDic["MaxMana"];
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
+        for (int i = 0; i < _abilityList.Count; i++)
+        {
+            Ability abClone = Instantiate(_abilityList[i]);
+            _abilityList[i] = abClone;
+        }
     }
 
     protected override void Update()
     {
+        if (_isStunned) return;
+
         if (_target == null)
         {
             ChangeTarget();

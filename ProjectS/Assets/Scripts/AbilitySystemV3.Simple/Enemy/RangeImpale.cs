@@ -10,7 +10,7 @@ public class RangeImpale : Ability
     private Vector3 _zonePosition;
     private GameObject _cursorObject;
 
-    public override void Activate(GameObject user, CoroutineRunner coroutineRunner,Animator animator)
+    public override void Activate(GameObject user, CoroutineRunner coroutineRunner, Animator animator)
     {
         abilityIsActive = true;
         animator.SetTrigger(animName);
@@ -22,7 +22,7 @@ public class RangeImpale : Ability
 
     IEnumerator EnemAoeAbilityCoroutine(GameObject enemy, float aoeDamage)
     {
-        Debug.DrawRay(_zonePosition, Vector3.up, Color.red, 5f); 
+        Debug.DrawRay(_zonePosition, Vector3.up, Color.red, 5f);
         yield return new WaitForSeconds(0.5f);
         while (abilityIsActive)
         {
@@ -31,15 +31,15 @@ public class RangeImpale : Ability
             foreach (Collider collider in colliders)
             {
 
-                if (collider.CompareTag(aim)&& collider is BoxCollider)
+                if (collider.CompareTag(aim) && collider is BoxCollider)
                 {
-                    collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage, Color.red);
+                    collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage, Color.red, _elementName);
                 }
             }
 
             abilityIsActive = false;
             yield return null;
         }
-        Destroy(_cursorObject,3.5f);
+        Destroy(_cursorObject, 3.5f);
     }
 }

@@ -5,14 +5,14 @@ using UnityEngine;
 public class ProjectileScript : MonoBehaviour
 {
 
-    [SerializeField] 
+    [SerializeField]
     private float _damage = 15;
     [SerializeField]
     private bool isEnchPr = false;
     public string aim { private get; set; }
     public float range;
     private Vector3 _initialPosition;
-    
+
     void Start()
     {
         _initialPosition = transform.position;
@@ -32,7 +32,7 @@ public class ProjectileScript : MonoBehaviour
                         if (collider.transform.root.gameObject.CompareTag(aim))
                         {
                             //collider.gameObject.GetComponent<HealthSystem>().TakeDamage(aoeDamage);
-                            collider.transform.root.gameObject.GetComponent<HealthSystem>().TakeDamage(_damage,Color.yellow);
+                            collider.transform.root.gameObject.GetComponent<HealthSystem>().TakeDamage(_damage, Color.yellow);
                         }
                     }
                 }
@@ -50,9 +50,9 @@ public class ProjectileScript : MonoBehaviour
         }
         else
         {
-            if (collision.collider&&collision.collider.CompareTag(aim)&& collision.collider is BoxCollider|| collision.collider.CompareTag("Summon")&& collision.collider is BoxCollider)
+            if (collision.collider && collision.collider.CompareTag(aim) && collision.collider is BoxCollider || collision.collider.CompareTag("Summon") && collision.collider is BoxCollider)
             {
-                collision.collider.gameObject.GetComponent<HealthSystem>().TakeDamage(_damage,Color.red);
+                collision.collider.gameObject.GetComponent<HealthSystem>().TakeDamage(_damage, Color.red);
                 Destroy(gameObject);
             }
             else
@@ -60,7 +60,7 @@ public class ProjectileScript : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-        
+
     }
 
     void Update()

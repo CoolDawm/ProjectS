@@ -9,22 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42be3b82a60f7624591655c733614bfb, type: 3}
+  m_Script: {fileID: 11500000, guid: f2507895b6e2bd148a12387e88d93f31, type: 3}
   m_Name: GolemJump
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::JumpWithAoe
   abilityIsActive: 0
   name: 
-  manaCost: 10
+  manaCost: 0
   cooldown: 0
   abilityImage: {fileID: 0}
   description: 
   animName: Hit Ground Attack
-  range: 5
+  range: 3
   animTime: 1
   aim: Player
   strongAttackStaminaCost: 0
   strongAttackName: 
   strongAttackTime: 0
-  meleeDamage: 15
-  aoeRange: 3
-  speed: 3
+  _elementName: Thunder
+  _damageBonus: 1.2
+  _jumpDistance: 3
+  meleeDamage: 0
+  aoeRange: 25
+  speed: 2

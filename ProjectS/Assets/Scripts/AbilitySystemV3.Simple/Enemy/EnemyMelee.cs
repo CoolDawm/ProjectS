@@ -30,18 +30,18 @@ public class EnemyMelee : Ability
             if (Vector3.Dot(user.transform.forward, directionToTarget) > 0)
             {
 
-                if (collider.CompareTag(aim)&&collider is BoxCollider)
+                if (collider.CompareTag(aim) && collider is BoxCollider)
                 {
                     Debug.Log("Punch");
                     Debug.Log(user);
-                    collider.GetComponent<HealthSystem>().TakeDamage(meleeDamage,Color.red);
+                    collider.GetComponent<HealthSystem>().TakeDamage(meleeDamage, Color.red);
                 }
-                else if (collider.CompareTag("Summon")&&collider is BoxCollider)
+                else if (collider.CompareTag("Summon") && collider is BoxCollider)
                 {
-                    collider.GetComponent<HealthSystem>().TakeDamage(meleeDamage,Color.red);
+                    collider.GetComponent<HealthSystem>().TakeDamage(meleeDamage, Color.red);
 
                 }
-                
+
             }
         }
 

@@ -20,24 +20,27 @@ public class RangeEnemyBehaviour : EnemyBehaviour
     private float _mana;
     private bool _isUsingAb=false;
     private CoroutineRunner _coroutineRunner;
-    private HealthSystem _healthSystem;
-
     protected override void Start()
     {
         base.Start();
         _agent = GetComponent<NavMeshAgent>();
-        _healthSystem = GetComponent<HealthSystem>();
         _characteristics=gameObject.GetComponent<Characteristics>(); 
         _healthSystem.OnDeath += Die;
         _healthSystem.OnTakeDamage+=TakeDamageAnim;
         _attackRange = detectionRadius - 3;
         _mana = _characteristics.secondCharDic["MaxMana"];
         _coroutineRunner = GameObject.FindGameObjectWithTag("CoroutineRunner").GetComponent<CoroutineRunner>();
-
+        for (int i = 0; i < abilityList.Count; i++)
+        {
+            Ability abClone = Instantiate(abilityList[i]);
+            abilityList[i] = abClone;
+        }
     }
 
     protected override void Update()
     {
+        if (_isStunned) return;
+
         if (_target == null)
         {
             ChangeTarget();

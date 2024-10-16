@@ -27,6 +27,8 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
     protected bool _isAggro = false;
     protected Animator _animator;
     protected StageStateManager _stageStateManager;
+    protected HealthSystem _healthSystem;
+    protected bool _isStunned = false;
     // Implementing properties from IEnemy
     public float detectionRadius { get { return _detectionRadius; } }
     public float aggroRadius { get { return _aggroRadius; } }
@@ -45,6 +47,10 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
         agent = GetComponent<NavMeshAgent>();
         _animator = GetComponentInChildren<Animator>();
         _stageStateManager=FindObjectOfType<StageStateManager>();
+        ElementalEffectsManager elementalEffectsManager = FindObjectOfType<ElementalEffectsManager>();
+        _healthSystem = GetComponent<HealthSystem>();
+
+        elementalEffectsManager.AddTarget(_healthSystem);
     }
     protected virtual void Update()
     {
@@ -87,5 +93,13 @@ public abstract class EnemyBehaviour : MonoBehaviour, IEnemy, IEnemyMovement
         }
         result = Vector3.zero;
         return false;
+    }
+    public void Stun()
+    {
+        _isStunned = true;
+    }
+    public void UnStun()
+    {
+        _isStunned = false;
     }
 }

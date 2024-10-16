@@ -18,9 +18,13 @@ MonoBehaviour:
   cooldown: 2
   abilityImage: {fileID: 0}
   description: 
-  animName: 
+  animName: AuraA
   range: 15
   animTime: 1
   aim: Enemy
+  strongAttackStaminaCost: 0
+  strongAttackName: 
+  strongAttackTime: 0
+  _elementName: Fire
   projectilePrefab: {fileID: 2416214550007718432, guid: f9852ad8712bd3540bbad50a9cf5e932, type: 3}
   projectileSpeed: 40

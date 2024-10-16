@@ -19,13 +19,13 @@ MonoBehaviour:
   abilityImage: {fileID: 0}
   description: Adding damage against Shields
   animName: MeleeA
-  range: 5
+  range: 3
   animTime: 0.6
   aim: Enemy
   strongAttackStaminaCost: 30
   strongAttackName: StrongMeleeA
   strongAttackTime: 1
+  _elementName: Earth
   _damageBonus: 1.2
-  _meleeRange: 3.5
   _armorPiercingFactor: 0.5
   _strongAttackMultiplier: 3
